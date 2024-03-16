@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "id": "twitch-interactions",
+  "version": "${version}",
+  "name": "Twitch-Interactions",
+  "description": "",
+  "authors": [],
+  "contact": {
+    "repo": "https://github.com/Evan/Twitch-Interactions-v4witch-Interactions-v4"
+  },
+  "license": "All-Rights-Reserved",
+  "icon": "assets/twitch-interactions/icon.png",
+  "environment": "server",
+  "entrypoints": {
+    "client": [
+      "uk.co.evanward.twitchinteractions.client.Twitch_InteractionsClient"
+    ],
+    "main": [
+      "uk.co.evanward.twitchinteractions.Twitch_Interactions"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
