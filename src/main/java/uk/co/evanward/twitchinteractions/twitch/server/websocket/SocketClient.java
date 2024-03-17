@@ -112,34 +112,51 @@ public class SocketClient extends WebSocketClient
     @Override
     public void onClose(int code, String reason, boolean remote)
     {
+        // Successful client disconnect
+        if (code == 1000) {
+            TwitchInteractions.logger.info("Successfully disconnected from Twitch");
+
+            return;
+        }
+
+        // Unexpected disconnect
         switch (code) {
-            case 1000:
-                // Successful client disconnect
-                break;
-            case 4000:
+            case 4000 -> {
                 // Internal server error
-                break;
-            case 4001:
+                TwitchInteractions.logger.error("Internal server error: Indicates a problem with the server");
+            }
+            case 4001 -> {
                 // Client sent inbound traffic
-                break;
-            case 4003:
+                TwitchInteractions.logger.error("Client sent inbound traffic: Sending outgoing messages to the server is prohibited with the exception of pong messages");
+            }
+            case 4002 -> {
                 // Client failed ping-pong
-                break;
-            case 4004:
+                TwitchInteractions.logger.error("Client failed ping-pong: You must respond to ping messages with a pong message");
+            }
+            case 4003 -> {
+                // Connection unused
+                TwitchInteractions.logger.error("Connection unused: When you connect to the server, you must create a subscription within 10 seconds or the connection is closed");
+            }
+            case 4004 -> {
                 // Reconnect grace time expired
-                break;
-            case 4005:
+                TwitchInteractions.logger.error("Reconnect grace time expired: When you receive a session_reconnect message, you have 30 seconds to reconnect to the server and close the old connection");
+            }
+            case 4005 -> {
                 // Network timeout
-                break;
-            case 4006:
+                TwitchInteractions.logger.error("Network timeout: Transient network timeout");
+            }
+            case 4006 -> {
                 // Network error
-                break;
-            case 4007:
+                TwitchInteractions.logger.error("Network error: Transient network error");
+            }
+            case 4007 -> {
                 // Invalid reconnect
-                break;
-            default:
+                TwitchInteractions.logger.error("Invalid reconnect: The reconnect URL is invalid");
+            }
+            default -> {
                 // Other
-                TwitchInteractions.logger.error(reason);
+                TwitchInteractions.logger.error("Unexpected socket error: " + reason);
+            }
         }
     }
 
