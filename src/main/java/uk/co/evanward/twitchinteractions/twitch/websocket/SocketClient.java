@@ -20,25 +20,6 @@ public class SocketClient extends WebSocketClient
         super(serverUri);
     }
 
-    public void connect(ServerCommandSource commandSource)
-    {
-        commandSource.sendFeedback(() -> Text.literal("Connecting to Twitch..."), false);
-
-        boolean connected;
-        try {
-            connected = connectBlocking();
-        } catch (InterruptedException e) {
-            commandSource.sendFeedback(() -> Text.literal("Error connecting to Twitch: " + e.getMessage()), false);
-            return;
-        }
-
-        if (connected) {
-            commandSource.sendFeedback(() -> Text.literal("Connected to Twitch"), false);
-        } else {
-            commandSource.sendFeedback(() -> Text.literal("Could not connect to twitch"), false);
-        }
-    }
-
     /**
      * On connection with Twitch websocket
      *

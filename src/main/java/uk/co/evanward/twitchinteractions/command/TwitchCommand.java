@@ -50,10 +50,20 @@ public class TwitchCommand
     private static int connect(CommandContext<ServerCommandSource> context)
     {
         if (!TwitchInteractions.socketClient.isConnected()) {
+            boolean connected = false;
             try {
-                TwitchInteractions.socketClient.connect(context.getSource());
-            } catch (Exception e) {
-                TwitchInteractions.logger.error("Error executing `twitch connect` command: " + e.getMessage());
+                // Connect to Twitch and wait until success or failure
+                connected = TwitchInteractions.socketClient.connectBlocking();
+            } catch (InterruptedException e) {
+                TwitchInteractions.logger.error("Error connecting to Twitch: " + e.getMessage());
+            }
+
+            if (connected) {
+                context.getSource().sendFeedback(() -> Text.literal("Connected to Twitch"), false);
+            } else {
+                context.getSource().sendFeedback(() -> Text.literal("Could not connect to twitch"), false);
+
+                return 0;
             }
         } else {
             context.getSource().sendFeedback(() -> Text.literal("Client is already connected to Twitch"), false);
