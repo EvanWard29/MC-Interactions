@@ -6,17 +6,17 @@
   "description": "",
   "authors": [],
   "contact": {
-    "repo": "https://github.com/Evan/Twitch-Interactions-v4witch-Interactions-v4"
+    "repo": "https://github.com/Evan/Twitch-Interactions-v4"
   },
   "license": "All-Rights-Reserved",
   "icon": "assets/twitch-interactions/icon.png",
-  "environment": "server",
+  "environment": "client",
   "entrypoints": {
     "client": [
-      "uk.co.evanward.twitchinteractions.client.Twitch_InteractionsClient"
+      "uk.co.evanward.twitchinteractions.client.TwitchInteractionsClient"
     ],
     "main": [
-      "uk.co.evanward.twitchinteractions.Twitch_Interactions"
+      "uk.co.evanward.twitchinteractions.TwitchInteractions"
     ]
   },
   "depends": {
