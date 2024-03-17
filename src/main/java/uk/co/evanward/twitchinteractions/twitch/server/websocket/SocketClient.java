@@ -10,6 +10,8 @@ import java.net.URI;
 
 public class SocketClient extends WebSocketClient
 {
+    private String sessionId;
+
     public SocketClient(URI serverUri)
     {
         super(serverUri);
@@ -23,7 +25,7 @@ public class SocketClient extends WebSocketClient
     @Override
     public void onOpen(ServerHandshake handshakeData)
     {
-
+        TwitchInteractions.logger.info("Successful connection to Twitch");
     }
 
     /**
@@ -51,13 +53,31 @@ public class SocketClient extends WebSocketClient
 
         switch (type) {
             case "session_welcome" -> {
+                // Set session id
+                try {
+                    this.sessionId = data.getJSONObject("payload").getJSONObject("session").getString("id");
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
 
+                TwitchInteractions.logger.info("Connected to Twitch with session ID `" + this.sessionId + "`");
             }
-            case "message" -> {
+            case "notification" -> {
+                JSONObject payload;
+                try {
+                    payload = data.getJSONObject("payload");
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
 
+                try {
+                    TwitchInteractions.logger.info("Twitch event: " + payload.getJSONObject("subscription").getString("type"));
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
             }
             case "session_reconnect" -> {
-
+                TwitchInteractions.logger.warn("Twitch socket triggered reconnect");
             }
         }
     }
@@ -109,5 +129,10 @@ public class SocketClient extends WebSocketClient
     public void onError(Exception ex)
     {
 
+    }
+
+    public String getSessionId()
+    {
+        return this.sessionId;
     }
 }

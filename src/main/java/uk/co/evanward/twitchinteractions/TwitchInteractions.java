@@ -16,6 +16,6 @@ public class TwitchInteractions implements ModInitializer
     public void onInitialize() {
         logger.info("Initialising Mod");
 
-        socketClient = new SocketClient(URI.create("ws://localhost:8000/ws"));
+        socketClient = new SocketClient(URI.create("ws://localhost:8080/ws"));
     }
 }
