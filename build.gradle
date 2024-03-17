@@ -28,7 +28,7 @@ dependencies {
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
     implementation "org.java-websocket:Java-WebSocket:1.5.3"
-    implementation 'org.json:json:20090211'
+    implementation 'org.json:json:20231013'
 }
 
 processResources {
