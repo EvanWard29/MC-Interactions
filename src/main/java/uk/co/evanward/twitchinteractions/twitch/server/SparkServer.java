@@ -2,7 +2,7 @@ package uk.co.evanward.twitchinteractions.twitch.server;
 
 import org.json.JSONObject;
 import spark.Spark;
-import uk.co.evanward.twitchinteractions.TwitchInteractions;
+import uk.co.evanward.twitchinteractions.helpers.TwitchHelper;
 
 import static spark.Spark.*;
 
@@ -28,10 +28,8 @@ public class SparkServer
                 response.body(new JSONObject().put("success", false).put("error", "Error obtaining access token! Be sure to click 'Authorize' in order for Twitch Interactions to work!").toString());
                 response.status(400);
             } else {
-                String accessToken = body.getString("access_token");
-
                 // Save access token to config
-                TwitchInteractions.logger.info("ACCESS TOKEN: " + accessToken);
+                TwitchHelper.setAccessToken(body.getString("access_token"));
 
                 response.body(new JSONObject().put("success", true).toString());
                 response.status(200);
