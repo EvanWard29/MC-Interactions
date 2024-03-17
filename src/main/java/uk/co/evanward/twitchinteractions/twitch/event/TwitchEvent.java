@@ -11,6 +11,8 @@ public class TwitchEvent
         Type getType();
         String getVersion();
         JSONObject getCondition();
+
+        void trigger();
     }
 
     public enum Type {

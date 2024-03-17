@@ -25,12 +25,20 @@ public class FollowEvent implements TwitchEvent.TwitchEventInterface
     }
 
     @Override
-    public String getVersion() {
+    public String getVersion()
+    {
         return this.version;
     }
 
     @Override
-    public JSONObject getCondition() {
+    public JSONObject getCondition()
+    {
         return this.context;
+    }
+
+    @Override
+    public void trigger()
+    {
+
     }
 }
