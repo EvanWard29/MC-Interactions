@@ -1,4 +1,4 @@
-package uk.co.evanward.twitchinteractions.twitch.server.websocket;
+package uk.co.evanward.twitchinteractions.twitch.websocket;
 
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
@@ -191,6 +191,11 @@ public class SocketClient extends WebSocketClient
                 TwitchInteractions.logger.error("Unexpected socket error: " + reason);
             }
         }
+
+        // Create a new SocketClient instance to allow reconnecting
+        TwitchInteractions.socketClient = new SocketClient(URI.create("ws://localhost:8080/ws"));
+
+        // Warn connected players of unexpected disconnect
     }
 
     /**

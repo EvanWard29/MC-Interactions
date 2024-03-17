@@ -5,7 +5,7 @@ import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.co.evanward.twitchinteractions.command.TwitchCommand;
-import uk.co.evanward.twitchinteractions.twitch.server.websocket.SocketClient;
+import uk.co.evanward.twitchinteractions.twitch.websocket.SocketClient;
 
 import java.net.URI;
 
