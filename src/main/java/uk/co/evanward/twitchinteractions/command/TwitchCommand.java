@@ -6,8 +6,9 @@ import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
+import uk.co.evanward.twitchinteractions.TwitchInteractions;
 
-import static net.minecraft.server.command.CommandManager.*;
+import static net.minecraft.server.command.CommandManager.literal;
 
 public class TwitchCommand
 {
@@ -20,14 +21,28 @@ public class TwitchCommand
 
     private static int twitch(CommandContext<ServerCommandSource> context)
     {
-        context.getSource().sendFeedback(() -> Text.literal("RETURNS CONNECTION STATUS"), false);
+        String sessionId = TwitchInteractions.socketClient.getSessionId();
+
+        if (sessionId != null) {
+            context.getSource().sendFeedback(() -> Text.literal("Connected to Twitch with session id `" + sessionId + "`"), false);
+        } else {
+            context.getSource().sendFeedback(() -> Text.literal("Client is not connected to Twitch"), false);
+        }
 
         return 1;
     }
 
     private static int connect(CommandContext<ServerCommandSource> context)
     {
-        context.getSource().sendFeedback(() -> Text.literal("HELLO WORLD"), false);
+        if (!TwitchInteractions.socketClient.isConnected()) {
+            try {
+                TwitchInteractions.socketClient.connect(context.getSource());
+            } catch (Exception e) {
+                TwitchInteractions.logger.error("Error executing `twitch connect` command: " + e.getMessage());
+            }
+        } else {
+            context.getSource().sendFeedback(() -> Text.literal("Client is already connected to Twitch"), false);
+        }
 
         return 1;
     }

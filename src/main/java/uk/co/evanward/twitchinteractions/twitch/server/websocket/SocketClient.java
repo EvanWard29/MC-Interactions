@@ -1,5 +1,7 @@
 package uk.co.evanward.twitchinteractions.twitch.server.websocket;
 
+import net.minecraft.server.command.ServerCommandSource;
+import net.minecraft.text.Text;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 import org.json.JSONException;
@@ -15,6 +17,25 @@ public class SocketClient extends WebSocketClient
     public SocketClient(URI serverUri)
     {
         super(serverUri);
+    }
+
+    public void connect(ServerCommandSource commandSource)
+    {
+        commandSource.sendFeedback(() -> Text.literal("Connecting to Twitch..."), false);
+
+        boolean connected;
+        try {
+            connected = connectBlocking();
+        } catch (InterruptedException e) {
+            commandSource.sendFeedback(() -> Text.literal("Error connecting to Twitch: " + e.getMessage()), false);
+            return;
+        }
+
+        if (connected) {
+            commandSource.sendFeedback(() -> Text.literal("Connected to Twitch"), false);
+        } else {
+            commandSource.sendFeedback(() -> Text.literal("Could not connect to twitch"), false);
+        }
     }
 
     /**
@@ -134,5 +155,10 @@ public class SocketClient extends WebSocketClient
     public String getSessionId()
     {
         return this.sessionId;
+    }
+
+    public boolean isConnected()
+    {
+        return this.sessionId != null;
     }
 }
