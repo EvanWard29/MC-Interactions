@@ -29,6 +29,8 @@ dependencies {
 
     implementation "org.java-websocket:Java-WebSocket:1.5.3"
     implementation 'org.json:json:20231013'
+
+    implementation "com.sparkjava:spark-core:2.9.4"
 }
 
 processResources {

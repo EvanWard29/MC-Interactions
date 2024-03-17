@@ -5,8 +5,15 @@ import com.mojang.brigadier.context.CommandContext;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
+import net.minecraft.text.ClickEvent;
+import net.minecraft.text.Style;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import uk.co.evanward.twitchinteractions.TwitchInteractions;
+import uk.co.evanward.twitchinteractions.helpers.TwitchHelper;
+import uk.co.evanward.twitchinteractions.twitch.server.SparkServer;
+
+import java.util.Objects;
 
 import static net.minecraft.server.command.CommandManager.literal;
 
@@ -17,6 +24,7 @@ public class TwitchCommand
         dispatcher.register(literal("twitch").executes(TwitchCommand::twitch)
             .then(literal("connect").executes(TwitchCommand::connect))
             .then(literal("disconnect").executes(TwitchCommand::disconnect))
+            .then(literal("authenticate").executes(TwitchCommand::authenticate))
         );
     }
 
@@ -78,6 +86,28 @@ public class TwitchCommand
         } else {
             context.getSource().sendFeedback(() -> Text.literal("Client is not connected to Twitch"), false);
         }
+
+        return 1;
+    }
+
+    /**
+     * Start the authentication process with Twitch to retrieve an access token
+     */
+    private static int authenticate(CommandContext<ServerCommandSource> context)
+    {
+        // Start Spark server to listen for response
+        SparkServer.start();
+
+        // Generate Auth URI
+        context.getSource().sendFeedback(() -> Text.literal("Click to Authorise")
+                .fillStyle(Style.EMPTY.withClickEvent(
+                    new ClickEvent(ClickEvent.Action.OPEN_URL,
+                    TwitchHelper.getAuthUri(Objects.requireNonNull(context.getSource().getPlayer()).getUuid()).toString())
+                ))
+                .formatted(Formatting.YELLOW)
+                .formatted(Formatting.UNDERLINE),
+            false
+        );
 
         return 1;
     }
