@@ -1,13 +1,12 @@
 package uk.co.evanward.twitchinteractions.twitch.websocket;
 
-import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.text.Text;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.framing.CloseFrame;
 import org.java_websocket.handshake.ServerHandshake;
 import org.json.JSONException;
 import org.json.JSONObject;
 import uk.co.evanward.twitchinteractions.TwitchInteractions;
+import uk.co.evanward.twitchinteractions.helpers.TwitchHelper;
 
 import java.net.URI;
 
@@ -63,7 +62,17 @@ public class SocketClient extends WebSocketClient
                     throw new RuntimeException(e);
                 }
 
-                TwitchInteractions.logger.info("Connected to Twitch with session ID `" + this.sessionId + "`");
+                // Subscribe to events
+                boolean subscribed = TwitchHelper.subscribe();
+
+                if (subscribed) {
+                    TwitchInteractions.logger.info("Connected to Twitch with session ID `" + this.sessionId + "`");
+                } else {
+                    TwitchInteractions.logger.error("Could not connect to Twitch: Subscriptions failed");
+
+                    TwitchInteractions.socketClient.close();
+                    TwitchInteractions.socketClient = new SocketClient(URI.create(TwitchHelper.WEBSOCKET_ENDPOINT));
+                }
             }
             case "notification" -> {
                 JSONObject payload;
