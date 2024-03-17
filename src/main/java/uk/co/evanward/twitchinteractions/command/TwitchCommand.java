@@ -16,9 +16,13 @@ public class TwitchCommand
     {
         dispatcher.register(literal("twitch").executes(TwitchCommand::twitch)
             .then(literal("connect").executes(TwitchCommand::connect))
+            .then(literal("disconnect").executes(TwitchCommand::disconnect))
         );
     }
 
+    /**
+     * Check the status of the Twitch websocket connection
+     */
     private static int twitch(CommandContext<ServerCommandSource> context)
     {
         String sessionId = TwitchInteractions.socketClient.getSessionId();
@@ -32,6 +36,9 @@ public class TwitchCommand
         return 1;
     }
 
+    /**
+     * Connect the client to the Twitch websocket
+     */
     private static int connect(CommandContext<ServerCommandSource> context)
     {
         if (!TwitchInteractions.socketClient.isConnected()) {
@@ -42,6 +49,34 @@ public class TwitchCommand
             }
         } else {
             context.getSource().sendFeedback(() -> Text.literal("Client is already connected to Twitch"), false);
+        }
+
+        return 1;
+    }
+
+    /**
+     * Disconnect the client from the Twitch websocket
+     */
+    private static int disconnect(CommandContext<ServerCommandSource> context)
+    {
+        if (TwitchInteractions.socketClient.isConnected()) {
+            try {
+                TwitchInteractions.socketClient.closeBlocking();
+            } catch (InterruptedException e) {
+                context.getSource().sendFeedback(() -> Text.literal("Error disconnecting from Twitch"), false);
+                TwitchInteractions.logger.error("Error disconnecting from Twitch: " + e.getMessage());
+
+                return 0;
+            }
+
+            if (!TwitchInteractions.socketClient.isConnected()) {
+                context.getSource().sendFeedback(() -> Text.literal("Client successfully disconnected from Twitch"), false);
+            } else {
+                context.getSource().sendFeedback(() -> Text.literal("Error disconnecting from Twitch"), false);
+                TwitchInteractions.logger.error("Error disconnecting from Twitch");
+            }
+        } else {
+            context.getSource().sendFeedback(() -> Text.literal("Client is not connected to Twitch"), false);
         }
 
         return 1;

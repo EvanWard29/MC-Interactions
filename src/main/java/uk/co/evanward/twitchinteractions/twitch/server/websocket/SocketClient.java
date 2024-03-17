@@ -3,6 +3,7 @@ package uk.co.evanward.twitchinteractions.twitch.server.websocket;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
 import org.java_websocket.client.WebSocketClient;
+import org.java_websocket.framing.CloseFrame;
 import org.java_websocket.handshake.ServerHandshake;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -142,8 +143,11 @@ public class SocketClient extends WebSocketClient
     public void onClose(int code, String reason, boolean remote)
     {
         // Successful client disconnect
-        if (code == 1000) {
+        if (code == CloseFrame.NORMAL) {
             TwitchInteractions.logger.info("Successfully disconnected from Twitch");
+
+            // Create a new SocketClient instance to allow reconnecting
+            TwitchInteractions.socketClient = new SocketClient(URI.create("ws://localhost:8080/ws"));
 
             return;
         }
