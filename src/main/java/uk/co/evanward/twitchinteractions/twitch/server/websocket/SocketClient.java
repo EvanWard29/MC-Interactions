@@ -99,6 +99,35 @@ public class SocketClient extends WebSocketClient
             }
             case "session_reconnect" -> {
                 TwitchInteractions.logger.warn("Twitch socket triggered reconnect");
+
+                // Keep the old socket active until successful reconnect
+                SocketClient oldSocket = TwitchInteractions.socketClient;
+
+                String uri;
+                try {
+                    uri = data.getJSONObject("payload").getJSONObject("session").getString("reconnect_url");
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
+
+                // Create a new socket for reconnecting
+                TwitchInteractions.socketClient = new SocketClient(URI.create(uri));
+
+                boolean connected;
+                try {
+                    connected = TwitchInteractions.socketClient.connectBlocking();
+                } catch (InterruptedException e) {
+                    TwitchInteractions.logger.error("Error reconnecting to Twitch: " + e.getMessage());
+
+                    return;
+                }
+
+                // Close the old socket if successfully reconnected
+                if (connected) {
+                    oldSocket.close();
+                } else {
+                    TwitchInteractions.logger.error("Error reconnecting to Twitch");
+                }
             }
         }
     }
