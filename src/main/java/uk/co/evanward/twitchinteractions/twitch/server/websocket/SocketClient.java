@@ -4,6 +4,7 @@ import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 import org.json.JSONException;
 import org.json.JSONObject;
+import uk.co.evanward.twitchinteractions.TwitchInteractions;
 
 import java.net.URI;
 
@@ -33,14 +34,15 @@ public class SocketClient extends WebSocketClient
     @Override
     public void onMessage(String message)
     {
-        JSONObject data = null;
+        JSONObject data;
+        String type;
+
         try {
             data = new JSONObject(message);
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
 
-        String type = null;
         try {
             type = data.getJSONObject("metadata").getString("message_type");
         } catch (JSONException e) {
@@ -73,9 +75,6 @@ public class SocketClient extends WebSocketClient
             case 1000:
                 // Successful client disconnect
                 break;
-            case -1:
-                // Connection refused
-                break;
             case 4000:
                 // Internal server error
                 break;
@@ -99,6 +98,7 @@ public class SocketClient extends WebSocketClient
                 break;
             default:
                 // Other
+                TwitchInteractions.logger.error(reason);
         }
     }
 
