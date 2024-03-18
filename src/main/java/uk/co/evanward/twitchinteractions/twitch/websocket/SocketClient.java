@@ -9,10 +9,12 @@ import uk.co.evanward.twitchinteractions.TwitchInteractions;
 import uk.co.evanward.twitchinteractions.helpers.TwitchHelper;
 
 import java.net.URI;
+import java.util.UUID;
 
 public class SocketClient extends WebSocketClient
 {
     private String sessionId;
+    private UUID playerId;
 
     public SocketClient(URI serverUri)
     {
@@ -205,5 +207,21 @@ public class SocketClient extends WebSocketClient
     public boolean isConnected()
     {
         return this.sessionId != null;
+    }
+
+    /**
+     * Set the connected player's UUID
+     */
+    public void setPlayerId(UUID playerId)
+    {
+        this.playerId = playerId;
+    }
+
+    /**
+     * Get the connected player's UUID
+     */
+    public UUID getPlayerId()
+    {
+        return this.playerId;
     }
 }

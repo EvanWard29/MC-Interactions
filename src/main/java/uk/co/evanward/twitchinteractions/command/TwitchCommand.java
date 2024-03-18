@@ -60,6 +60,8 @@ public class TwitchCommand
 
             if (connected) {
                 context.getSource().sendFeedback(() -> Text.literal("Connected to Twitch"), false);
+
+                TwitchInteractions.socketClient.setPlayerId(Objects.requireNonNull(context.getSource().getPlayer()).getUuid());
             } else {
                 context.getSource().sendFeedback(() -> Text.literal("Could not connect to twitch"), false);
 
