@@ -37,7 +37,7 @@ public class FollowEvent implements TwitchEvent.TwitchEventInterface
     }
 
     @Override
-    public void trigger()
+    public void trigger(JSONObject payload)
     {
 
     }

@@ -12,7 +12,7 @@ public class TwitchEvent
         String getVersion();
         JSONObject getCondition();
 
-        void trigger();
+        void trigger(JSONObject payload);
     }
 
     public enum Type {
