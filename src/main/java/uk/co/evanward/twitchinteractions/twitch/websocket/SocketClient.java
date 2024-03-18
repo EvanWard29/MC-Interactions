@@ -7,6 +7,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import uk.co.evanward.twitchinteractions.TwitchInteractions;
 import uk.co.evanward.twitchinteractions.helpers.TwitchHelper;
+import uk.co.evanward.twitchinteractions.twitch.event.TwitchEvent;
 
 import java.net.URI;
 import java.util.UUID;
@@ -84,8 +85,17 @@ public class SocketClient extends WebSocketClient
                     throw new RuntimeException(e);
                 }
 
+                TwitchEvent.Type type;
                 try {
-                    TwitchInteractions.logger.info("Twitch event: " + payload.getJSONObject("subscription").getString("type"));
+                    type = TwitchEvent.Type.from(payload.getJSONObject("subscription").getString("type"));
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
+
+                new TwitchEvent(type).getEvent().trigger(payload);
+
+                try {
+                    TwitchInteractions.logger.info("Twitch event: " + type);
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
                 }
