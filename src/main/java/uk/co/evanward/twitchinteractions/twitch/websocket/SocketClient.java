@@ -39,7 +39,7 @@ public class SocketClient extends WebSocketClient
     public void onMessage(String message)
     {
         JSONObject data;
-        String type;
+        String messageType;
 
         try {
             data = new JSONObject(message);
@@ -48,12 +48,12 @@ public class SocketClient extends WebSocketClient
         }
 
         try {
-            type = data.getJSONObject("metadata").getString("message_type");
+            messageType = data.getJSONObject("metadata").getString("message_type");
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
 
-        switch (type) {
+        switch (messageType) {
             case "session_welcome" -> {
                 // Set session id
                 try {
