@@ -65,7 +65,9 @@ public class TwitchHelper
 
     public static boolean subscribe()
     {
-        for (TwitchEvent.TwitchEventInterface event : ModConfig.TWITCH_EVENTS) {
+        for (TwitchEvent.Type type : ModConfig.TWITCH_EVENTS) {
+            TwitchEvent.TwitchEventInterface event = new TwitchEvent(type).getEvent();
+
             JSONObject body = new JSONObject();
             body.put("type", event.getType().getString());
             body.put("version", event.getVersion());
