@@ -31,6 +31,9 @@ dependencies {
     implementation 'org.json:json:20231013'
 
     implementation "com.sparkjava:spark-core:2.9.4"
+
+    implementation 'org.xerial:sqlite-jdbc:3.44.1.0'
+
 }
 
 processResources {
