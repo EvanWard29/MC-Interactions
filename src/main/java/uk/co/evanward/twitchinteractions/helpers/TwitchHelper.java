@@ -63,8 +63,18 @@ public class TwitchHelper
         }
     }
 
+    /**
+     * Subscribe to the selected Twitch events in config
+     */
     public static boolean subscribe()
     {
+        // Check if Twitch has been authenticated first
+        if (!authenticated()) {
+            TwitchInteractions.logger.error("User is not authenticated with Twitch");
+
+            return false;
+        }
+
         for (TwitchEvent.Type type : ModConfig.TWITCH_EVENTS) {
             TwitchEvent.TwitchEventInterface event = new TwitchEvent(type).getEvent();
 
@@ -111,6 +121,11 @@ public class TwitchHelper
      */
     public static JSONObject getFollowerList(String after) throws Exception
     {
+        // Check if Twitch has been authenticated first
+        if (!TwitchHelper.authenticated()) {
+            throw new Exception("User is not connected to Twitch");
+        }
+
         HttpClient client = HttpClient.newHttpClient();
 
         HttpRequest request = HttpRequest.newBuilder()
@@ -128,6 +143,14 @@ public class TwitchHelper
         }
 
         return new JSONObject(response.body());
+    }
+
+    /**
+     * Check if Twitch has been authenticated and the `broadcaster_id` and `access_token` has been set
+     */
+    public static boolean authenticated()
+    {
+        return !ModConfig.BROADCASTER_ID.isBlank() && !ModConfig.USER_ACCESS_TOKEN.isBlank();
     }
 
     /**

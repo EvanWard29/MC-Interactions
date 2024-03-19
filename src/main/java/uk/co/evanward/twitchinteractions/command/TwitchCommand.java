@@ -11,6 +11,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import uk.co.evanward.twitchinteractions.TwitchInteractions;
 import uk.co.evanward.twitchinteractions.helpers.TwitchHelper;
+import uk.co.evanward.twitchinteractions.twitch.server.SQLite;
 import uk.co.evanward.twitchinteractions.twitch.server.SparkServer;
 
 import java.util.Objects;
@@ -49,6 +50,19 @@ public class TwitchCommand
      */
     private static int connect(CommandContext<ServerCommandSource> context)
     {
+        // Check if Twitch has been authenticated first
+        if (!TwitchHelper.authenticated()) {
+            context.getSource().sendFeedback(() -> Text.literal("Please first ").formatted(Formatting.YELLOW)
+                .append(Text.literal("authenticate")
+                    .fillStyle(Style.EMPTY.withClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/twitch authenticate")))
+                    .formatted(Formatting.YELLOW)
+                    .formatted(Formatting.UNDERLINE)
+                )
+                .append(Text.literal(" with Twitch").formatted(Formatting.YELLOW)), true);
+
+            return 0;
+        }
+
         if (!TwitchInteractions.socketClient.isConnected()) {
             boolean connected = false;
             try {
