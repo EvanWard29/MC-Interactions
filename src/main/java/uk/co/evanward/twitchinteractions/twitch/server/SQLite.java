@@ -1,7 +1,9 @@
 package uk.co.evanward.twitchinteractions.twitch.server;
 
+import org.json.JSONObject;
 import uk.co.evanward.twitchinteractions.TwitchInteractions;
 import uk.co.evanward.twitchinteractions.helpers.FileHelper;
+import uk.co.evanward.twitchinteractions.helpers.TwitchHelper;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,12 +20,71 @@ public class SQLite
     public static void initialiseSQLite()
     {
         try {
-            Statement statement = connection().createStatement();
+            Connection connection = connection();
+            Statement statement = connection.createStatement();
             statement.setQueryTimeout(30);  // set timeout to 30 sec.
 
-            // Create the relevant tables if they don't already exist
-            statement.executeUpdate("CREATE TABLE IF NOT EXISTS followers (id string, username string)");
-        } catch (SQLException e) {
+            // Drop existing tables
+            statement.executeUpdate("DROP TABLE IF EXISTS followers");
+
+            // Recreate the tables
+            statement.executeUpdate("CREATE TABLE followers (id string, user_login string, user_name string, followed_at string)");
+
+            statement.close();
+
+            Thread thread = new Thread(() -> {
+                try {
+                    Connection databaseConnection = connection();
+                    databaseConnection.setAutoCommit(false);
+
+                    Statement sqlStatement = databaseConnection.createStatement();
+
+                    // Populate the followers table
+                    JSONObject pagination = new JSONObject();
+                    do {
+                        String after = pagination.has("cursor") ? pagination.getString("cursor") : "";
+                        JSONObject followers = TwitchHelper.getFollowerList(after);
+
+                        for (int i = 0; i < followers.getJSONArray("data").length(); i++) {
+                            JSONObject user = followers.getJSONArray("data").getJSONObject(i);
+
+                            String userId = user.getString("user_id");
+                            String userLogin = user.getString("user_login");
+                            String userName = user.getString("user_name");
+                            String followedAt = user.getString("followed_at");
+
+                            String query = "INSERT INTO followers (id,user_login,user_name,followed_at) VALUES(\"" + userId + "\",\"" + userLogin + "\",\"" + userName + "\",\"" + followedAt + "\");";
+
+                            try {
+                                sqlStatement.executeUpdate(query);
+                            } catch (SQLException e) {
+                                TwitchInteractions.logger.error("Failed to add follower `" + userLogin + "` to DB: " + e.getMessage());
+                            }
+                        }
+
+                        pagination = followers.getJSONObject("pagination");
+                    } while (!pagination.isEmpty());
+
+                    sqlStatement.close();
+                    databaseConnection.commit();
+
+                    databaseConnection.setAutoCommit(true);
+                    sqlStatement = databaseConnection.createStatement();
+
+                    if (sqlStatement.execute("SELECT COUNT(*) FROM followers")) {
+                        TwitchInteractions.logger.info("Added `" + sqlStatement.getResultSet().getInt(1) + "` followers to DB");
+                    }
+
+                    sqlStatement.close();
+                    databaseConnection.close();
+                } catch (Exception e) {
+                    TwitchInteractions.logger.error("Error adding followers to DB: " + e.getMessage());
+                }
+            });
+
+            thread.start();
+
+        } catch (Exception e) {
             TwitchInteractions.logger.error(e.getMessage());
         }
     }
