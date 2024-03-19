@@ -9,6 +9,7 @@ import uk.co.evanward.twitchinteractions.command.TwitchCommand;
 import uk.co.evanward.twitchinteractions.config.ModConfig;
 import uk.co.evanward.twitchinteractions.helpers.FileHelper;
 import uk.co.evanward.twitchinteractions.helpers.TwitchHelper;
+import uk.co.evanward.twitchinteractions.twitch.server.SQLite;
 import uk.co.evanward.twitchinteractions.twitch.websocket.SocketClient;
 
 import java.lang.management.ManagementFactory;
@@ -29,6 +30,7 @@ public class TwitchInteractions implements ModInitializer
         // Perform actions once server loaded
         ServerLifecycleEvents.SERVER_STARTED.register(server -> {
             FileHelper.loadPaths();
+            SQLite.initialiseSQLite();
         });
 
         socketClient = new SocketClient(URI.create(TwitchHelper.WEBSOCKET_ENDPOINT));
