@@ -2,10 +2,12 @@ package uk.co.evanward.twitchinteractions;
 
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.co.evanward.twitchinteractions.command.TwitchCommand;
 import uk.co.evanward.twitchinteractions.config.ModConfig;
+import uk.co.evanward.twitchinteractions.helpers.FileHelper;
 import uk.co.evanward.twitchinteractions.helpers.TwitchHelper;
 import uk.co.evanward.twitchinteractions.twitch.websocket.SocketClient;
 
@@ -23,6 +25,11 @@ public class TwitchInteractions implements ModInitializer
         logger.info("Initialising Mod");
 
         ModConfig.loadConfig();
+
+        // Perform actions once server loaded
+        ServerLifecycleEvents.SERVER_STARTED.register(server -> {
+            FileHelper.loadPaths();
+        });
 
         socketClient = new SocketClient(URI.create(TwitchHelper.WEBSOCKET_ENDPOINT));
 
