@@ -31,6 +31,9 @@ public class SparkServer
                 // Save access token to config
                 TwitchHelper.setAccessToken(body.getString("access_token"));
 
+                // Initialise SQLite
+                SQLite.initialiseSQLite();
+
                 response.body(new JSONObject().put("success", true).toString());
                 response.status(200);
             }
