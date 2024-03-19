@@ -107,6 +107,30 @@ public class TwitchHelper
     }
 
     /**
+     * Get the follower list of the connected user
+     */
+    public static JSONObject getFollowerList(String after) throws Exception
+    {
+        HttpClient client = HttpClient.newHttpClient();
+
+        HttpRequest request = HttpRequest.newBuilder()
+            .GET()
+            .uri(URI.create(API_ENDPOINT + "/channels/followers?first=100&broadcaster_id=" + ModConfig.BROADCASTER_ID + "&after=" + after))
+            .header("Accept", "application/json")
+            .header("Client-Id", CLIENT_ID)
+            .header("Authorization", "Bearer " + ModConfig.USER_ACCESS_TOKEN)
+            .build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        if (response.statusCode() != 200) {
+            throw new Exception(response.body());
+        }
+
+        return new JSONObject(response.body());
+    }
+
+    /**
      * Get the user's Twitch broadcasterId
      */
     private static String getTwitchUserId() throws IOException, InterruptedException
