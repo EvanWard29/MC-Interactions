@@ -29,7 +29,7 @@ public class ServerHelper
     /**
      * Get the minecraft server
      */
-    private static IntegratedServer getServer()
+    public static IntegratedServer getServer()
     {
         return MinecraftClient.getInstance().getServer();
     }
