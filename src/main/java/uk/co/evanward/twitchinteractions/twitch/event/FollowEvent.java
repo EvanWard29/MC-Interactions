@@ -19,35 +19,24 @@ import java.sql.Statement;
 
 public class FollowEvent implements TwitchEvent.TwitchEventInterface
 {
-    private final TwitchEvent.Type type;
-    private final String version;
-    private final JSONObject context;
-
-    public FollowEvent()
-    {
-        this.type = TwitchEvent.Type.FOLLOW;
-        this.version = "2";
-        this.context = new JSONObject()
-            .put("broadcaster_user_id", ModConfig.BROADCASTER_ID)
-            .put("moderator_user_id", ModConfig.BROADCASTER_ID);
-    }
-
     @Override
     public TwitchEvent.Type getType()
     {
-        return this.type;
+        return TwitchEvent.Type.FOLLOW;
     }
 
     @Override
     public String getVersion()
     {
-        return this.version;
+        return "2";
     }
 
     @Override
     public JSONObject getCondition()
     {
-        return this.context;
+        return new JSONObject()
+            .put("broadcaster_user_id", ModConfig.BROADCASTER_ID)
+            .put("moderator_user_id", ModConfig.BROADCASTER_ID);
     }
 
     /**
