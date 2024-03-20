@@ -5,6 +5,7 @@ import org.json.JSONObject;
 import uk.co.evanward.twitchinteractions.TwitchInteractions;
 import uk.co.evanward.twitchinteractions.config.ModConfig;
 import uk.co.evanward.twitchinteractions.twitch.event.TwitchEvent;
+import uk.co.evanward.twitchinteractions.twitch.server.SQLite;
 
 import java.io.IOException;
 import java.net.URI;
@@ -12,6 +13,9 @@ import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Arrays;
 import java.util.UUID;
 
@@ -151,6 +155,30 @@ public class TwitchHelper
     public static boolean authenticated()
     {
         return !ModConfig.BROADCASTER_ID.isBlank() && !ModConfig.USER_ACCESS_TOKEN.isBlank();
+    }
+
+    /**
+     * Check if the given follower has already followed before
+     */
+    public static boolean hasUserAlreadyFollowed(String followerId)
+    {
+        // Assume the follower hasn't followed before
+        boolean followed = false;
+        try {
+            Connection connection = SQLite.connection();
+            Statement statement = connection.createStatement();
+
+            if (statement.execute("SELECT EXISTS(SELECT * FROM followers WHERE id = \"" + followerId + "\")")) {
+                followed = statement.getResultSet().getBoolean(1);
+            }
+
+            statement.close();
+            connection.close();
+        } catch (SQLException e) {
+            TwitchInteractions.logger.error("Error checking if follower `" + followerId + "` is already following: " + e.getMessage());
+        }
+
+        return followed;
     }
 
     /**
