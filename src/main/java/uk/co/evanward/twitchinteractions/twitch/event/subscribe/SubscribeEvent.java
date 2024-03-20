@@ -1,4 +1,4 @@
-package uk.co.evanward.twitchinteractions.twitch.event;
+package uk.co.evanward.twitchinteractions.twitch.event.subscribe;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -19,6 +19,7 @@ import org.json.JSONObject;
 import uk.co.evanward.twitchinteractions.config.ModConfig;
 import uk.co.evanward.twitchinteractions.helpers.AnnouncementHelper;
 import uk.co.evanward.twitchinteractions.helpers.ServerHelper;
+import uk.co.evanward.twitchinteractions.twitch.event.TwitchEvent;
 
 import java.util.Random;
 

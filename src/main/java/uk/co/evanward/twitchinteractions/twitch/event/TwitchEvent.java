@@ -1,6 +1,7 @@
 package uk.co.evanward.twitchinteractions.twitch.event;
 
 import org.json.JSONObject;
+import uk.co.evanward.twitchinteractions.twitch.event.subscribe.SubscribeEvent;
 
 import java.util.Objects;
 
