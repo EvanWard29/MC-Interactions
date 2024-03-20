@@ -37,9 +37,9 @@ public class TwitchCommand
         String sessionId = TwitchInteractions.socketClient.getSessionId();
 
         if (sessionId != null) {
-            context.getSource().sendFeedback(() -> Text.literal("Connected to Twitch with session id `" + sessionId + "`"), false);
+            context.getSource().sendFeedback(() -> Text.literal("Connected to Twitch with session id `" + sessionId + "`").formatted(Formatting.AQUA), false);
         } else {
-            context.getSource().sendFeedback(() -> Text.literal("Client is not connected to Twitch"), false);
+            context.getSource().sendFeedback(() -> Text.literal("Client is not connected to Twitch").formatted(Formatting.GOLD), false);
         }
 
         return 1;
@@ -52,13 +52,13 @@ public class TwitchCommand
     {
         // Check if Twitch has been authenticated first
         if (!TwitchHelper.authenticated()) {
-            context.getSource().sendFeedback(() -> Text.literal("Please first ").formatted(Formatting.YELLOW)
+            context.getSource().sendFeedback(() -> Text.literal("Please first ").formatted(Formatting.GOLD)
                 .append(Text.literal("authenticate")
                     .fillStyle(Style.EMPTY.withClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/twitch authenticate")))
                     .formatted(Formatting.YELLOW)
                     .formatted(Formatting.UNDERLINE)
                 )
-                .append(Text.literal(" with Twitch").formatted(Formatting.YELLOW)), true);
+                .append(Text.literal(" with Twitch").formatted(Formatting.GOLD)), true);
 
             return 0;
         }
@@ -73,16 +73,16 @@ public class TwitchCommand
             }
 
             if (connected) {
-                context.getSource().sendFeedback(() -> Text.literal("Connected to Twitch"), false);
+                context.getSource().sendFeedback(() -> Text.literal("Connected to Twitch").formatted(Formatting.AQUA), false);
 
                 TwitchInteractions.socketClient.setPlayerId(Objects.requireNonNull(context.getSource().getPlayer()).getUuid());
             } else {
-                context.getSource().sendFeedback(() -> Text.literal("Could not connect to twitch"), false);
+                context.getSource().sendFeedback(() -> Text.literal("Could not connect to twitch").formatted(Formatting.RED), false);
 
                 return 0;
             }
         } else {
-            context.getSource().sendFeedback(() -> Text.literal("Client is already connected to Twitch"), false);
+            context.getSource().sendFeedback(() -> Text.literal("Client is already connected to Twitch").formatted(Formatting.GOLD), false);
         }
 
         return 1;
@@ -97,20 +97,20 @@ public class TwitchCommand
             try {
                 TwitchInteractions.socketClient.closeBlocking();
             } catch (InterruptedException e) {
-                context.getSource().sendFeedback(() -> Text.literal("Error disconnecting from Twitch"), false);
+                context.getSource().sendFeedback(() -> Text.literal("Error disconnecting from Twitch").formatted(Formatting.RED), false);
                 TwitchInteractions.logger.error("Error disconnecting from Twitch: " + e.getMessage());
 
                 return 0;
             }
 
             if (!TwitchInteractions.socketClient.isConnected()) {
-                context.getSource().sendFeedback(() -> Text.literal("Client successfully disconnected from Twitch"), false);
+                context.getSource().sendFeedback(() -> Text.literal("Client successfully disconnected from Twitch").formatted(Formatting.AQUA), false);
             } else {
-                context.getSource().sendFeedback(() -> Text.literal("Error disconnecting from Twitch"), false);
+                context.getSource().sendFeedback(() -> Text.literal("Error disconnecting from Twitch").formatted(Formatting.RED), false);
                 TwitchInteractions.logger.error("Error disconnecting from Twitch");
             }
         } else {
-            context.getSource().sendFeedback(() -> Text.literal("Client is not connected to Twitch"), false);
+            context.getSource().sendFeedback(() -> Text.literal("Client is not connected to Twitch").formatted(Formatting.GOLD), false);
         }
 
         return 1;
