@@ -6,9 +6,16 @@ import net.minecraft.entity.passive.AllayEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import org.json.JSONObject;
+import uk.co.evanward.twitchinteractions.TwitchInteractions;
 import uk.co.evanward.twitchinteractions.config.ModConfig;
 import uk.co.evanward.twitchinteractions.helpers.AnnouncementHelper;
 import uk.co.evanward.twitchinteractions.helpers.ServerHelper;
+import uk.co.evanward.twitchinteractions.helpers.TwitchHelper;
+import uk.co.evanward.twitchinteractions.twitch.server.SQLite;
+
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class FollowEvent implements TwitchEvent.TwitchEventInterface
 {
@@ -43,21 +50,44 @@ public class FollowEvent implements TwitchEvent.TwitchEventInterface
         return this.context;
     }
 
+    /**
+     * Summon an allay
+     */
     @Override
     public void trigger(JSONObject payload)
     {
-        JSONObject event = payload.getJSONObject("event");
-        String follower = event.getString("user_name");
+        JSONObject follower = payload.getJSONObject("event");
 
-        ServerPlayerEntity player = ServerHelper.getConnectedPlayer();
-        AnnouncementHelper.playAnnouncement(follower, "Just Followed!");
+        if (!TwitchHelper.hasUserAlreadyFollowed(follower.getString("user_id"))) {
+            ServerPlayerEntity player = ServerHelper.getConnectedPlayer();
+            AnnouncementHelper.playAnnouncement(follower.getString("user_name"), "Just Followed!");
 
-        AllayEntity allay = new AllayEntity(EntityType.ALLAY, player.getWorld());
-        allay.setPosition(player.getPos());
-        allay.setCustomName(Text.literal(follower));
-        allay.setCustomNameVisible(true);
-        allay.getBrain().remember(MemoryModuleType.LIKED_PLAYER, player.getUuid());
+            AllayEntity allay = new AllayEntity(EntityType.ALLAY, player.getWorld());
+            allay.setPosition(player.getPos());
+            allay.setCustomName(Text.literal(follower.getString("user_name")));
+            allay.setCustomNameVisible(true);
+            allay.getBrain().remember(MemoryModuleType.LIKED_PLAYER, player.getUuid());
 
-        player.getServerWorld().spawnEntity(allay);
+            player.getServerWorld().spawnEntity(allay);
+
+            try {
+                // Add follower to DB
+                Connection connection = SQLite.connection();
+                Statement statement = connection.createStatement();
+
+                String query = "INSERT INTO followers (id, user_login, user_name, followed_at) VALUES(\""
+                    + follower.getString("user_id") + "\",\""
+                    + follower.getString("user_login") + "\",\""
+                    + follower.getString("user_name") + "\",\""
+                    + follower.getString("followed_at") + "\")";
+
+                statement.executeUpdate(query);
+
+                statement.close();
+                connection.close();
+            } catch (SQLException e) {
+                TwitchInteractions.logger.error("Error adding follower `" + follower.getString("user_name") + "` to DB: " + e.getMessage());
+            }
+        }
     }
 }
