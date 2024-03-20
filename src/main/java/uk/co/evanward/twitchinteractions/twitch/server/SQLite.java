@@ -38,6 +38,7 @@ public class SQLite
             statement.executeUpdate("CREATE TABLE followers (id string, user_login string, user_name string, followed_at string)");
 
             statement.close();
+            connection.close();
 
             Thread thread = new Thread(() -> {
                 try {
