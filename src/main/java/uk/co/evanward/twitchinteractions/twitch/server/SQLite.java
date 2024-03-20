@@ -31,11 +31,8 @@ public class SQLite
             Statement statement = connection.createStatement();
             statement.setQueryTimeout(30);  // set timeout to 30 sec.
 
-            // Drop existing tables
-            statement.executeUpdate("DROP TABLE IF EXISTS followers");
-
-            // Recreate the tables
-            statement.executeUpdate("CREATE TABLE followers (id string, user_login string, user_name string, followed_at string)");
+            // Create tables if they don't already exist
+            statement.executeUpdate("CREATE TABLE IF NOT EXISTS followers (id STRING PRIMARY KEY, user_login STRING, user_name STRING, followed_at DATETIME)");
 
             statement.close();
             connection.close();
@@ -61,7 +58,11 @@ public class SQLite
                             String userName = user.getString("user_name");
                             String followedAt = user.getString("followed_at");
 
-                            String query = "INSERT INTO followers (id,user_login,user_name,followed_at) VALUES(\"" + userId + "\",\"" + userLogin + "\",\"" + userName + "\",\"" + followedAt + "\");";
+                            // Insert new follower or update the display name of an existing follower
+                            String query = "INSERT INTO followers (id,user_login,user_name,followed_at)"
+                                + " VALUES(\"" + userId + "\",\"" + userLogin + "\",\"" + userName + "\",\"" + followedAt + "\")"
+                                + "ON CONFLICT (id)"
+                                + "DO UPDATE SET user_name = \"" + userName + "\"";
 
                             try {
                                 sqlStatement.executeUpdate(query);
