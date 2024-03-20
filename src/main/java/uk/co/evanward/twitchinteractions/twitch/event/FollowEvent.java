@@ -51,7 +51,7 @@ public class FollowEvent implements TwitchEvent.TwitchEventInterface
     }
 
     /**
-     * Summon an allay
+     * Summon an Allay
      */
     @Override
     public void trigger(JSONObject payload)
