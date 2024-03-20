@@ -195,7 +195,7 @@ public class SocketClient extends WebSocketClient
         }
 
         // Create a new SocketClient instance to allow reconnecting
-        TwitchInteractions.socketClient = new SocketClient(URI.create("ws://localhost:8080/ws"));
+        TwitchInteractions.socketClient = new SocketClient(URI.create(TwitchHelper.WEBSOCKET_ENDPOINT));
 
         // Warn connected players of unexpected disconnect
     }

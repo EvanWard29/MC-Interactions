@@ -172,6 +172,7 @@ public class TwitchCommand
         if (wasConnected && TwitchHelper.authenticated() && !TwitchInteractions.socketClient.isConnected()) {
             try {
                 TwitchInteractions.socketClient.connectBlocking();
+                TwitchInteractions.socketClient.setPlayerId(Objects.requireNonNull(context.getSource().getPlayer()).getUuid());
             } catch (InterruptedException e) {
                 TwitchInteractions.logger.error("Error reconnecting to Twitch: " + e.getMessage());
             }
