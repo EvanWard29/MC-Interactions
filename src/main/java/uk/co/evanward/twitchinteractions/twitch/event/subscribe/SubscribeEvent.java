@@ -117,22 +117,7 @@ public class SubscribeEvent implements TwitchEvent.TwitchEventInterface
             eggItem.setNbt(nbt);
             eggItem.setCount(1);
 
-            ServerPlayerEntity player = ServerHelper.getConnectedPlayer();
-
-            // Attempt to insert egg into player's inventory
-            boolean inserted = player.getInventory().insertStack(eggItem);
-
-            // Drop the egg on the floor if the player's inventory is full
-            ItemEntity itemEntity;
-            if (!inserted) {
-                itemEntity = player.dropItem(eggItem, false);
-                itemEntity.resetPickupDelay();
-                itemEntity.setOwner(player.getUuid());
-            }
-
-            // Play item pickup sound
-            player.getWorld().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2f, ((player.getRandom().nextFloat() - player.getRandom().nextFloat()) * 0.7f + 1.0f) * 2.0f);
-            player.currentScreenHandler.sendContentUpdates();
+            ServerHelper.giveItem(ServerHelper.getConnectedPlayer(), eggItem);
             // </editor-fold>
         } else {
             AnnouncementHelper.playAnnouncement(event.getString("user_name"), "Just Subscribed!");
