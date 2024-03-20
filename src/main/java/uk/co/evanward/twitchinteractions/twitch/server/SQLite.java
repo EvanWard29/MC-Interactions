@@ -99,7 +99,7 @@ public class SQLite
     /**
      * Get a connection to the SQLite database
      */
-    private static Connection connection() throws SQLException
+    public static Connection connection() throws SQLException
     {
         // Create DB file if it doesn't exist
         File db = new File(FileHelper.WORLD_DATA_FOLDER_PATH + "/" + TwitchInteractions.MOD_ID + ".sqlite");
