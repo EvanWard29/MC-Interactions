@@ -2,7 +2,6 @@ package uk.co.evanward.twitchinteractions.twitch.event.subscribe;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.passive.CatEntity;
 import net.minecraft.entity.passive.PandaEntity;
 import net.minecraft.entity.passive.WolfEntity;
@@ -11,8 +10,6 @@ import net.minecraft.item.SpawnEggItem;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.Registries;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.DyeColor;
 import org.json.JSONObject;
@@ -101,7 +98,6 @@ public class SubscribeEvent implements TwitchEvent.TwitchEventInterface
             // <editor-fold desc="Gift Sub">
             SpawnEggItem spawnEggItem = SpawnEggItem.forEntity(EntityType.TROPICAL_FISH);
             ItemStack eggItem = spawnEggItem.asItem().getDefaultStack();
-            eggItem.setCount(1);
 
             NbtCompound entityNbt = new NbtCompound();
             entityNbt.putBoolean("CustomNameVisible", true);
