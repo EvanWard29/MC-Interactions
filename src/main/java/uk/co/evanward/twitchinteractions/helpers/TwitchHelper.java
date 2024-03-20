@@ -5,6 +5,7 @@ import org.json.JSONObject;
 import uk.co.evanward.twitchinteractions.TwitchInteractions;
 import uk.co.evanward.twitchinteractions.config.ModConfig;
 import uk.co.evanward.twitchinteractions.twitch.event.TwitchEvent;
+import uk.co.evanward.twitchinteractions.twitch.server.SQLite;
 
 import java.io.IOException;
 import java.net.URI;
@@ -12,6 +13,9 @@ import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Arrays;
 import java.util.UUID;
 
@@ -63,9 +67,21 @@ public class TwitchHelper
         }
     }
 
+    /**
+     * Subscribe to the selected Twitch events in config
+     */
     public static boolean subscribe()
     {
-        for (TwitchEvent.TwitchEventInterface event : ModConfig.TWITCH_EVENTS) {
+        // Check if Twitch has been authenticated first
+        if (!authenticated()) {
+            TwitchInteractions.logger.error("User is not authenticated with Twitch");
+
+            return false;
+        }
+
+        for (TwitchEvent.Type type : ModConfig.TWITCH_EVENTS) {
+            TwitchEvent.TwitchEventInterface event = new TwitchEvent(type).getEvent();
+
             JSONObject body = new JSONObject();
             body.put("type", event.getType().getString());
             body.put("version", event.getVersion());
@@ -102,6 +118,67 @@ public class TwitchHelper
         }
 
         return true;
+    }
+
+    /**
+     * Get the follower list of the connected user
+     */
+    public static JSONObject getFollowerList(String after) throws Exception
+    {
+        // Check if Twitch has been authenticated first
+        if (!TwitchHelper.authenticated()) {
+            throw new Exception("User is not connected to Twitch");
+        }
+
+        HttpClient client = HttpClient.newHttpClient();
+
+        HttpRequest request = HttpRequest.newBuilder()
+            .GET()
+            .uri(URI.create(API_ENDPOINT + "/channels/followers?first=100&broadcaster_id=" + ModConfig.BROADCASTER_ID + "&after=" + after))
+            .header("Accept", "application/json")
+            .header("Client-Id", CLIENT_ID)
+            .header("Authorization", "Bearer " + ModConfig.USER_ACCESS_TOKEN)
+            .build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        if (response.statusCode() != 200) {
+            throw new Exception(response.body());
+        }
+
+        return new JSONObject(response.body());
+    }
+
+    /**
+     * Check if Twitch has been authenticated and the `broadcaster_id` and `access_token` has been set
+     */
+    public static boolean authenticated()
+    {
+        return !ModConfig.BROADCASTER_ID.isBlank() && !ModConfig.USER_ACCESS_TOKEN.isBlank();
+    }
+
+    /**
+     * Check if the given follower has already followed before
+     */
+    public static boolean hasUserAlreadyFollowed(String followerId)
+    {
+        // Assume the follower hasn't followed before
+        boolean followed = false;
+        try {
+            Connection connection = SQLite.connection();
+            Statement statement = connection.createStatement();
+
+            if (statement.execute("SELECT EXISTS(SELECT * FROM followers WHERE id = \"" + followerId + "\")")) {
+                followed = statement.getResultSet().getBoolean(1);
+            }
+
+            statement.close();
+            connection.close();
+        } catch (SQLException e) {
+            TwitchInteractions.logger.error("Error checking if follower `" + followerId + "` is already following: " + e.getMessage());
+        }
+
+        return followed;
     }
 
     /**

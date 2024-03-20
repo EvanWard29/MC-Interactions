@@ -7,12 +7,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import uk.co.evanward.twitchinteractions.TwitchInteractions;
 import uk.co.evanward.twitchinteractions.helpers.TwitchHelper;
+import uk.co.evanward.twitchinteractions.twitch.event.TwitchEvent;
 
 import java.net.URI;
+import java.util.UUID;
 
 public class SocketClient extends WebSocketClient
 {
     private String sessionId;
+    private UUID playerId;
 
     public SocketClient(URI serverUri)
     {
@@ -39,7 +42,7 @@ public class SocketClient extends WebSocketClient
     public void onMessage(String message)
     {
         JSONObject data;
-        String type;
+        String messageType;
 
         try {
             data = new JSONObject(message);
@@ -48,12 +51,12 @@ public class SocketClient extends WebSocketClient
         }
 
         try {
-            type = data.getJSONObject("metadata").getString("message_type");
+            messageType = data.getJSONObject("metadata").getString("message_type");
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
 
-        switch (type) {
+        switch (messageType) {
             case "session_welcome" -> {
                 // Set session id
                 try {
@@ -82,8 +85,17 @@ public class SocketClient extends WebSocketClient
                     throw new RuntimeException(e);
                 }
 
+                TwitchEvent.Type type;
                 try {
-                    TwitchInteractions.logger.info("Twitch event: " + payload.getJSONObject("subscription").getString("type"));
+                    type = TwitchEvent.Type.from(payload.getJSONObject("subscription").getString("type"));
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
+
+                new TwitchEvent(type).getEvent().trigger(payload);
+
+                try {
+                    TwitchInteractions.logger.info("Twitch event: " + type);
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
                 }
@@ -205,5 +217,21 @@ public class SocketClient extends WebSocketClient
     public boolean isConnected()
     {
         return this.sessionId != null;
+    }
+
+    /**
+     * Set the connected player's UUID
+     */
+    public void setPlayerId(UUID playerId)
+    {
+        this.playerId = playerId;
+    }
+
+    /**
+     * Get the connected player's UUID
+     */
+    public UUID getPlayerId()
+    {
+        return this.playerId;
     }
 }
