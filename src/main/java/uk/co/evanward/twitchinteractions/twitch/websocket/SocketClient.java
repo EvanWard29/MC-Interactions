@@ -6,6 +6,7 @@ import org.java_websocket.handshake.ServerHandshake;
 import org.json.JSONException;
 import org.json.JSONObject;
 import uk.co.evanward.twitchinteractions.TwitchInteractions;
+import uk.co.evanward.twitchinteractions.config.ModConfig;
 import uk.co.evanward.twitchinteractions.helpers.TwitchHelper;
 import uk.co.evanward.twitchinteractions.twitch.event.TwitchEvent;
 
@@ -92,12 +93,16 @@ public class SocketClient extends WebSocketClient
                     throw new RuntimeException(e);
                 }
 
-                new TwitchEvent(type).getEvent().trigger(payload);
+                if (ModConfig.TWITCH_EVENTS.contains(type)) {
+                    new TwitchEvent(type).getEvent().trigger(payload);
 
-                try {
-                    TwitchInteractions.logger.info("Twitch event: " + type);
-                } catch (JSONException e) {
-                    throw new RuntimeException(e);
+                    try {
+                        TwitchInteractions.logger.info("Twitch event: " + type);
+                    } catch (JSONException e) {
+                        throw new RuntimeException(e);
+                    }
+                } else {
+                    throw new RuntimeException("Not subscribed to `" + type.getString() + "` events");
                 }
             }
             case "session_reconnect" -> {
@@ -195,7 +200,7 @@ public class SocketClient extends WebSocketClient
         }
 
         // Create a new SocketClient instance to allow reconnecting
-        TwitchInteractions.socketClient = new SocketClient(URI.create("ws://localhost:8080/ws"));
+        TwitchInteractions.socketClient = new SocketClient(URI.create(TwitchHelper.WEBSOCKET_ENDPOINT));
 
         // Warn connected players of unexpected disconnect
     }

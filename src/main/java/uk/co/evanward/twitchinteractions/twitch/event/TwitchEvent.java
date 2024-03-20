@@ -1,6 +1,8 @@
 package uk.co.evanward.twitchinteractions.twitch.event;
 
 import org.json.JSONObject;
+import uk.co.evanward.twitchinteractions.twitch.event.subscribe.GifSubscriptionEvent;
+import uk.co.evanward.twitchinteractions.twitch.event.subscribe.SubscribeEvent;
 
 import java.util.Objects;
 
@@ -63,6 +65,12 @@ public class TwitchEvent
         switch(this.type) {
             case FOLLOW -> {
                 return new FollowEvent();
+            }
+            case SUBSCRIBE, RE_SUBSCRIBE -> {
+                return new SubscribeEvent();
+            }
+            case GIFT -> {
+                return new GifSubscriptionEvent();
             }
         }
 

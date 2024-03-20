@@ -10,6 +10,7 @@ import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import uk.co.evanward.twitchinteractions.TwitchInteractions;
+import uk.co.evanward.twitchinteractions.config.ModConfig;
 import uk.co.evanward.twitchinteractions.helpers.TwitchHelper;
 import uk.co.evanward.twitchinteractions.twitch.server.SQLite;
 import uk.co.evanward.twitchinteractions.twitch.server.SparkServer;
@@ -26,6 +27,7 @@ public class TwitchCommand
             .then(literal("connect").executes(TwitchCommand::connect))
             .then(literal("disconnect").executes(TwitchCommand::disconnect))
             .then(literal("authenticate").executes(TwitchCommand::authenticate))
+            .then(literal("reload").executes(TwitchCommand::reload))
         );
     }
 
@@ -134,6 +136,47 @@ public class TwitchCommand
                 .formatted(Formatting.UNDERLINE),
             false
         );
+
+        return 1;
+    }
+
+    /**
+     * Reload the Twitch Interactions config file
+     */
+    private static int reload(CommandContext<ServerCommandSource> context)
+    {
+        // Disconnect from Twitch if connected
+        boolean wasConnected = false;
+        if (TwitchInteractions.socketClient.isConnected()) {
+            wasConnected = true;
+
+            try {
+                TwitchInteractions.socketClient.closeBlocking();
+            } catch (InterruptedException e) {
+                TwitchInteractions.logger.error("Error disconnecting from Twitch: " + e.getMessage());
+            }
+        }
+
+        try {
+            ModConfig.loadConfig();
+        } catch (Exception e) {
+            TwitchInteractions.logger.error("Error reloading config: " + e.getMessage());
+            context.getSource().sendFeedback(() -> Text.literal("Error reloading config").formatted(Formatting.RED), false);
+
+            return 0;
+        }
+
+        context.getSource().sendFeedback(() -> Text.literal("Config reloaded").formatted(Formatting.AQUA), false);
+
+        // Reconnect to Twitch
+        if (wasConnected && TwitchHelper.authenticated() && !TwitchInteractions.socketClient.isConnected()) {
+            try {
+                TwitchInteractions.socketClient.connectBlocking();
+                TwitchInteractions.socketClient.setPlayerId(Objects.requireNonNull(context.getSource().getPlayer()).getUuid());
+            } catch (InterruptedException e) {
+                TwitchInteractions.logger.error("Error reconnecting to Twitch: " + e.getMessage());
+            }
+        }
 
         return 1;
     }
