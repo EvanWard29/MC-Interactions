@@ -64,6 +64,7 @@ public class TwitchEvent
             case FOLLOW -> {
                 return new FollowEvent();
             }
+            case SUBSCRIBE -> {
                 return new SubscribeEvent();
             }
         }
