@@ -83,7 +83,7 @@ public class TwitchHelper
             TwitchEvent.TwitchEventInterface event = new TwitchEvent(type).getEvent();
 
             JSONObject body = new JSONObject();
-            body.put("type", event.getType().getString());
+            body.put("type", type.getString());
             body.put("version", event.getVersion());
             body.put("condition", event.getCondition());
             body.put("transport", new JSONObject().put("method", "websocket").put("session_id", TwitchInteractions.socketClient.getSessionId()));
@@ -113,7 +113,7 @@ public class TwitchHelper
                 TwitchInteractions.logger.error("Error subscribing to event `" + event.getType().toString() + "`: " + response);
                 TwitchInteractions.logger.info("REQUEST: " + body);
             } else {
-                TwitchInteractions.logger.info("Subscribed to event: " + event.getType().toString());
+                TwitchInteractions.logger.info("Subscribed to event: " + type.getString());
             }
         }
 
