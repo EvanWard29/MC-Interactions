@@ -72,6 +72,9 @@ public class TwitchEvent
             case GIFT -> {
                 return new GifSubscriptionEvent();
             }
+            case BITS -> {
+                return new CheerEvent();
+            }
         }
 
         return null;
