@@ -76,7 +76,5 @@ public class TwitchEvent
                 return new CheerEvent();
             }
         }
-
-        return null;
     }
 }
