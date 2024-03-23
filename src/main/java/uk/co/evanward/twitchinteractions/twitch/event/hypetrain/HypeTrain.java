@@ -94,14 +94,11 @@ public class HypeTrain
                         zombie.setBaby(true);
                     }
 
-                    // Add strength and armour to the mob, based on the current Hype Train level
+                    // Add strength and armour to the Zombies, based on the current Hype Train level
                     if (buffed) {
                         zombie.addStatusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, -1, TwitchInteractions.hypeTrain.level.getLevel()));
 
-                        zombie.equipStack(EquipmentSlot.HEAD, new ItemStack(TwitchInteractions.hypeTrain.level == FIVE ? Items.DIAMOND_HELMET : Items.IRON_HELMET));
-                        zombie.equipStack(EquipmentSlot.CHEST, new ItemStack(TwitchInteractions.hypeTrain.level == FIVE ? Items.DIAMOND_CHESTPLATE : Items.IRON_CHESTPLATE));
-                        zombie.equipStack(EquipmentSlot.LEGS, new ItemStack(TwitchInteractions.hypeTrain.level == FIVE ? Items.DIAMOND_LEGGINGS : Items.IRON_LEGGINGS));
-                        zombie.equipStack(EquipmentSlot.FEET, new ItemStack(TwitchInteractions.hypeTrain.level == FIVE ? Items.DIAMOND_BOOTS : Items.IRON_BOOTS));
+                        buffEntity(zombie);
                     }
 
                     entities.add(zombie);
@@ -118,10 +115,7 @@ public class HypeTrain
                     if (buffed) {
                         bow.addEnchantment(Enchantments.POWER, TwitchInteractions.hypeTrain.level.getLevel());
 
-                        skeleton.equipStack(EquipmentSlot.HEAD, new ItemStack(TwitchInteractions.hypeTrain.level == FIVE ? Items.DIAMOND_HELMET : Items.IRON_HELMET));
-                        skeleton.equipStack(EquipmentSlot.CHEST, new ItemStack(TwitchInteractions.hypeTrain.level == FIVE ? Items.DIAMOND_CHESTPLATE : Items.IRON_CHESTPLATE));
-                        skeleton.equipStack(EquipmentSlot.LEGS, new ItemStack(TwitchInteractions.hypeTrain.level == FIVE ? Items.DIAMOND_LEGGINGS : Items.IRON_LEGGINGS));
-                        skeleton.equipStack(EquipmentSlot.FEET, new ItemStack(TwitchInteractions.hypeTrain.level == FIVE ? Items.DIAMOND_BOOTS : Items.IRON_BOOTS));
+                        buffEntity(skeleton);
                     }
 
                     skeleton.equipStack(EquipmentSlot.MAINHAND, bow);
@@ -134,8 +128,8 @@ public class HypeTrain
                     CreeperEntity creeper = new CreeperEntity(EntityType.CREEPER, player.getWorld());
                     creeper.setTarget(player);
 
-                    // 20% chance the creeper is charged
-                    if (random.nextInt(100) <= 20) {
+                    // 20% chance the Creeper is charged or always charged if buffed
+                    if (random.nextInt(100) <= 20 || buffed) {
                         NbtCompound nbt = new NbtCompound();
                         nbt.putBoolean("powered", true);
 
@@ -146,7 +140,7 @@ public class HypeTrain
                     entities.addAll(THREE.getEntities(player, true));
                 }
                 case FIVE -> {
-                    // Level 5 summons buffed Spiders, super buffed Zombies, super buffed Skeletons, and creepers
+                    // Level 5 summons buffed Spiders, super buffed Zombies, super buffed Skeletons, and charged Creepers
                     entities.addAll(FOUR.getEntities(player, true));
                 }
             }
@@ -208,5 +202,16 @@ public class HypeTrain
                 }
             }
         }
+    }
+
+    /**
+     * Buff the given entity with armour based on the current level
+     */
+    private static void buffEntity(HostileEntity entity)
+    {
+        entity.equipStack(EquipmentSlot.HEAD, new ItemStack(TwitchInteractions.hypeTrain.level == Level.FIVE ? Items.DIAMOND_HELMET : Items.IRON_HELMET));
+        entity.equipStack(EquipmentSlot.CHEST, new ItemStack(TwitchInteractions.hypeTrain.level == Level.FIVE ? Items.DIAMOND_CHESTPLATE : Items.IRON_CHESTPLATE));
+        entity.equipStack(EquipmentSlot.LEGS, new ItemStack(TwitchInteractions.hypeTrain.level == Level.FIVE ? Items.DIAMOND_LEGGINGS : Items.IRON_LEGGINGS));
+        entity.equipStack(EquipmentSlot.FEET, new ItemStack(TwitchInteractions.hypeTrain.level == Level.FIVE ? Items.DIAMOND_BOOTS : Items.IRON_BOOTS));
     }
 }
