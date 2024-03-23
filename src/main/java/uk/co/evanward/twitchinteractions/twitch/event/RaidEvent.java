@@ -56,7 +56,7 @@ public class RaidEvent implements TwitchEvent.TwitchEventInterface
                         NbtCompound nbt = new NbtCompound();
                         nbt.putBoolean("powered", true);
 
-                        creeper.writeCustomDataToNbt(nbt);
+                        creeper.readCustomDataFromNbt(nbt);
                     }
 
                     return creeper;
