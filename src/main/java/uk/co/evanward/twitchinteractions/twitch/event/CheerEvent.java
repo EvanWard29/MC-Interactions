@@ -6,7 +6,6 @@ import net.minecraft.entity.passive.*;
 import net.minecraft.registry.Registries;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.json.JSONObject;
 import uk.co.evanward.twitchinteractions.config.ModConfig;
@@ -81,24 +80,14 @@ public class CheerEvent implements TwitchEvent.TwitchEventInterface
 
         ServerPlayerEntity player = ServerHelper.getConnectedPlayer();
 
+        // Spawn a random mob for every 10th bit
         for (int i = 0; i < bits; i++) {
             Random random = new Random();
             Entity entity = CheerEntities.values()[random.nextInt(CheerEntities.values().length)].getEntity(player.getWorld());
             entity.setCustomName(Text.literal(!event.getBoolean("is_anonymous") ? event.getString("user_name") : "A Cool User"));
             entity.setCustomNameVisible(true);
 
-            // Get a random position within a 10 block square of the player that is safe for the mob to spawn on
-            do {
-                // Set the position to the centre of the block
-                double x = (random.nextBoolean() ? player.getBlockX() + random.nextInt(10) : player.getBlockX() - random.nextInt(10)) + 0.5;
-                double z = (random.nextBoolean() ? player.getBlockZ() + random.nextInt(10) : player.getBlockZ() - random.nextInt(10)) + 0.5;
-                int y = player.getBlockY();
-
-                Vec3d pos = new Vec3d(x, y, z);
-                entity.setPosition(pos);
-            } while (entity.collidesWithStateAtPos(entity.getBlockPos(), player.getServerWorld().getBlockState(entity.getBlockPos())));
-
-            player.getServerWorld().spawnEntity(entity);
+            ServerHelper.spawnEntity(entity);
         }
     }
 }
