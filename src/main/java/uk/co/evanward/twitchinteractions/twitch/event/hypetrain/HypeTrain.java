@@ -1,8 +1,14 @@
 package uk.co.evanward.twitchinteractions.twitch.event.hypetrain;
 
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.*;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -36,7 +42,18 @@ public class HypeTrain
             return levels[level - 1];
         }
 
+        /**
+         * Get a list of entities to spawn based on the Hype Train level
+         */
         public List<Entity> getEntities(ServerPlayerEntity player)
+        {
+            return getEntities(player, false);
+        }
+
+        /**
+         * Get a list of buffed entities to spawn based on the Hype Train level
+         */
+        public List<Entity> getEntities(ServerPlayerEntity player, boolean buffed)
         {
             Random random = new Random();
 
@@ -45,19 +62,27 @@ public class HypeTrain
 
             switch (this) {
                 case ONE -> {
+                    HostileEntity entity;
                     // Level 1 summons Spiders
                     if (random.nextInt(100) <= 20) {
                         // 20% chance to summon a Cave Spider
                         CaveSpiderEntity caveSpider = new CaveSpiderEntity(EntityType.CAVE_SPIDER, player.getWorld());
                         caveSpider.setTarget(player);
 
-                        entities.add(caveSpider);
+                        entity = caveSpider;
                     } else {
                         SpiderEntity spider = new SpiderEntity(EntityType.SPIDER, player.getWorld());
                         spider.setTarget(player);
 
-                        entities.add(spider);
+                        entity = spider;
                     }
+
+                    // Add strength to the mob, based on the current Hype Train level
+                    if (buffed) {
+                        entity.addStatusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, -1, TwitchInteractions.hypeTrain.level.getLevel()));
+                    }
+
+                    entities.add(entity);
                 }
                 case TWO -> {
                     // Level 2 summons buffed Spiders and Zombies
@@ -69,16 +94,40 @@ public class HypeTrain
                         zombie.setBaby(true);
                     }
 
+                    // Add strength and armour to the mob, based on the current Hype Train level
+                    if (buffed) {
+                        zombie.addStatusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, -1, TwitchInteractions.hypeTrain.level.getLevel()));
+
+                        zombie.equipStack(EquipmentSlot.HEAD, new ItemStack(TwitchInteractions.hypeTrain.level == FIVE ? Items.DIAMOND_HELMET : Items.IRON_HELMET));
+                        zombie.equipStack(EquipmentSlot.CHEST, new ItemStack(TwitchInteractions.hypeTrain.level == FIVE ? Items.DIAMOND_CHESTPLATE : Items.IRON_CHESTPLATE));
+                        zombie.equipStack(EquipmentSlot.LEGS, new ItemStack(TwitchInteractions.hypeTrain.level == FIVE ? Items.DIAMOND_LEGGINGS : Items.IRON_LEGGINGS));
+                        zombie.equipStack(EquipmentSlot.FEET, new ItemStack(TwitchInteractions.hypeTrain.level == FIVE ? Items.DIAMOND_BOOTS : Items.IRON_BOOTS));
+                    }
+
                     entities.add(zombie);
-                    entities.addAll(ONE.getEntities(player));
+                    entities.addAll(ONE.getEntities(player, true));
                 }
                 case THREE -> {
                     // Level 3 summons buffed Spiders, buffed Zombies, and Skeletons
                     SkeletonEntity skeleton = new SkeletonEntity(EntityType.SKELETON, player.getWorld());
                     skeleton.setTarget(player);
 
+                    ItemStack bow = new ItemStack(Items.BOW);
+
+                    // Add power to the Skeleton's bow and armour, based on the current Hype Train level
+                    if (buffed) {
+                        bow.addEnchantment(Enchantments.POWER, TwitchInteractions.hypeTrain.level.getLevel());
+
+                        skeleton.equipStack(EquipmentSlot.HEAD, new ItemStack(TwitchInteractions.hypeTrain.level == FIVE ? Items.DIAMOND_HELMET : Items.IRON_HELMET));
+                        skeleton.equipStack(EquipmentSlot.CHEST, new ItemStack(TwitchInteractions.hypeTrain.level == FIVE ? Items.DIAMOND_CHESTPLATE : Items.IRON_CHESTPLATE));
+                        skeleton.equipStack(EquipmentSlot.LEGS, new ItemStack(TwitchInteractions.hypeTrain.level == FIVE ? Items.DIAMOND_LEGGINGS : Items.IRON_LEGGINGS));
+                        skeleton.equipStack(EquipmentSlot.FEET, new ItemStack(TwitchInteractions.hypeTrain.level == FIVE ? Items.DIAMOND_BOOTS : Items.IRON_BOOTS));
+                    }
+
+                    skeleton.equipStack(EquipmentSlot.MAINHAND, bow);
+
                     entities.add(skeleton);
-                    entities.addAll(TWO.getEntities(player));
+                    entities.addAll(TWO.getEntities(player, true));
                 }
                 case FOUR -> {
                     // Level 4 summons buffed Spiders, buffed Zombies, buffed Skeletons, and Creepers
@@ -94,11 +143,11 @@ public class HypeTrain
                     }
 
                     entities.add(creeper);
-                    entities.addAll(THREE.getEntities(player));
+                    entities.addAll(THREE.getEntities(player, true));
                 }
                 case FIVE -> {
                     // Level 5 summons buffed Spiders, super buffed Zombies, super buffed Skeletons, and creepers
-                    entities.addAll(FOUR.getEntities(player));
+                    entities.addAll(FOUR.getEntities(player, true));
                 }
             }
 
