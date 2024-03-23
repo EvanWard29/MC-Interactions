@@ -161,7 +161,11 @@ public class HypeTrain
                     entities.addAll(THREE.getEntities(player, true));
                 }
                 case FIVE -> {
-                    // Level 5 summons buffed Spiders, super buffed Zombies, super buffed Skeletons, and charged Creepers
+                    // Level 5 summons buffed Spiders, super buffed Zombies, super buffed Skeletons, charged Creepers, and Witches
+                    WitchEntity witch = new WitchEntity(EntityType.WITCH, player.getWorld());
+                    witch.setTarget(player);
+
+                    entities.add(witch);
                     entities.addAll(FOUR.getEntities(player, true));
                 }
             }
