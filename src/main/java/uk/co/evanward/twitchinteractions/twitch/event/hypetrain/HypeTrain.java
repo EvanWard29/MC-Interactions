@@ -19,12 +19,10 @@ import java.util.*;
 
 public class HypeTrain
 {
-    // TODO: Simplify `from`
     public enum Level
     {
         ONE(1), TWO(2), THREE(3), FOUR(4), FIVE(5);
 
-        private static final Level[] levels = Arrays.stream(values()).sorted(Comparator.comparingInt(Level::getLevel)).toArray(Level[]::new);
         private final int level;
 
         Level(int level)
@@ -32,14 +30,37 @@ public class HypeTrain
             this.level = level;
         }
 
-        public int getLevel()
+        /**
+         * Return the integer value of the current level
+         */
+        public int value()
         {
             return this.level;
         }
 
+        /**
+         * Get the Level from the given integer value
+         */
         public static Level from(int level)
         {
-            return levels[level - 1];
+            switch (level) {
+                case 1 -> {
+                    return ONE;
+                }
+                case 2 -> {
+                    return TWO;
+                }
+                case 3 -> {
+                    return THREE;
+                }
+                case 4 -> {
+                    return FOUR;
+                }
+                case 5 -> {
+                    return FIVE;
+                }
+                default -> throw new RuntimeException("Unsupported level `" + level + "`");
+            }
         }
 
         /**
@@ -79,7 +100,7 @@ public class HypeTrain
 
                     // Add strength to the mob, based on the current Hype Train level
                     if (buffed) {
-                        entity.addStatusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, -1, TwitchInteractions.hypeTrain.level.getLevel()));
+                        entity.addStatusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, -1, TwitchInteractions.hypeTrain.level.value()));
                     }
 
                     entities.add(entity);
@@ -96,7 +117,7 @@ public class HypeTrain
 
                     // Add strength and armour to the Zombies, based on the current Hype Train level
                     if (buffed) {
-                        zombie.addStatusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, -1, TwitchInteractions.hypeTrain.level.getLevel()));
+                        zombie.addStatusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, -1, TwitchInteractions.hypeTrain.level.value()));
 
                         buffEntity(zombie);
                     }
@@ -113,7 +134,7 @@ public class HypeTrain
 
                     // Add power to the Skeleton's bow and armour, based on the current Hype Train level
                     if (buffed) {
-                        bow.addEnchantment(Enchantments.POWER, TwitchInteractions.hypeTrain.level.getLevel());
+                        bow.addEnchantment(Enchantments.POWER, TwitchInteractions.hypeTrain.level.value());
 
                         buffEntity(skeleton);
                     }
