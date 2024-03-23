@@ -26,6 +26,9 @@ public class HypeTrainEndEvent implements TwitchEvent.TwitchEventInterface
             .put("broadcaster_user_id", ModConfig.BROADCASTER_ID);
     }
 
+    /**
+     * Stop spawning mobs every 2-3 seconds
+     */
     @Override
     public void trigger(JSONObject payload)
     {

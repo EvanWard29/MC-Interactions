@@ -26,6 +26,9 @@ public class HypeTrainProgressEvent implements TwitchEvent.TwitchEventInterface
             .put("broadcaster_user_id", ModConfig.BROADCASTER_ID);
     }
 
+    /**
+     * Increase the difficulty of the mobs being spawned every 2-3 seconds
+     */
     @Override
     public void trigger(JSONObject payload)
     {

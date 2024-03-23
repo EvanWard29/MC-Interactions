@@ -26,6 +26,9 @@ public class HypeTrainBeginEvent implements TwitchEvent.TwitchEventInterface
             .put("broadcaster_user_id", ModConfig.BROADCASTER_ID);
     }
 
+    /**
+     * Spawn mobs every 2-3 seconds of different difficulty, based on the Hype Train level
+     */
     @Override
     public void trigger(JSONObject payload)
     {
