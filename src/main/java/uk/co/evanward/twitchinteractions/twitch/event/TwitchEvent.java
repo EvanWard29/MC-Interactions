@@ -75,8 +75,10 @@ public class TwitchEvent
             case BITS -> {
                 return new CheerEvent();
             }
+            case RAID -> {
+                return new RaidEvent();
+            }
+            default -> throw new RuntimeException("Unsupported Twitch event `" + type + "`");
         }
-
-        return null;
     }
 }

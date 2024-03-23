@@ -82,10 +82,6 @@ public class TwitchHelper
         for (TwitchEvent.Type type : ModConfig.TWITCH_EVENTS) {
             TwitchEvent.TwitchEventInterface event = new TwitchEvent(type).getEvent();
 
-            if (event == null) {
-                throw new RuntimeException("Unrecognised Twitch event: " + type);
-            }
-
             JSONObject body = new JSONObject();
             body.put("type", type.getString());
             body.put("version", event.getVersion());
