@@ -3,12 +3,14 @@ package uk.co.evanward.twitchinteractions;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.co.evanward.twitchinteractions.command.TwitchCommand;
 import uk.co.evanward.twitchinteractions.config.ModConfig;
 import uk.co.evanward.twitchinteractions.helpers.FileHelper;
 import uk.co.evanward.twitchinteractions.helpers.TwitchHelper;
+import uk.co.evanward.twitchinteractions.twitch.event.hypetrain.HypeTrain;
 import uk.co.evanward.twitchinteractions.twitch.server.SQLite;
 import uk.co.evanward.twitchinteractions.twitch.websocket.SocketClient;
 
@@ -19,6 +21,7 @@ public class TwitchInteractions implements ModInitializer
 {
     public static final String MOD_ID = "TwitchInteractions";
     public static final Logger logger = LoggerFactory.getLogger(MOD_ID);
+    public static final HypeTrain hypeTrain = new HypeTrain();
     public static SocketClient socketClient;
 
     @Override
@@ -36,6 +39,8 @@ public class TwitchInteractions implements ModInitializer
         socketClient = new SocketClient(URI.create(TwitchHelper.WEBSOCKET_ENDPOINT));
 
         CommandRegistrationCallback.EVENT.register(TwitchCommand::register);
+
+        ServerTickEvents.START_SERVER_TICK.register(HypeTrain::tick);
     }
 
     /**

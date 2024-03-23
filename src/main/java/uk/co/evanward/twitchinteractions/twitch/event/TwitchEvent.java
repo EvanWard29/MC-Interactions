@@ -1,6 +1,9 @@
 package uk.co.evanward.twitchinteractions.twitch.event;
 
 import org.json.JSONObject;
+import uk.co.evanward.twitchinteractions.twitch.event.hypetrain.HypeTrainBeginEvent;
+import uk.co.evanward.twitchinteractions.twitch.event.hypetrain.HypeTrainEndEvent;
+import uk.co.evanward.twitchinteractions.twitch.event.hypetrain.HypeTrainProgressEvent;
 import uk.co.evanward.twitchinteractions.twitch.event.subscribe.GifSubscriptionEvent;
 import uk.co.evanward.twitchinteractions.twitch.event.subscribe.SubscribeEvent;
 
@@ -77,6 +80,15 @@ public class TwitchEvent
             }
             case RAID -> {
                 return new RaidEvent();
+            }
+            case HYPE_TRAIN_START -> {
+                return new HypeTrainBeginEvent();
+            }
+            case HYPE_TRAIN_PROGRESS -> {
+                return new HypeTrainProgressEvent();
+            }
+            case HYPE_TRAIN_END -> {
+                return new HypeTrainEndEvent();
             }
             default -> throw new RuntimeException("Unsupported Twitch event `" + type + "`");
         }
