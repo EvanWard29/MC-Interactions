@@ -2,6 +2,7 @@ package uk.co.evanward.twitchinteractions.twitch.event.channelpoints;
 
 import org.json.JSONObject;
 import uk.co.evanward.twitchinteractions.twitch.event.channelpoints.redemptions.SetDayRedemption;
+import uk.co.evanward.twitchinteractions.twitch.event.channelpoints.redemptions.SetNightRedemption;
 
 public class ChannelPoint
 {
@@ -51,6 +52,9 @@ public class ChannelPoint
         switch (redemption) {
             case SET_DAY -> {
                 return new SetDayRedemption();
+            }
+            case SET_NIGHT -> {
+                return new SetNightRedemption();
             }
             default -> throw new IllegalArgumentException("Unsupported redemption `" + redemption + "`");
         }
