@@ -44,7 +44,7 @@ public class ServerHelper
     /**
      * Give a player the given item
      */
-    public static void giveItem(ServerPlayerEntity player, ItemStack item)
+    public static void giveItem(ItemStack item, ServerPlayerEntity player)
     {
         // Attempt to insert egg into player's inventory
         boolean inserted = player.getInventory().insertStack(item);
@@ -60,6 +60,14 @@ public class ServerHelper
         // Play item pickup sound
         player.getWorld().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2f, ((player.getRandom().nextFloat() - player.getRandom().nextFloat()) * 0.7f + 1.0f) * 2.0f);
         player.currentScreenHandler.sendContentUpdates();
+    }
+
+    /**
+     * Give an item to the connected player
+     */
+    public static void giveItem(ItemStack item)
+    {
+        giveItem(item, getConnectedPlayer());
     }
 
     /**
