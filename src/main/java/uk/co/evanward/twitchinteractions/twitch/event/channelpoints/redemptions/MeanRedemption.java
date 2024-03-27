@@ -24,7 +24,7 @@ import java.util.Random;
 
 public class MeanRedemption implements ChannelPoint.ChannelPointInterface
 {
-    private enum Actions implements Action
+    private enum MeanActions implements Action
     {
         PIGLIN_BRUTE(5), POLAR_BEAR(5), UNDEAD_HORSES(5), EVOKER(5), PUFFERFISH(5),
         WITCH(5), BLAZE(5), WITHER_SKELETON(10), SILVERFISH(10), VEX(10),
@@ -32,7 +32,7 @@ public class MeanRedemption implements ChannelPoint.ChannelPointInterface
 
         private final int weight;
 
-        Actions(int weight)
+        MeanActions(int weight)
         {
             this.weight = weight;
         }
@@ -188,7 +188,7 @@ public class MeanRedemption implements ChannelPoint.ChannelPointInterface
         {
             int totalWeight = 0;
 
-            for (Actions action : Actions.values()) {
+            for (MeanActions action : MeanActions.values()) {
                 totalWeight += action.weight;
             }
 
@@ -225,7 +225,7 @@ public class MeanRedemption implements ChannelPoint.ChannelPointInterface
 
         AnnouncementHelper.playAnnouncement(username, "Is Feeling Mean!");
 
-        TwitchHelper.getRandomAction(Actions.values()).execute();
+        TwitchHelper.getRandomAction(MeanActions.values()).execute();
     }
 
     /**
