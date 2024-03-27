@@ -88,7 +88,7 @@ public class ServerHelper
             entity.setPosition(pos);
         } while (entity.collidesWithStateAtPos(entity.getBlockPos(), player.getServerWorld().getBlockState(entity.getBlockPos())));
 
-        player.getServerWorld().spawnEntity(entity);
+        player.getServerWorld().spawnEntityAndPassengers(entity);
     }
 
     /**

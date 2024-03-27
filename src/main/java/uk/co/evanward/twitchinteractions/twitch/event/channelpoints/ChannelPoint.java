@@ -1,10 +1,7 @@
 package uk.co.evanward.twitchinteractions.twitch.event.channelpoints;
 
 import org.json.JSONObject;
-import uk.co.evanward.twitchinteractions.twitch.event.channelpoints.redemptions.FriendCreatorRedemption;
-import uk.co.evanward.twitchinteractions.twitch.event.channelpoints.redemptions.SetDayRedemption;
-import uk.co.evanward.twitchinteractions.twitch.event.channelpoints.redemptions.SetNightRedemption;
-import uk.co.evanward.twitchinteractions.twitch.event.channelpoints.redemptions.TeleportHomeRedemption;
+import uk.co.evanward.twitchinteractions.twitch.event.channelpoints.redemptions.*;
 
 public class ChannelPoint
 {
@@ -63,6 +60,9 @@ public class ChannelPoint
             }
             case FRIEND_CREATOR -> {
                 return new FriendCreatorRedemption();
+            }
+            case MEAN -> {
+                return new MeanRedemption();
             }
             default -> throw new IllegalArgumentException("Unsupported redemption `" + redemption + "`");
         }
