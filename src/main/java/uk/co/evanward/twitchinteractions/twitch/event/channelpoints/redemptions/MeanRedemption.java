@@ -15,9 +15,9 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import org.json.JSONObject;
-import uk.co.evanward.twitchinteractions.TwitchInteractions;
 import uk.co.evanward.twitchinteractions.helpers.AnnouncementHelper;
 import uk.co.evanward.twitchinteractions.helpers.ServerHelper;
+import uk.co.evanward.twitchinteractions.helpers.TwitchHelper;
 import uk.co.evanward.twitchinteractions.twitch.event.channelpoints.ChannelPoint;
 
 import java.util.Random;
@@ -35,6 +35,12 @@ public class MeanRedemption implements ChannelPoint.ChannelPointInterface
         Actions(int weight)
         {
             this.weight = weight;
+        }
+
+        @Override
+        public int getWeight()
+        {
+            return this.weight;
         }
 
         @Override
@@ -219,28 +225,7 @@ public class MeanRedemption implements ChannelPoint.ChannelPointInterface
 
         AnnouncementHelper.playAnnouncement(username, "Is Feeling Mean!");
 
-        Action action = random();
-        action.execute();
-
-        TwitchInteractions.logger.info(action.toString());
-    }
-
-    private Action random()
-    {
-        int totalWeight = Actions.getTotalWeight();
-
-        // Get a random number between 1 and the total weight
-        int random = (new Random()).nextInt(totalWeight);
-
-        int cursor = 0;
-        for (int i = 0; i < Actions.values().length; i++) {
-            cursor += Actions.values()[i].weight;
-            if (cursor >= random) {
-                return Actions.values()[i];
-            }
-        }
-
-        throw new RuntimeException("Error getting random action");
+        TwitchHelper.getRandomAction(Actions.values()).execute();
     }
 
     /**

@@ -5,6 +5,7 @@ import org.json.JSONObject;
 import uk.co.evanward.twitchinteractions.TwitchInteractions;
 import uk.co.evanward.twitchinteractions.config.ModConfig;
 import uk.co.evanward.twitchinteractions.twitch.event.TwitchEvent;
+import uk.co.evanward.twitchinteractions.twitch.event.channelpoints.redemptions.Action;
 import uk.co.evanward.twitchinteractions.twitch.server.SQLite;
 
 import java.io.IOException;
@@ -17,6 +18,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Arrays;
+import java.util.Random;
 import java.util.UUID;
 
 public class TwitchHelper
@@ -179,6 +181,32 @@ public class TwitchHelper
         }
 
         return followed;
+    }
+
+    /**
+     * Get a random Action enum from the given array of Action based on their weights
+     */
+    public static Action getRandomAction(Action[] actions)
+    {
+        int totalWeight = 0;
+
+        for (Action action : actions) {
+            totalWeight += action.getWeight();
+        }
+
+        // Get a random number between 1 and the total weight
+        int random = (new Random()).nextInt(totalWeight);
+
+        int cursor = 0;
+        for (Action action : actions) {
+            cursor += action.getWeight();
+
+            if (cursor >= random) {
+                return action;
+            }
+        }
+
+        throw new RuntimeException("Error getting random action: Total weight may not add to 100");
     }
 
     /**
