@@ -64,6 +64,9 @@ public class ChannelPoint
             case MEAN -> {
                 return new MeanRedemption();
             }
+            case GAMBLE -> {
+                return new GambleRedemption();
+            }
             default -> throw new IllegalArgumentException("Unsupported redemption `" + redemption + "`");
         }
     }
