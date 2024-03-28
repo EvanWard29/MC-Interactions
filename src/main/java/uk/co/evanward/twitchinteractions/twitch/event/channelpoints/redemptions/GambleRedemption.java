@@ -6,6 +6,7 @@ import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.Angerable;
+import net.minecraft.entity.mob.CreeperEntity;
 import net.minecraft.entity.mob.ZombifiedPiglinEntity;
 import net.minecraft.entity.passive.*;
 import net.minecraft.entity.projectile.FireworkRocketEntity;
@@ -29,7 +30,8 @@ public class GambleRedemption implements ChannelPoint.ChannelPointInterface
 {
     private enum GambleActions implements Action
     {
-        WATER_BUCKET_CHALLENGE(10), HALF_HEALTH(10), ANGRY_MOB(15), FOOD_EXPLOSION(15), NOTHING(50);
+        CHARGED_CREEPERS(10), WATER_BUCKET_CHALLENGE(10), HALF_HEALTH(10), ANGRY_MOB(10),
+        FOOD_EXPLOSION(10), NOTHING(50);
 
         private final int weight;
 
@@ -148,6 +150,23 @@ public class GambleRedemption implements ChannelPoint.ChannelPointInterface
                         summonRocket(sheep);
                     }
                 }
+                case CHARGED_CREEPERS -> {
+                    CreeperEntity creeper = new CreeperEntity(EntityType.CREEPER, player.getWorld());
+                    creeper.setTarget(player);
+
+                    // Set the Creeper to charged if Creepers are now charged
+                    if (!chargedCreepers) {
+                        NbtCompound powered = new NbtCompound();
+                        powered.putBoolean("powered", true);
+
+                        creeper.readCustomDataFromNbt(powered);
+                    }
+
+                    ServerHelper.spawnEntity(creeper);
+
+                    // Set spawning Creepers to charged
+                    chargedCreepers = !chargedCreepers;
+                }
                 case NOTHING -> {
                     player.sendMessage(Text.literal("You got lucky this time, but unlucky ")
                         .append(Text.literal(username).formatted(Formatting.AQUA)));
@@ -156,16 +175,20 @@ public class GambleRedemption implements ChannelPoint.ChannelPointInterface
         }
     }
 
+    // TODO: Save the last state of this
+    public static boolean chargedCreepers;
+
     private static String username;
     private static ServerPlayerEntity player;
 
     /**
      * Perform one of the following:
      * <ul>
+     *     <li>Charged Creepers - 10%</li>
      *     <li>Water Bucket Challenge - 10%</li>
      *     <li>Half Health - 10%</li>
-     *     <li>Angry Mob - 15%</li>
-     *     <li>Food Explosion - 15%</li>
+     *     <li>Angry Mob - 10%</li>
+     *     <li>Food Explosion - 10%</li>
      *     <li>Nothing - 50%</li>
      * </ul>
      */
@@ -178,7 +201,6 @@ public class GambleRedemption implements ChannelPoint.ChannelPointInterface
         AnnouncementHelper.playAnnouncement(username, "Is Feeling Lucky!");
 
         TwitchHelper.getRandomAction(GambleActions.values()).execute();
-        //GambleActions.FOOD_EXPLOSION.execute();
     }
 
     /**
