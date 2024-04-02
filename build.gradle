@@ -16,6 +16,12 @@ repositories {
     // Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
     // See https://docs.gradle.org/current/userguide/declaring_repositories.html
     // for more information about repositories.
+    mavenCentral()
+}
+
+configurations {
+    shade
+    implementation.extendsFrom shade
 }
 
 dependencies {
@@ -27,13 +33,16 @@ dependencies {
     // Fabric API. This is technically optional, but you probably want it anyway.
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-    implementation "org.java-websocket:Java-WebSocket:1.5.3"
+    implementation 'org.java-websocket:Java-WebSocket:1.5.3'
     implementation 'org.json:json:20231013'
-
-    implementation "com.sparkjava:spark-core:2.9.4"
-
+    //implementation 'com.sparkjava:spark-core:2.9.4'
     implementation 'org.xerial:sqlite-jdbc:3.44.1.0'
 
+    include "org.java-websocket:Java-WebSocket:1.5.3"
+    include 'org.json:json:20231013'
+    include 'org.xerial:sqlite-jdbc:3.44.1.0'
+
+    shade "com.sparkjava:spark-core:2.9.4"
 }
 
 processResources {
@@ -75,6 +84,14 @@ java {
 jar {
     from("LICENSE") {
         rename { "${it}_${project.archivesBaseName}"}
+    }
+
+    // Include all shaded dependencies (add the dependencies of marked dependencies)
+    duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
+    configurations.shade.each {dep ->
+        from(project.zipTree(dep)) {
+            exclude 'META-INF', 'META-INF/**'
+        }
     }
 }
 
