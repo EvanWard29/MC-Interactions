@@ -113,7 +113,6 @@ public class TwitchHelper
 
             if (responseBody.has("error")) {
                 TwitchInteractions.logger.error("Error subscribing to event `" + event.getType().toString() + "`: " + response);
-                TwitchInteractions.logger.info("REQUEST: " + body);
             } else {
                 TwitchInteractions.logger.info("Subscribed to event: " + type.getString());
             }
