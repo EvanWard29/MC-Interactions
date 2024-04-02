@@ -18,6 +18,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.Random;
 import java.util.UUID;
 
@@ -163,6 +164,11 @@ public class TwitchHelper
      */
     public static boolean hasUserAlreadyFollowed(String followerId)
     {
+        // Always return `false` when testing
+        if (Objects.equals(followerId, "781930612")) {
+            return false;
+        }
+
         // Assume the follower hasn't followed before
         boolean followed = false;
         try {
