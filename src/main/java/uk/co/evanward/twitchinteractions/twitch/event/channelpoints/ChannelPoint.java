@@ -67,6 +67,9 @@ public class ChannelPoint
             case GAMBLE -> {
                 return new GambleRedemption();
             }
+            case EXTREME_GAMBLE -> {
+                return new ExtremeGambleRedemption();
+            }
             default -> throw new IllegalArgumentException("Unsupported redemption `" + redemption + "`");
         }
     }
