@@ -4,9 +4,11 @@
   "version": "${version}",
   "name": "Twitch-Interactions",
   "description": "",
-  "authors": [],
+  "authors": [
+    "Evan Ward"
+  ],
   "contact": {
-    "repo": "https://github.com/Evan/Twitch-Interactions-v4"
+    "repo": "https://github.com/EvanWard29/Twitch-Interactions-v4"
   },
   "license": "All-Rights-Reserved",
   "icon": "assets/twitch-interactions/icon.png",
