@@ -215,16 +215,18 @@ public class HypeTrain
         // Tick the hype train by 1
         ++TwitchInteractions.hypeTrain.tick;
 
+        if (!TwitchInteractions.hypeTrain.isActive() || !TwitchInteractions.socketClient.isConnected()) {
+            return;
+        }
+
         ServerPlayerEntity player = ServerHelper.getConnectedPlayer();
 
         // Spawn an entity every 2-3 seconds if hype train is active
-        if (TwitchInteractions.hypeTrain.isActive()) {
-            if (TwitchInteractions.hypeTrain.tick % 50 == 0) {
-                List<Entity> entities = TwitchInteractions.hypeTrain.level.getEntities(player);
+        if (TwitchInteractions.hypeTrain.tick % 50 == 0) {
+            List<Entity> entities = TwitchInteractions.hypeTrain.level.getEntities(player);
 
-                for (Entity entity : entities) {
-                    ServerHelper.spawnEntity(entity);
-                }
+            for (Entity entity : entities) {
+                ServerHelper.spawnEntity(entity);
             }
         }
     }

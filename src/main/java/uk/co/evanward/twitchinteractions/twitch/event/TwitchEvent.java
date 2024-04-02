@@ -1,6 +1,7 @@
 package uk.co.evanward.twitchinteractions.twitch.event;
 
 import org.json.JSONObject;
+import uk.co.evanward.twitchinteractions.twitch.event.channelpoints.ChannelPointRedemptionEvent;
 import uk.co.evanward.twitchinteractions.twitch.event.hypetrain.HypeTrainBeginEvent;
 import uk.co.evanward.twitchinteractions.twitch.event.hypetrain.HypeTrainEndEvent;
 import uk.co.evanward.twitchinteractions.twitch.event.hypetrain.HypeTrainProgressEvent;
@@ -90,7 +91,10 @@ public class TwitchEvent
             case HYPE_TRAIN_END -> {
                 return new HypeTrainEndEvent();
             }
-            default -> throw new RuntimeException("Unsupported Twitch event `" + type + "`");
+            case CHANNEL_POINTS_REDEMPTION -> {
+                return new ChannelPointRedemptionEvent();
+            }
+            default -> throw new IllegalArgumentException("Unsupported Twitch event `" + type + "`");
         }
     }
 }

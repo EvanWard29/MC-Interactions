@@ -21,7 +21,7 @@ public class SQLite
     {
         // Check if Twitch has been authenticated first
         if (!TwitchHelper.authenticated()) {
-            TwitchInteractions.logger.error("User has not authenticated with Twitch");
+            TwitchInteractions.logger.warn("Cannot initialise SQLite: User has not authenticated!");
 
             return;
         }

@@ -57,6 +57,6 @@ public class GifSubscriptionEvent implements TwitchEvent.TwitchEventInterface
         dolphinEgg.setNbt(nbt);
         dolphinEgg.setCount(1);
 
-        ServerHelper.giveItem(ServerHelper.getConnectedPlayer(), dolphinEgg);
+        ServerHelper.giveItem(dolphinEgg);
     }
 }

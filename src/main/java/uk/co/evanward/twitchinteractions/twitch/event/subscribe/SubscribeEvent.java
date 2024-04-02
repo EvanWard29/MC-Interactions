@@ -113,7 +113,7 @@ public class SubscribeEvent implements TwitchEvent.TwitchEventInterface
             eggItem.setNbt(nbt);
             eggItem.setCount(1);
 
-            ServerHelper.giveItem(ServerHelper.getConnectedPlayer(), eggItem);
+            ServerHelper.giveItem(eggItem);
             // </editor-fold>
         } else {
             AnnouncementHelper.playAnnouncement(event.getString("user_name"), "Just Subscribed!");
