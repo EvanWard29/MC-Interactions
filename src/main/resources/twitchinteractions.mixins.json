@@ -2,6 +2,7 @@
   "required": true,
   "package": "uk.co.evanward.twitchinteractions.mixins",
   "mixins": [
-    "CreeperMixin"
+    "CreeperMixin",
+    "worldchanges.ChickenItemLayMixin"
   ]
 }

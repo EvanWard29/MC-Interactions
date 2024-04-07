@@ -20,7 +20,8 @@ public class ChannelPoint
         GAMBLE("37dd369a-f460-45ae-87b9-bcf98febf2af"),
         EXTREME_GAMBLE("865e32f1-aec3-4950-abaa-a05ee6296e4c"),
         RANDOM_EFFECT("20ecf4b4-95ea-4a17-834a-f50fa799d4ea"),
-        RANDOM_ITEM("1fe43479-5118-4d1c-8bc9-591fc2d862af");
+        RANDOM_ITEM("1fe43479-5118-4d1c-8bc9-591fc2d862af"),
+        WORLD_RANDOMISE("1bda0825-ae54-43c7-b2be-56604937c8d0");
 
         private final String rewardId;
 
@@ -77,6 +78,9 @@ public class ChannelPoint
             }
             case RANDOM_ITEM -> {
                 return new RandomItemRedemption();
+            }
+            case WORLD_RANDOMISE -> {
+                return new WorldRandomiseRedemption();
             }
             default -> throw new IllegalArgumentException("Unsupported redemption `" + redemption + "`");
         }
