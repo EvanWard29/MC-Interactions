@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.co.evanward.twitchinteractions.command.TwitchCommand;
 import uk.co.evanward.twitchinteractions.config.ModConfig;
+import uk.co.evanward.twitchinteractions.config.WorldChanges;
 import uk.co.evanward.twitchinteractions.helpers.FileHelper;
 import uk.co.evanward.twitchinteractions.helpers.TwitchHelper;
 import uk.co.evanward.twitchinteractions.twitch.event.hypetrain.HypeTrain;
@@ -24,6 +25,8 @@ public class TwitchInteractions implements ModInitializer
     public static final HypeTrain hypeTrain = new HypeTrain();
     public static SocketClient socketClient;
 
+    public static WorldChanges worldChanges;
+
     @Override
     public void onInitialize() {
         logger.info("Initialising Mod");
@@ -33,6 +36,10 @@ public class TwitchInteractions implements ModInitializer
         // Perform actions once server loaded
         ServerLifecycleEvents.SERVER_STARTED.register(server -> {
             FileHelper.loadPaths();
+
+            // Load the world changes
+            worldChanges = WorldChanges.getServerState(server);
+
             SQLite.initialiseSQLite();
         });
 
