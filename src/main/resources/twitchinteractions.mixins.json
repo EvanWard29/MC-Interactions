@@ -3,6 +3,10 @@
   "package": "uk.co.evanward.twitchinteractions.mixins",
   "mixins": [
     "CreeperMixin",
-    "worldchanges.ChickenItemLayMixin"
+    "worldchanges.ChickenItemLayMixin",
+    "worldchanges.ServerWorldLengthOfDayMixin"
+  ],
+  "client": [
+    "worldchanges.ClientWorldLengthOfDayMixin"
   ]
 }

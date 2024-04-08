@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
 import uk.co.evanward.twitchinteractions.TwitchInteractions;
 
 @Mixin(ChickenEntity.class)
-public class ChickenItemLayMixin
+public abstract class ChickenItemLayMixin
 {
     @ModifyArg(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/passive/ChickenEntity;dropItem(Lnet/minecraft/item/ItemConvertible;)Lnet/minecraft/entity/ItemEntity;"))
     private ItemConvertible injected(ItemConvertible par1) {

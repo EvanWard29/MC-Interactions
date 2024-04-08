@@ -1,10 +1,13 @@
 package uk.co.evanward.twitchinteractions.twitch.event.channelpoints.redemptions;
 
 import net.minecraft.registry.RegistryKeys;
+import net.minecraft.util.math.MathHelper;
 import org.json.JSONObject;
 import uk.co.evanward.twitchinteractions.TwitchInteractions;
 import uk.co.evanward.twitchinteractions.helpers.ServerHelper;
 import uk.co.evanward.twitchinteractions.twitch.event.channelpoints.ChannelPoint;
+
+import java.util.Random;
 
 public class WorldRandomiseRedemption implements ChannelPoint.ChannelPointInterface
 {
@@ -38,5 +41,17 @@ public class WorldRandomiseRedemption implements ChannelPoint.ChannelPointInterf
             .getRandom(ServerHelper.getConnectedPlayer().getRandom())
             .get()
             .value();
+
+        // Double or half the length of day
+        int newDayLength = (new Random()).nextBoolean()
+            ? TwitchInteractions.worldChanges.DAY_LENGTH * 2
+            : TwitchInteractions.worldChanges.DAY_LENGTH / 2;
+
+        // Reset to 24000 ticks (20:00) if day is less than 1500 ticks (1:15)
+        TwitchInteractions.worldChanges.DAY_LENGTH = newDayLength < 1500
+            ? 24000
+            : newDayLength;
+
+        TwitchInteractions.worldChanges.setDirty(true);
     }
 }

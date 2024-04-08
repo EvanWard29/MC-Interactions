@@ -9,12 +9,12 @@ import net.minecraft.util.Identifier;
 import net.minecraft.world.PersistentState;
 import net.minecraft.world.PersistentStateManager;
 import net.minecraft.world.World;
-import uk.co.evanward.twitchinteractions.TwitchInteractions;
 import uk.co.evanward.twitchinteractions.helpers.ServerHelper;
 
 public class WorldChanges extends PersistentState
 {
     public Item CHICKEN_EGG;
+    public int DAY_LENGTH;
 
     private static final Type<WorldChanges> type = new Type<>(
         WorldChanges::new,
@@ -28,6 +28,7 @@ public class WorldChanges extends PersistentState
     WorldChanges()
     {
         this.CHICKEN_EGG = Items.EGG;
+        this.DAY_LENGTH = 24000;
     }
 
     /**
@@ -37,6 +38,7 @@ public class WorldChanges extends PersistentState
     public NbtCompound writeNbt(NbtCompound nbt)
     {
         nbt.putString("CHICKEN_EGG", CHICKEN_EGG.toString());
+        nbt.putInt("DAY_LENGTH", DAY_LENGTH);
 
         return nbt;
     }
@@ -53,7 +55,8 @@ public class WorldChanges extends PersistentState
             .get(RegistryKeys.ITEM)
             .get(Identifier.of("minecraft", nbt.getString("CHICKEN_EGG")));
 
-        TwitchInteractions.logger.info("CHICKEN_EGG: " + worldChanges.CHICKEN_EGG.toString());
+        worldChanges.DAY_LENGTH = nbt.getInt("DAY_LENGTH");
+
         return worldChanges;
     }
 
