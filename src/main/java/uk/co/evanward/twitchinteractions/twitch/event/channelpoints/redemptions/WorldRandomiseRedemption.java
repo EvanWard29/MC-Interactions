@@ -1,6 +1,7 @@
 package uk.co.evanward.twitchinteractions.twitch.event.channelpoints.redemptions;
 
 import net.minecraft.registry.RegistryKeys;
+import net.minecraft.util.DyeColor;
 import net.minecraft.util.math.MathHelper;
 import org.json.JSONObject;
 import uk.co.evanward.twitchinteractions.TwitchInteractions;
@@ -51,6 +52,9 @@ public class WorldRandomiseRedemption implements ChannelPoint.ChannelPointInterf
         TwitchInteractions.worldChanges.DAY_LENGTH = newDayLength < 1500
             ? 24000
             : newDayLength;
+
+        // Change the default Sheep colour
+        TwitchInteractions.worldChanges.SHEEP_COLOUR = DyeColor.values()[new Random().nextInt(DyeColor.values().length)];
 
         TwitchInteractions.worldChanges.setDirty(true);
     }

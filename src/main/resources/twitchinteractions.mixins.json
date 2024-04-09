@@ -4,7 +4,8 @@
   "mixins": [
     "CreeperMixin",
     "worldchanges.ChickenItemLayMixin",
-    "worldchanges.ServerWorldLengthOfDayMixin"
+    "worldchanges.ServerWorldLengthOfDayMixin",
+    "worldchanges.SheepColourMixin"
   ],
   "client": [
     "worldchanges.ClientWorldLengthOfDayMixin"

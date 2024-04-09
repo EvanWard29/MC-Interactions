@@ -5,6 +5,7 @@ import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.PersistentState;
 import net.minecraft.world.PersistentStateManager;
@@ -15,6 +16,7 @@ public class WorldChanges extends PersistentState
 {
     public Item CHICKEN_EGG;
     public int DAY_LENGTH;
+    public DyeColor SHEEP_COLOUR;
 
     private static final Type<WorldChanges> type = new Type<>(
         WorldChanges::new,
@@ -29,6 +31,7 @@ public class WorldChanges extends PersistentState
     {
         this.CHICKEN_EGG = Items.EGG;
         this.DAY_LENGTH = 24000;
+        this.SHEEP_COLOUR = DyeColor.WHITE;
     }
 
     /**
@@ -39,6 +42,7 @@ public class WorldChanges extends PersistentState
     {
         nbt.putString("CHICKEN_EGG", CHICKEN_EGG.toString());
         nbt.putInt("DAY_LENGTH", DAY_LENGTH);
+        nbt.putString("SHEEP_COLOUR", SHEEP_COLOUR.toString());
 
         return nbt;
     }
@@ -56,6 +60,8 @@ public class WorldChanges extends PersistentState
             .get(Identifier.of("minecraft", nbt.getString("CHICKEN_EGG")));
 
         worldChanges.DAY_LENGTH = nbt.getInt("DAY_LENGTH");
+
+        worldChanges.SHEEP_COLOUR = DyeColor.byName(nbt.getString("SHEEP_COLOUR"), DyeColor.WHITE);
 
         return worldChanges;
     }
