@@ -17,6 +17,7 @@ public class WorldChanges extends PersistentState
     public Item CHICKEN_EGG;
     public int DAY_LENGTH;
     public DyeColor SHEEP_COLOUR;
+    public int ITEM_DESPAWN;
 
     private static final Type<WorldChanges> type = new Type<>(
         WorldChanges::new,
@@ -32,6 +33,7 @@ public class WorldChanges extends PersistentState
         this.CHICKEN_EGG = Items.EGG;
         this.DAY_LENGTH = 24000;
         this.SHEEP_COLOUR = DyeColor.WHITE;
+        this.ITEM_DESPAWN = 6000;
     }
 
     /**
@@ -43,6 +45,7 @@ public class WorldChanges extends PersistentState
         nbt.putString("CHICKEN_EGG", CHICKEN_EGG.toString());
         nbt.putInt("DAY_LENGTH", DAY_LENGTH);
         nbt.putString("SHEEP_COLOUR", SHEEP_COLOUR.toString());
+        nbt.putInt("ITEM_DESPAWN", ITEM_DESPAWN);
 
         return nbt;
     }
@@ -62,6 +65,8 @@ public class WorldChanges extends PersistentState
         worldChanges.DAY_LENGTH = nbt.getInt("DAY_LENGTH");
 
         worldChanges.SHEEP_COLOUR = DyeColor.byName(nbt.getString("SHEEP_COLOUR"), DyeColor.WHITE);
+
+        worldChanges.ITEM_DESPAWN = nbt.getInt("ITEM_DESPAWN");
 
         return worldChanges;
     }

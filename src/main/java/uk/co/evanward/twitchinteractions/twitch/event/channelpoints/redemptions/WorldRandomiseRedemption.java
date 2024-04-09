@@ -2,7 +2,6 @@ package uk.co.evanward.twitchinteractions.twitch.event.channelpoints.redemptions
 
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.DyeColor;
-import net.minecraft.util.math.MathHelper;
 import org.json.JSONObject;
 import uk.co.evanward.twitchinteractions.TwitchInteractions;
 import uk.co.evanward.twitchinteractions.helpers.ServerHelper;
@@ -55,6 +54,21 @@ public class WorldRandomiseRedemption implements ChannelPoint.ChannelPointInterf
 
         // Change the default Sheep colour
         TwitchInteractions.worldChanges.SHEEP_COLOUR = DyeColor.values()[new Random().nextInt(DyeColor.values().length)];
+
+        // Double or half the item despawn time
+        int despawnTime = (new Random()).nextBoolean()
+            ? TwitchInteractions.worldChanges.ITEM_DESPAWN * 2
+            : TwitchInteractions.worldChanges.ITEM_DESPAWN / 2;
+
+        // 10% chance to reset the timer
+        if ((new Random()).nextInt(100) <= 10) {
+            despawnTime = 6000;
+        }
+
+        // Set the despawn time to 6000 (5:00) if less than 200 (00:05)
+        TwitchInteractions.worldChanges.ITEM_DESPAWN = despawnTime < 600
+            ? 6000
+            : despawnTime;
 
         TwitchInteractions.worldChanges.setDirty(true);
     }
