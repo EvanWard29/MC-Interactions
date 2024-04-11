@@ -1,5 +1,6 @@
 package uk.co.evanward.twitchinteractions.twitch.event.channelpoints.redemptions;
 
+import net.minecraft.entity.damage.DamageType;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.DyeColor;
 import org.json.JSONObject;
@@ -69,6 +70,30 @@ public class WorldRandomiseRedemption implements ChannelPoint.ChannelPointInterf
         TwitchInteractions.worldChanges.ITEM_DESPAWN = despawnTime < 600
             ? 6000
             : despawnTime;
+
+        // Get a random damage type
+        DamageType damageType = ServerHelper.getConnectedPlayer()
+            .getDamageSources()
+            .registry
+            .getRandom(ServerHelper.getConnectedPlayer().getRandom())
+            .get()
+            .value();
+
+        // Get the existing modifier of the random damage type (if set already)
+        float damageModifier = TwitchInteractions.worldChanges.DAMAGE_MODIFIERS.getFloat(damageType.toString());
+
+        // Set the modifier to unmodified if not already modified
+        if (!(damageModifier > 0.0f)) {
+            damageModifier = 1.0f;
+        }
+
+        // Double or half the damage modifier
+        TwitchInteractions.worldChanges.DAMAGE_MODIFIERS.putFloat(
+            damageType.msgId(),
+            (new Random()).nextBoolean()
+                ? damageModifier * 2
+                : damageModifier / 2
+        );
 
         TwitchInteractions.worldChanges.setDirty(true);
     }

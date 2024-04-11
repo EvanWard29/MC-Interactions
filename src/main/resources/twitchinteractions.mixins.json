@@ -4,6 +4,7 @@
   "mixins": [
     "CreeperMixin",
     "worldchanges.ChickenItemLayMixin",
+    "worldchanges.DamageModifierMixin",
     "worldchanges.ItemDespawnTimeMixin",
     "worldchanges.ServerWorldLengthOfDayMixin",
     "worldchanges.SheepColourMixin"
