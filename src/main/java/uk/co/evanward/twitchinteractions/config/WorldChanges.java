@@ -19,6 +19,7 @@ public class WorldChanges extends PersistentState
     public DyeColor SHEEP_COLOUR;
     public int ITEM_DESPAWN;
     public NbtCompound DAMAGE_MODIFIERS;
+    public int SPAWN_EGG_CHANCE;
 
     private static final Type<WorldChanges> type = new Type<>(
         WorldChanges::new,
@@ -36,6 +37,7 @@ public class WorldChanges extends PersistentState
         this.SHEEP_COLOUR = DyeColor.WHITE;
         this.ITEM_DESPAWN = 6000;
         this.DAMAGE_MODIFIERS = new NbtCompound();
+        this.SPAWN_EGG_CHANCE = 0;
     }
 
     /**
@@ -49,6 +51,7 @@ public class WorldChanges extends PersistentState
         nbt.putString("SHEEP_COLOUR", SHEEP_COLOUR.toString());
         nbt.putInt("ITEM_DESPAWN", ITEM_DESPAWN);
         nbt.put("DAMAGE_MODIFIERS", DAMAGE_MODIFIERS);
+        nbt.putInt("SPAWN_EGG_CHANCE", SPAWN_EGG_CHANCE);
 
         return nbt;
     }
@@ -72,6 +75,8 @@ public class WorldChanges extends PersistentState
         worldChanges.ITEM_DESPAWN = nbt.getInt("ITEM_DESPAWN");
 
         worldChanges.DAMAGE_MODIFIERS = nbt.getCompound("DAMAGE_MODIFIERS");
+
+        worldChanges.SPAWN_EGG_CHANCE = nbt.getInt("SPAWN_EGG_CHANCE");
 
         return worldChanges;
     }

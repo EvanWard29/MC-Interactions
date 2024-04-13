@@ -95,6 +95,9 @@ public class WorldRandomiseRedemption implements ChannelPoint.ChannelPointInterf
                 : damageModifier / 2
         );
 
+        // Set the spawn egg chance
+        TwitchInteractions.worldChanges.SPAWN_EGG_CHANCE = (new Random()).nextInt(100);
+
         TwitchInteractions.worldChanges.setDirty(true);
     }
 }
