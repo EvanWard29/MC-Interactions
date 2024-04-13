@@ -1,6 +1,8 @@
 package uk.co.evanward.twitchinteractions.twitch.event.channelpoints.redemptions;
 
 import net.minecraft.entity.damage.DamageType;
+import net.minecraft.item.Item;
+import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.DyeColor;
 import org.json.JSONObject;
@@ -97,6 +99,12 @@ public class WorldRandomiseRedemption implements ChannelPoint.ChannelPointInterf
 
         // Set the spawn egg chance
         TwitchInteractions.worldChanges.SPAWN_EGG_CHANCE = (new Random()).nextInt(100);
+
+        // Replace a random item with another
+        Item item = Registries.ITEM.getRandom(ServerHelper.getConnectedPlayer().getRandom()).get().value();
+        Item replacement = Registries.ITEM.getRandom(ServerHelper.getConnectedPlayer().getRandom()).get().value();
+
+        TwitchInteractions.worldChanges.REPLACE_LOOT.putString(item.toString(), replacement.toString());
 
         TwitchInteractions.worldChanges.setDirty(true);
     }

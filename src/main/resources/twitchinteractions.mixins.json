@@ -6,6 +6,7 @@
     "worldchanges.ChickenItemLayMixin",
     "worldchanges.DamageModifierMixin",
     "worldchanges.ItemDespawnTimeMixin",
+    "worldchanges.ReplaceLootMixin",
     "worldchanges.ServerWorldLengthOfDayMixin",
     "worldchanges.SheepColourMixin",
     "worldchanges.SpawnEggMixin"
