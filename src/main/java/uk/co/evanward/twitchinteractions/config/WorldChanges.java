@@ -21,6 +21,7 @@ public class WorldChanges extends PersistentState
     public NbtCompound DAMAGE_MODIFIERS;
     public int SPAWN_EGG_CHANCE;
     public NbtCompound REPLACE_LOOT;
+    public NbtCompound LOOT_MODIFIER;
 
     private static final Type<WorldChanges> type = new Type<>(
         WorldChanges::new,
@@ -40,6 +41,7 @@ public class WorldChanges extends PersistentState
         this.DAMAGE_MODIFIERS = new NbtCompound();
         this.SPAWN_EGG_CHANCE = 0;
         this.REPLACE_LOOT = new NbtCompound();
+        this.LOOT_MODIFIER = new NbtCompound();
     }
 
     /**
@@ -55,6 +57,7 @@ public class WorldChanges extends PersistentState
         nbt.put("DAMAGE_MODIFIERS", DAMAGE_MODIFIERS);
         nbt.putInt("SPAWN_EGG_CHANCE", SPAWN_EGG_CHANCE);
         nbt.put("REPLACE_LOOT", REPLACE_LOOT);
+        nbt.put("LOOT_MODIFIER", LOOT_MODIFIER);
 
         return nbt;
     }
@@ -82,6 +85,8 @@ public class WorldChanges extends PersistentState
         worldChanges.SPAWN_EGG_CHANCE = nbt.getInt("SPAWN_EGG_CHANCE");
 
         worldChanges.REPLACE_LOOT = nbt.getCompound("REPLACE_LOOT");
+
+        worldChanges.LOOT_MODIFIER = nbt.getCompound("LOOT_MODIFIER");
 
         return worldChanges;
     }

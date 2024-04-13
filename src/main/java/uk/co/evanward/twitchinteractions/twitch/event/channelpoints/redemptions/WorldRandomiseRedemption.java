@@ -100,12 +100,39 @@ public class WorldRandomiseRedemption implements ChannelPoint.ChannelPointInterf
         // Set the spawn egg chance
         TwitchInteractions.worldChanges.SPAWN_EGG_CHANCE = (new Random()).nextInt(100);
 
-        // Replace a random item with another
-        Item item = Registries.ITEM.getRandom(ServerHelper.getConnectedPlayer().getRandom()).get().value();
-        Item replacement = Registries.ITEM.getRandom(ServerHelper.getConnectedPlayer().getRandom()).get().value();
+        this.replaceLoot();
 
-        TwitchInteractions.worldChanges.REPLACE_LOOT.putString(item.toString(), replacement.toString());
+        this.modifyLootAmount();
 
         TwitchInteractions.worldChanges.setDirty(true);
+    }
+
+    /**
+     * Replace a random item drop with another
+     */
+    private void replaceLoot()
+    {
+        Item loot = Registries.ITEM.getRandom(ServerHelper.getConnectedPlayer().getRandom()).get().value();
+        Item replacement = Registries.ITEM.getRandom(ServerHelper.getConnectedPlayer().getRandom()).get().value();
+
+        TwitchInteractions.worldChanges.REPLACE_LOOT.putString(loot.toString(), replacement.toString());
+    }
+
+    /**
+     * Double or half the loot amount of a random item drop
+     */
+    private void modifyLootAmount()
+    {
+        Item lootAmount = Registries.ITEM.getRandom(ServerHelper.getConnectedPlayer().getRandom()).get().value();
+
+        // Double or half the loot
+        int amount = TwitchInteractions.worldChanges.LOOT_MODIFIER.getInt(lootAmount.toString());
+        if (amount > 1) {
+            amount = (new Random()).nextBoolean() ? amount * 2 : amount / 2;
+        } else {
+            amount = 2;
+        }
+
+        TwitchInteractions.worldChanges.LOOT_MODIFIER.putInt(lootAmount.toString(), amount);
     }
 }
