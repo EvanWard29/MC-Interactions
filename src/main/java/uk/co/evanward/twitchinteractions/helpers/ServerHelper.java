@@ -2,8 +2,11 @@ package uk.co.evanward.twitchinteractions.helpers;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ItemEntity;
+import net.minecraft.entity.SpawnGroup;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.Registries;
 import net.minecraft.server.integrated.IntegratedServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
@@ -11,9 +14,8 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.Vec3d;
 import uk.co.evanward.twitchinteractions.TwitchInteractions;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
+import java.util.stream.Stream;
 
 public class ServerHelper
 {
@@ -97,5 +99,19 @@ public class ServerHelper
     public static void spawnEntity(Entity entity)
     {
         spawnEntity(entity, getConnectedPlayer());
+    }
+
+    /**
+     * Get a random living mob type
+     */
+    public static EntityType<?> randomMobType()
+    {
+        return Stream.generate(() -> Registries.ENTITY_TYPE.getRandom(getConnectedPlayer().getRandom()))
+            .flatMap(Optional::stream)
+            .filter(entityTypeReference -> EnumSet.of(SpawnGroup.CREATURE, SpawnGroup.MONSTER, SpawnGroup.WATER_CREATURE, SpawnGroup.WATER_AMBIENT)
+                .contains(entityTypeReference.value().getSpawnGroup()))
+            .findAny()
+            .get()
+            .value();
     }
 }

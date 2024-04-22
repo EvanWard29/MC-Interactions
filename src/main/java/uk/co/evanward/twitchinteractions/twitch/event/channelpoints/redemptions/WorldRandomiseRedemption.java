@@ -1,5 +1,6 @@
 package uk.co.evanward.twitchinteractions.twitch.event.channelpoints.redemptions;
 
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.damage.DamageType;
 import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
@@ -104,6 +105,8 @@ public class WorldRandomiseRedemption implements ChannelPoint.ChannelPointInterf
 
         this.modifyLootAmount();
 
+        this.replaceMobSpawn();
+
         TwitchInteractions.worldChanges.setDirty(true);
     }
 
@@ -134,5 +137,19 @@ public class WorldRandomiseRedemption implements ChannelPoint.ChannelPointInterf
         }
 
         TwitchInteractions.worldChanges.LOOT_MODIFIER.putInt(lootAmount.toString(), amount);
+    }
+
+    /**
+     * Replace the natural spawn of a mob with another
+     */
+    private void replaceMobSpawn()
+    {
+        // Get a random mob to replace
+        EntityType<?> entityType = ServerHelper.randomMobType();
+
+        // Get a random mob to replace with
+        EntityType<?> replacement = ServerHelper.randomMobType();
+
+        TwitchInteractions.worldChanges.REPLACE_MOB_SPAWN.putString(entityType.toString(), replacement.getUntranslatedName());
     }
 }
