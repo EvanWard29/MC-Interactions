@@ -38,15 +38,45 @@ public class WorldRandomiseRedemption implements ChannelPoint.ChannelPointInterf
     @Override
     public void trigger(JSONObject event)
     {
-        // Set the item Chickens lay to a random item
+        this.changeChickenEgg();
+
+        this.changeLengthOfDay();
+
+        this.changeSheepColour();
+
+        this.changeDespawnTime();
+
+        this.changeDamageModifier();
+
+        this.changeSpawnEggChance();
+
+        this.changeLootDrop();
+
+        this.changeLootAmount();
+
+        this.changeMobSpawn();
+
+        TwitchInteractions.worldChanges.setDirty(true);
+    }
+
+    /**
+     * Set the item Chickens lay to a random one
+     */
+    private void changeChickenEgg()
+    {
         TwitchInteractions.worldChanges.CHICKEN_EGG = ServerHelper.getServer()
             .getRegistryManager()
             .get(RegistryKeys.ITEM)
             .getRandom(ServerHelper.getConnectedPlayer().getRandom())
             .get()
             .value();
+    }
 
-        // Double or half the length of day
+    /**
+     * Double or half the length of day
+     */
+    private void changeLengthOfDay()
+    {
         int newDayLength = (new Random()).nextBoolean()
             ? TwitchInteractions.worldChanges.DAY_LENGTH * 2
             : TwitchInteractions.worldChanges.DAY_LENGTH / 2;
@@ -55,10 +85,21 @@ public class WorldRandomiseRedemption implements ChannelPoint.ChannelPointInterf
         TwitchInteractions.worldChanges.DAY_LENGTH = newDayLength < 1500
             ? 24000
             : newDayLength;
+    }
 
-        // Change the default Sheep colour
+    /**
+     * Change the colour of naturally spawning sheep
+     */
+    private void changeSheepColour()
+    {
         TwitchInteractions.worldChanges.SHEEP_COLOUR = DyeColor.values()[new Random().nextInt(DyeColor.values().length)];
+    }
 
+    /**
+     * Double or half the item despawn time
+     */
+    private void changeDespawnTime()
+    {
         // Double or half the item despawn time
         int despawnTime = (new Random()).nextBoolean()
             ? TwitchInteractions.worldChanges.ITEM_DESPAWN * 2
@@ -73,7 +114,13 @@ public class WorldRandomiseRedemption implements ChannelPoint.ChannelPointInterf
         TwitchInteractions.worldChanges.ITEM_DESPAWN = despawnTime < 600
             ? 6000
             : despawnTime;
+    }
 
+    /**
+     * Modify the damage of a random damage source
+     */
+    private void changeDamageModifier()
+    {
         // Get a random damage type
         DamageType damageType = ServerHelper.getConnectedPlayer()
             .getDamageSources()
@@ -97,23 +144,20 @@ public class WorldRandomiseRedemption implements ChannelPoint.ChannelPointInterf
                 ? damageModifier * 2
                 : damageModifier / 2
         );
+    }
 
-        // Set the spawn egg chance
+    /**
+     * Set the chance of a spawn egg dropping when killing a mob
+     */
+    private void changeSpawnEggChance()
+    {
         TwitchInteractions.worldChanges.SPAWN_EGG_CHANCE = (new Random()).nextInt(100);
-
-        this.replaceLoot();
-
-        this.modifyLootAmount();
-
-        this.replaceMobSpawn();
-
-        TwitchInteractions.worldChanges.setDirty(true);
     }
 
     /**
      * Replace a random item drop with another
      */
-    private void replaceLoot()
+    private void changeLootDrop()
     {
         Item loot = Registries.ITEM.getRandom(ServerHelper.getConnectedPlayer().getRandom()).get().value();
         Item replacement = Registries.ITEM.getRandom(ServerHelper.getConnectedPlayer().getRandom()).get().value();
@@ -124,7 +168,7 @@ public class WorldRandomiseRedemption implements ChannelPoint.ChannelPointInterf
     /**
      * Double or half the loot amount of a random item drop
      */
-    private void modifyLootAmount()
+    private void changeLootAmount()
     {
         Item lootAmount = Registries.ITEM.getRandom(ServerHelper.getConnectedPlayer().getRandom()).get().value();
 
@@ -142,7 +186,7 @@ public class WorldRandomiseRedemption implements ChannelPoint.ChannelPointInterf
     /**
      * Replace the natural spawn of a mob with another
      */
-    private void replaceMobSpawn()
+    private void changeMobSpawn()
     {
         // Get a random mob to replace
         EntityType<?> entityType = ServerHelper.randomMobType();
