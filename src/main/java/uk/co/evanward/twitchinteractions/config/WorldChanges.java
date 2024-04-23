@@ -24,6 +24,7 @@ public class WorldChanges extends PersistentState
     public NbtCompound LOOT_MODIFIER;
     public NbtCompound REPLACE_MOB_SPAWN;
     public NbtCompound STACK_SIZE;
+    public NbtCompound RECIPE_MODIFIERS;
 
     private static final Type<WorldChanges> type = new Type<>(
         WorldChanges::new,
@@ -46,6 +47,7 @@ public class WorldChanges extends PersistentState
         this.LOOT_MODIFIER = new NbtCompound();
         this.REPLACE_MOB_SPAWN = new NbtCompound();
         this.STACK_SIZE = new NbtCompound();
+        this.RECIPE_MODIFIERS = new NbtCompound();
     }
 
     /**
@@ -64,6 +66,7 @@ public class WorldChanges extends PersistentState
         nbt.put("LOOT_MODIFIER", LOOT_MODIFIER);
         nbt.put("REPLACE_MOB_SPAWN", REPLACE_MOB_SPAWN);
         nbt.put("STACK_SIZE", STACK_SIZE);
+        nbt.put("RECIPE_MODIFIERS", RECIPE_MODIFIERS);
 
         return nbt;
     }
@@ -97,6 +100,8 @@ public class WorldChanges extends PersistentState
         worldChanges.REPLACE_MOB_SPAWN = nbt.getCompound("REPLACE_MOB_SPAWN");
 
         worldChanges.STACK_SIZE = nbt.getCompound("STACK_SIZE");
+
+        worldChanges.RECIPE_MODIFIERS = nbt.getCompound("RECIPE_MODIFIERS");
 
         return worldChanges;
     }

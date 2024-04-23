@@ -22,7 +22,6 @@ public class WorldRandomiseRedemption implements ChannelPoint.ChannelPointInterf
      * <ul>
      *     <li>Item laid by chickens</li>
      *     <li>Natural mob spawns</li>
-     *     <li>Amount outputted by a crafting recipe</li>
      *     <li>Dropped loot</li>
      *     <li>Double or half the max item stack size</li>
      *     <li>Replace sound with another</li>
@@ -59,6 +58,8 @@ public class WorldRandomiseRedemption implements ChannelPoint.ChannelPointInterf
         this.changeMobSpawn();
 
         this.changeStackSize();
+
+        this.changeRecipeOutput();
 
         TwitchInteractions.worldChanges.setDirty(true);
     }
@@ -232,5 +233,31 @@ public class WorldRandomiseRedemption implements ChannelPoint.ChannelPointInterf
 
         itemSizes.putInt("current", MathHelper.ceil(size));
         TwitchInteractions.worldChanges.STACK_SIZE.put(item.toString(), itemSizes);
+    }
+
+    /**
+     * Double or half the recipe output of an item
+     */
+    private void changeRecipeOutput()
+    {
+        // Get a random item
+        Item item = Registries.ITEM.getRandom(ServerHelper.getConnectedPlayer().getRandom()).get().value();
+
+        float modifier;
+        if (TwitchInteractions.worldChanges.RECIPE_MODIFIERS.contains(item.toString())) {
+            modifier = TwitchInteractions.worldChanges.RECIPE_MODIFIERS.getFloat(item.toString());
+        } else {
+            modifier = 1.0f;
+        }
+
+        if (modifier == 1.0f) {
+            // Double the modifier
+            modifier = modifier * 2;
+        } else {
+            // Double or half the modifier
+            modifier = (new Random()).nextBoolean() ? modifier * 2 : modifier / 2;
+        }
+
+        TwitchInteractions.worldChanges.RECIPE_MODIFIERS.putFloat(item.toString(), modifier);
     }
 }

@@ -11,7 +11,12 @@
     "worldchanges.ReplaceLootMixin",
     "worldchanges.ServerWorldLengthOfDayMixin",
     "worldchanges.SheepColourMixin",
-    "worldchanges.SpawnEggMixin"
+    "worldchanges.SpawnEggMixin",
+    "worldchanges.craftingoutput.CookingOutputMixin",
+    "worldchanges.craftingoutput.CuttingOutputMixin",
+    "worldchanges.craftingoutput.FurnaceOutputMixin",
+    "worldchanges.craftingoutput.ShapedCraftingOutputMixin",
+    "worldchanges.craftingoutput.ShapelessCraftingOutputMixin"
   ],
   "client": [
     "worldchanges.ClientWorldLengthOfDayMixin"
