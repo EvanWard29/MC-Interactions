@@ -3,9 +3,11 @@ package uk.co.evanward.twitchinteractions.twitch.event.channelpoints.redemptions
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.damage.DamageType;
 import net.minecraft.item.Item;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.DyeColor;
+import net.minecraft.util.math.MathHelper;
 import org.json.JSONObject;
 import uk.co.evanward.twitchinteractions.TwitchInteractions;
 import uk.co.evanward.twitchinteractions.helpers.ServerHelper;
@@ -55,6 +57,8 @@ public class WorldRandomiseRedemption implements ChannelPoint.ChannelPointInterf
         this.changeLootAmount();
 
         this.changeMobSpawn();
+
+        this.changeStackSize();
 
         TwitchInteractions.worldChanges.setDirty(true);
     }
@@ -195,5 +199,38 @@ public class WorldRandomiseRedemption implements ChannelPoint.ChannelPointInterf
         EntityType<?> replacement = ServerHelper.randomMobType();
 
         TwitchInteractions.worldChanges.REPLACE_MOB_SPAWN.putString(entityType.toString(), replacement.getUntranslatedName());
+    }
+
+    /**
+     * Double or half the max stack size of a random item
+     */
+    private void changeStackSize()
+    {
+        Item item = Registries.ITEM.getRandom(ServerHelper.getConnectedPlayer().getRandom()).get().value();
+
+        NbtCompound itemSizes;
+        if (TwitchInteractions.worldChanges.STACK_SIZE.contains(item.toString())) {
+            // Get the existing item size changes
+            itemSizes = TwitchInteractions.worldChanges.STACK_SIZE.getCompound(item.toString());
+        } else {
+            itemSizes = new NbtCompound();
+
+            // Set the default stack sizes
+            itemSizes.putInt("default", item.getMaxCount());
+            itemSizes.putInt("current", item.getMaxCount());
+        }
+
+        float size = itemSizes.getInt("current");
+
+        // Double or half the current size
+        size = (new Random()).nextBoolean() ? size * 2 : size / 2;
+
+        if (size < 1) {
+            // Reset to default if less than 1
+            size = itemSizes.getInt("default");
+        }
+
+        itemSizes.putInt("current", MathHelper.ceil(size));
+        TwitchInteractions.worldChanges.STACK_SIZE.put(item.toString(), itemSizes);
     }
 }

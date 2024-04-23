@@ -6,6 +6,7 @@
     "worldchanges.ChickenItemLayMixin",
     "worldchanges.DamageModifierMixin",
     "worldchanges.ItemDespawnTimeMixin",
+    "worldchanges.ItemMaxStackSizeMixin",
     "worldchanges.NaturalSpawnMixin",
     "worldchanges.ReplaceLootMixin",
     "worldchanges.ServerWorldLengthOfDayMixin",
