@@ -6,6 +6,7 @@ import net.minecraft.item.Item;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKeys;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.math.MathHelper;
 import org.json.JSONObject;
@@ -62,6 +63,8 @@ public class WorldRandomiseRedemption implements ChannelPoint.ChannelPointInterf
         this.changeRecipeOutput();
 
         this.changeVillagerCurrency();
+
+        this.changeSound();
 
         TwitchInteractions.worldChanges.setDirty(true);
     }
@@ -270,5 +273,16 @@ public class WorldRandomiseRedemption implements ChannelPoint.ChannelPointInterf
     {
         // Get a random item to switch currency for
         TwitchInteractions.worldChanges.VILLAGER_CURRENCY = Registries.ITEM.getRandom(ServerHelper.getConnectedPlayer().getRandom()).get().value();
+    }
+
+    /**
+     * Replace a random sound to another
+     */
+    private void changeSound()
+    {
+        SoundEvent sound = Registries.SOUND_EVENT.getRandom(ServerHelper.getConnectedPlayer().getRandom()).get().value();
+        SoundEvent replacement = Registries.SOUND_EVENT.getRandom(ServerHelper.getConnectedPlayer().getRandom()).get().value();
+
+        TwitchInteractions.worldChanges.SOUNDS.putString(sound.getId().toString(), replacement.getId().toString());
     }
 }

@@ -20,6 +20,7 @@
     "worldchanges.craftingoutput.ShapelessCraftingOutputMixin"
   ],
   "client": [
-    "worldchanges.ClientWorldLengthOfDayMixin"
+    "worldchanges.ClientWorldLengthOfDayMixin",
+    "worldchanges.ReplaceSoundMixin"
   ]
 }
