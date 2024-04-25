@@ -21,6 +21,7 @@
   ],
   "client": [
     "worldchanges.ClientWorldLengthOfDayMixin",
+    "worldchanges.ReplaceItemModelMixin",
     "worldchanges.ReplaceSoundMixin"
   ]
 }

@@ -66,6 +66,8 @@ public class WorldRandomiseRedemption implements ChannelPoint.ChannelPointInterf
 
         this.changeSound();
 
+        this.changeItemModel();
+
         TwitchInteractions.worldChanges.setDirty(true);
     }
 
@@ -284,5 +286,16 @@ public class WorldRandomiseRedemption implements ChannelPoint.ChannelPointInterf
         SoundEvent replacement = Registries.SOUND_EVENT.getRandom(ServerHelper.getConnectedPlayer().getRandom()).get().value();
 
         TwitchInteractions.worldChanges.SOUNDS.putString(sound.getId().toString(), replacement.getId().toString());
+    }
+
+    /**
+     * Replace an Item model with another
+     */
+    private void changeItemModel()
+    {
+        Item item = Registries.ITEM.getRandom(ServerHelper.getConnectedPlayer().getRandom()).get().value();
+        Item replacement = Registries.ITEM.getRandom(ServerHelper.getConnectedPlayer().getRandom()).get().value();
+
+        TwitchInteractions.worldChanges.ITEM_MODELS.putString(item.toString(), replacement.toString());
     }
 }

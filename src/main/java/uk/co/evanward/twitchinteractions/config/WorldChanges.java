@@ -27,6 +27,7 @@ public class WorldChanges extends PersistentState
     public NbtCompound RECIPE_MODIFIERS;
     public Item VILLAGER_CURRENCY;
     public NbtCompound SOUNDS;
+    public NbtCompound ITEM_MODELS;
 
     private static final Type<WorldChanges> type = new Type<>(
         WorldChanges::new,
@@ -52,6 +53,7 @@ public class WorldChanges extends PersistentState
         this.RECIPE_MODIFIERS = new NbtCompound();
         this.VILLAGER_CURRENCY = Items.EMERALD;
         this.SOUNDS = new NbtCompound();
+        this.ITEM_MODELS = new NbtCompound();
     }
 
     /**
@@ -73,6 +75,7 @@ public class WorldChanges extends PersistentState
         nbt.put("RECIPE_MODIFIERS", RECIPE_MODIFIERS);
         nbt.putString("VILLAGER_CURRENCY", VILLAGER_CURRENCY.toString());
         nbt.put("SOUNDS", SOUNDS);
+        nbt.put("ITEM_MODELS", ITEM_MODELS);
 
         return nbt;
     }
@@ -115,6 +118,8 @@ public class WorldChanges extends PersistentState
             .get(Identifier.of("minecraft", nbt.getString("VILLAGER_CURRENCY")));
 
         worldChanges.SOUNDS = nbt.getCompound("SOUNDS");
+
+        worldChanges.ITEM_MODELS = nbt.getCompound("ITEM_MODELS");
 
         return worldChanges;
     }
