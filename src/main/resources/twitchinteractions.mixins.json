@@ -12,6 +12,7 @@
     "worldchanges.ServerWorldLengthOfDayMixin",
     "worldchanges.SheepColourMixin",
     "worldchanges.SpawnEggMixin",
+    "worldchanges.VillagerCurrencyMixin",
     "worldchanges.craftingoutput.CookingOutputMixin",
     "worldchanges.craftingoutput.CuttingOutputMixin",
     "worldchanges.craftingoutput.FurnaceOutputMixin",

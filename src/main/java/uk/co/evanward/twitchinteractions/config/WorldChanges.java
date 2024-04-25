@@ -25,6 +25,7 @@ public class WorldChanges extends PersistentState
     public NbtCompound REPLACE_MOB_SPAWN;
     public NbtCompound STACK_SIZE;
     public NbtCompound RECIPE_MODIFIERS;
+    public Item VILLAGER_CURRENCY;
 
     private static final Type<WorldChanges> type = new Type<>(
         WorldChanges::new,
@@ -48,6 +49,7 @@ public class WorldChanges extends PersistentState
         this.REPLACE_MOB_SPAWN = new NbtCompound();
         this.STACK_SIZE = new NbtCompound();
         this.RECIPE_MODIFIERS = new NbtCompound();
+        this.VILLAGER_CURRENCY = Items.EMERALD;
     }
 
     /**
@@ -67,6 +69,7 @@ public class WorldChanges extends PersistentState
         nbt.put("REPLACE_MOB_SPAWN", REPLACE_MOB_SPAWN);
         nbt.put("STACK_SIZE", STACK_SIZE);
         nbt.put("RECIPE_MODIFIERS", RECIPE_MODIFIERS);
+        nbt.putString("VILLAGER_CURRENCY", VILLAGER_CURRENCY.toString());
 
         return nbt;
     }
@@ -102,6 +105,11 @@ public class WorldChanges extends PersistentState
         worldChanges.STACK_SIZE = nbt.getCompound("STACK_SIZE");
 
         worldChanges.RECIPE_MODIFIERS = nbt.getCompound("RECIPE_MODIFIERS");
+
+        worldChanges.VILLAGER_CURRENCY = ServerHelper.getServer()
+            .getRegistryManager()
+            .get(RegistryKeys.ITEM)
+            .get(Identifier.of("minecraft", nbt.getString("VILLAGER_CURRENCY")));
 
         return worldChanges;
     }

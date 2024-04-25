@@ -61,6 +61,8 @@ public class WorldRandomiseRedemption implements ChannelPoint.ChannelPointInterf
 
         this.changeRecipeOutput();
 
+        this.changeVillagerCurrency();
+
         TwitchInteractions.worldChanges.setDirty(true);
     }
 
@@ -259,5 +261,14 @@ public class WorldRandomiseRedemption implements ChannelPoint.ChannelPointInterf
         }
 
         TwitchInteractions.worldChanges.RECIPE_MODIFIERS.putFloat(item.toString(), modifier);
+    }
+
+    /**
+     * Change the currency Villagers trade in
+     */
+    private void changeVillagerCurrency()
+    {
+        // Get a random item to switch currency for
+        TwitchInteractions.worldChanges.VILLAGER_CURRENCY = Registries.ITEM.getRandom(ServerHelper.getConnectedPlayer().getRandom()).get().value();
     }
 }
