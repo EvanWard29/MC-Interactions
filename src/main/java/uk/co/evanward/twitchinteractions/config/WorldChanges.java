@@ -11,7 +11,6 @@ import net.minecraft.world.PersistentState;
 import net.minecraft.world.PersistentStateManager;
 import net.minecraft.world.World;
 import uk.co.evanward.twitchinteractions.helpers.ServerHelper;
-import uk.co.evanward.twitchinteractions.overrides.BlockModelNbt;
 
 public class WorldChanges extends PersistentState
 {
@@ -29,7 +28,7 @@ public class WorldChanges extends PersistentState
     public Item VILLAGER_CURRENCY;
     public NbtCompound SOUNDS;
     public NbtCompound ITEM_MODELS;
-    public BlockModelNbt BLOCK_MODELS;
+    public NbtCompound BLOCK_MODELS;
 
     private static final Type<WorldChanges> type = new Type<>(
         WorldChanges::new,
@@ -56,7 +55,7 @@ public class WorldChanges extends PersistentState
         this.VILLAGER_CURRENCY = Items.EMERALD;
         this.SOUNDS = new NbtCompound();
         this.ITEM_MODELS = new NbtCompound();
-        this.BLOCK_MODELS = new BlockModelNbt();
+        this.BLOCK_MODELS = new NbtCompound();
     }
 
     /**
@@ -125,7 +124,7 @@ public class WorldChanges extends PersistentState
 
         worldChanges.ITEM_MODELS = nbt.getCompound("ITEM_MODELS");
 
-        worldChanges.BLOCK_MODELS = BlockModelNbt.fromNbtCompound(nbt.getCompound("BLOCK_MODELS"));
+        worldChanges.BLOCK_MODELS = nbt.getCompound("BLOCK_MODELS");
 
         return worldChanges;
     }

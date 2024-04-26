@@ -28,5 +28,10 @@
   },
   "mixins": [
     "twitchinteractions.mixins.json"
-  ]
+  ],
+  "custom": {
+    "loom:injected_interfaces": {
+      "net/minecraft/nbt/NbtCompound": ["uk/co/evanward/twitchinteractions/interfaces/CanBeDirty"]
+    }
+  }
 }

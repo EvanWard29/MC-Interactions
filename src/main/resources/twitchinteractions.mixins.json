@@ -3,6 +3,7 @@
   "package": "uk.co.evanward.twitchinteractions.mixins",
   "mixins": [
     "CreeperMixin",
+    "NbtCompoundMixin",
     "worldchanges.ChickenItemLayMixin",
     "worldchanges.DamageModifierMixin",
     "worldchanges.ItemDespawnTimeMixin",
