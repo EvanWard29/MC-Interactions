@@ -1,5 +1,7 @@
 package uk.co.evanward.twitchinteractions.twitch.event.channelpoints.redemptions;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.damage.DamageType;
 import net.minecraft.item.Item;
@@ -67,6 +69,8 @@ public class WorldRandomiseRedemption implements ChannelPoint.ChannelPointInterf
         this.changeSound();
 
         this.changeItemModel();
+
+        this.changeBlockModel();
 
         TwitchInteractions.worldChanges.setDirty(true);
     }
@@ -297,5 +301,25 @@ public class WorldRandomiseRedemption implements ChannelPoint.ChannelPointInterf
         Item replacement = Registries.ITEM.getRandom(ServerHelper.getConnectedPlayer().getRandom()).get().value();
 
         TwitchInteractions.worldChanges.ITEM_MODELS.putString(item.toString(), replacement.toString());
+    }
+
+    /**
+     * Replace a random block model with another
+     */
+    private void changeBlockModel()
+    {
+        Block block;
+        do {
+            block = Registries.BLOCK.getRandom(ServerHelper.getConnectedPlayer().getRandom()).get().value();
+        } while (block == Blocks.AIR);
+
+
+        Block replacement;
+        do {
+            replacement = Registries.BLOCK.getRandom(ServerHelper.getConnectedPlayer().getRandom()).get().value();
+        } while (replacement == Blocks.AIR);
+
+        TwitchInteractions.worldChanges.BLOCK_MODELS.putString(block.asItem().toString(), replacement.asItem().toString());
+        TwitchInteractions.worldChanges.BLOCK_MODELS.markDirty();
     }
 }
