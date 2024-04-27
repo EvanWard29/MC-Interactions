@@ -48,14 +48,14 @@ public class MeanRedemption implements ChannelPoint.ChannelPointInterface
         {
             switch(this) {
                 case PIGLIN_BRUTE -> {
-                    PiglinBruteEntity piglinBrute = new PiglinBruteEntity(EntityType.PIGLIN_BRUTE, player.getWorld());
+                    PiglinBruteEntity piglinBrute = new PiglinBruteEntity(EntityType.PIGLIN_BRUTE, player.getEntityWorld());
                     piglinBrute.setAttacking(player);
                     piglinBrute.setStackInHand(Hand.MAIN_HAND, new ItemStack(Items.GOLDEN_AXE));
 
                     ServerHelper.spawnEntity(piglinBrute);
                 }
                 case WITHER_SKELETON -> {
-                    WitherSkeletonEntity witherSkeleton = new WitherSkeletonEntity(EntityType.WITHER_SKELETON, player.getWorld());
+                    WitherSkeletonEntity witherSkeleton = new WitherSkeletonEntity(EntityType.WITHER_SKELETON, player.getEntityWorld());
                     witherSkeleton.setStackInHand(Hand.MAIN_HAND, new ItemStack(Items.STONE_SWORD));
                     witherSkeleton.setTarget(player);
 
@@ -63,7 +63,7 @@ public class MeanRedemption implements ChannelPoint.ChannelPointInterface
                 }
                 case SILVERFISH -> {
                     for (int i = 0; i < 20; i++) {
-                        SilverfishEntity silverfish = new SilverfishEntity(EntityType.SILVERFISH, player.getWorld());
+                        SilverfishEntity silverfish = new SilverfishEntity(EntityType.SILVERFISH, player.getEntityWorld());
                         silverfish.setTarget(player);
 
                         ServerHelper.spawnEntity(silverfish);
@@ -71,7 +71,7 @@ public class MeanRedemption implements ChannelPoint.ChannelPointInterface
                 }
                 case PUFFERFISH -> {
                     for (int i = 0; i < 3; i++) {
-                        PufferfishEntity pufferfish = new PufferfishEntity(EntityType.PUFFERFISH, player.getWorld());
+                        PufferfishEntity pufferfish = new PufferfishEntity(EntityType.PUFFERFISH, player.getEntityWorld());
                         pufferfish.setTarget(player);
                         pufferfish.setPosition(player.getPos());
 
@@ -82,9 +82,9 @@ public class MeanRedemption implements ChannelPoint.ChannelPointInterface
                 case UNDEAD_HORSES -> {
                     // Summon 5 Zombie Horses with Zombie riders
                     for (int i = 0; i < 5; i++) {
-                        ZombieHorseEntity zombieHorse = new ZombieHorseEntity(EntityType.ZOMBIE_HORSE, player.getWorld());
+                        ZombieHorseEntity zombieHorse = new ZombieHorseEntity(EntityType.ZOMBIE_HORSE, player.getEntityWorld());
 
-                        ZombieEntity zombie = new ZombieEntity(EntityType.ZOMBIE, player.getWorld());
+                        ZombieEntity zombie = new ZombieEntity(EntityType.ZOMBIE, player.getEntityWorld());
                         zombie.setTarget(player);
                         equipArmour(zombie);
 
@@ -98,9 +98,9 @@ public class MeanRedemption implements ChannelPoint.ChannelPointInterface
 
                     // Summon 5 Skeleton Horses with Skeleton riders
                     for (int i = 0; i < 5; i++) {
-                        SkeletonHorseEntity skeletonHorse = new SkeletonHorseEntity(EntityType.SKELETON_HORSE, player.getWorld());
+                        SkeletonHorseEntity skeletonHorse = new SkeletonHorseEntity(EntityType.SKELETON_HORSE, player.getEntityWorld());
 
-                        SkeletonEntity skeleton = new SkeletonEntity(EntityType.SKELETON, player.getWorld());
+                        SkeletonEntity skeleton = new SkeletonEntity(EntityType.SKELETON, player.getEntityWorld());
                         skeleton.setTarget(player);
                         equipArmour(skeleton);
 
@@ -116,14 +116,14 @@ public class MeanRedemption implements ChannelPoint.ChannelPointInterface
                     }
                 }
                 case LIGHTNING -> {
-                    LightningEntity lightning = new LightningEntity(EntityType.LIGHTNING_BOLT, player.getWorld());
+                    LightningEntity lightning = new LightningEntity(EntityType.LIGHTNING_BOLT, player.getEntityWorld());
                     lightning.setPosition(player.getPos());
 
                     // Manually spawn at the player's location, rather than around
                     player.getServerWorld().spawnEntity(lightning);
                 }
                 case CREEPER -> {
-                    CreeperEntity creeper = new CreeperEntity(EntityType.CREEPER, player.getWorld());
+                    CreeperEntity creeper = new CreeperEntity(EntityType.CREEPER, player.getEntityWorld());
                     creeper.setTarget(player);
 
                     // 5% chance to charge the creeper
@@ -137,20 +137,20 @@ public class MeanRedemption implements ChannelPoint.ChannelPointInterface
                     ServerHelper.spawnEntity(creeper);
                 }
                 case EVOKER -> {
-                    EvokerEntity evoker = new EvokerEntity(EntityType.EVOKER, player.getWorld());
+                    EvokerEntity evoker = new EvokerEntity(EntityType.EVOKER, player.getEntityWorld());
                     evoker.setTarget(player);
 
                     ServerHelper.spawnEntity(evoker);
                 }
                 case BLAZE -> {
-                    BlazeEntity blaze = new BlazeEntity(EntityType.BLAZE, player.getWorld());
+                    BlazeEntity blaze = new BlazeEntity(EntityType.BLAZE, player.getEntityWorld());
                     blaze.setTarget(player);
 
                     ServerHelper.spawnEntity(blaze);
                 }
                 case VEX -> {
                     for (int i = 0; i < 10; i++) {
-                        VexEntity vex = new VexEntity(EntityType.VEX, player.getWorld());
+                        VexEntity vex = new VexEntity(EntityType.VEX, player.getEntityWorld());
                         vex.setTarget(player);
 
                         ServerHelper.spawnEntity(vex);
@@ -169,13 +169,13 @@ public class MeanRedemption implements ChannelPoint.ChannelPointInterface
                     player.getServerWorld().setBlockState(player.getSteppingPos().up(3), Blocks.OBSIDIAN.getDefaultState());
                 }
                 case POLAR_BEAR -> {
-                    PolarBearEntity polarBear = new PolarBearEntity(EntityType.POLAR_BEAR, player.getWorld());
+                    PolarBearEntity polarBear = new PolarBearEntity(EntityType.POLAR_BEAR, player.getEntityWorld());
                     polarBear.setTarget(player);
 
                     ServerHelper.spawnEntity(polarBear);
                 }
                 case WITCH -> {
-                    WitchEntity witch = new WitchEntity(EntityType.WITCH, player.getWorld());
+                    WitchEntity witch = new WitchEntity(EntityType.WITCH, player.getEntityWorld());
                     witch.setTarget(player);
 
                     ServerHelper.spawnEntity(witch);

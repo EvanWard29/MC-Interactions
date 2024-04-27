@@ -15,7 +15,9 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import uk.co.evanward.twitchinteractions.TwitchInteractions;
 import uk.co.evanward.twitchinteractions.helpers.ServerHelper;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class HypeTrain
 {
@@ -87,12 +89,12 @@ public class HypeTrain
                     // Level 1 summons Spiders
                     if (random.nextInt(100) <= 20) {
                         // 20% chance to summon a Cave Spider
-                        CaveSpiderEntity caveSpider = new CaveSpiderEntity(EntityType.CAVE_SPIDER, player.getWorld());
+                        CaveSpiderEntity caveSpider = new CaveSpiderEntity(EntityType.CAVE_SPIDER, player.getEntityWorld());
                         caveSpider.setTarget(player);
 
                         entity = caveSpider;
                     } else {
-                        SpiderEntity spider = new SpiderEntity(EntityType.SPIDER, player.getWorld());
+                        SpiderEntity spider = new SpiderEntity(EntityType.SPIDER, player.getEntityWorld());
                         spider.setTarget(player);
 
                         entity = spider;
@@ -107,7 +109,7 @@ public class HypeTrain
                 }
                 case TWO -> {
                     // Level 2 summons buffed Spiders and Zombies
-                    ZombieEntity zombie = new ZombieEntity(EntityType.ZOMBIE, player.getWorld());
+                    ZombieEntity zombie = new ZombieEntity(EntityType.ZOMBIE, player.getEntityWorld());
                     zombie.setTarget(player);
 
                     // 20% chance the Zombie is a baby
@@ -127,7 +129,7 @@ public class HypeTrain
                 }
                 case THREE -> {
                     // Level 3 summons buffed Spiders, buffed Zombies, and Skeletons
-                    SkeletonEntity skeleton = new SkeletonEntity(EntityType.SKELETON, player.getWorld());
+                    SkeletonEntity skeleton = new SkeletonEntity(EntityType.SKELETON, player.getEntityWorld());
                     skeleton.setTarget(player);
 
                     ItemStack bow = new ItemStack(Items.BOW);
@@ -146,7 +148,7 @@ public class HypeTrain
                 }
                 case FOUR -> {
                     // Level 4 summons buffed Spiders, buffed Zombies, buffed Skeletons, and Creepers
-                    CreeperEntity creeper = new CreeperEntity(EntityType.CREEPER, player.getWorld());
+                    CreeperEntity creeper = new CreeperEntity(EntityType.CREEPER, player.getEntityWorld());
                     creeper.setTarget(player);
 
                     // 20% chance the Creeper is charged or always charged if buffed
@@ -162,7 +164,7 @@ public class HypeTrain
                 }
                 case FIVE -> {
                     // Level 5 summons buffed Spiders, super buffed Zombies, super buffed Skeletons, charged Creepers, and Witches
-                    WitchEntity witch = new WitchEntity(EntityType.WITCH, player.getWorld());
+                    WitchEntity witch = new WitchEntity(EntityType.WITCH, player.getEntityWorld());
                     witch.setTarget(player);
 
                     entities.add(witch);

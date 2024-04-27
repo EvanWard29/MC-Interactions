@@ -83,7 +83,7 @@ public class CheerEvent implements TwitchEvent.TwitchEventInterface
         // Spawn a random mob for every 10th bit
         for (int i = 0; i < bits; i++) {
             Random random = new Random();
-            Entity entity = CheerEntities.values()[random.nextInt(CheerEntities.values().length)].getEntity(player.getWorld());
+            Entity entity = CheerEntities.values()[random.nextInt(CheerEntities.values().length)].getEntity(player.getEntityWorld());
             entity.setCustomName(Text.literal(!event.getBoolean("is_anonymous") ? event.getString("user_name") : "A Cool User"));
             entity.setCustomNameVisible(true);
 

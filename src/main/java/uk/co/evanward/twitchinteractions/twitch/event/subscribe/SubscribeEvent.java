@@ -34,7 +34,7 @@ public class SubscribeEvent implements TwitchEvent.TwitchEventInterface
             switch (this) {
                 case TIER_1000 -> {
                     // Random cat variant
-                    CatEntity cat = new CatEntity(EntityType.CAT, player.getWorld());
+                    CatEntity cat = new CatEntity(EntityType.CAT, player.getEntityWorld());
                     cat.setOwner(player);
                     cat.setVariant(Registries.CAT_VARIANT.get((new Random()).nextInt(Registries.CAT_VARIANT.size())));
 
@@ -42,7 +42,7 @@ public class SubscribeEvent implements TwitchEvent.TwitchEventInterface
                 }
                 case TIER_2000 -> {
                     // Random wolf variant
-                    WolfEntity wolf = new WolfEntity(EntityType.WOLF, player.getWorld());
+                    WolfEntity wolf = new WolfEntity(EntityType.WOLF, player.getEntityWorld());
                     wolf.setOwner(player);
                     wolf.setCollarColor(DyeColor.values()[(new Random()).nextInt(DyeColor.values().length)]);
 
@@ -50,7 +50,7 @@ public class SubscribeEvent implements TwitchEvent.TwitchEventInterface
                 }
                 case TIER_3000 -> {
                     // Random panda variant
-                    PandaEntity panda = new PandaEntity(EntityType.PANDA, player.getWorld());
+                    PandaEntity panda = new PandaEntity(EntityType.PANDA, player.getEntityWorld());
                     panda.setMainGene(PandaEntity.Gene.createRandom(net.minecraft.util.math.random.Random.create((new Random()).nextLong())));
                     panda.setHiddenGene(PandaEntity.Gene.createRandom(net.minecraft.util.math.random.Random.create((new Random()).nextLong())));
 

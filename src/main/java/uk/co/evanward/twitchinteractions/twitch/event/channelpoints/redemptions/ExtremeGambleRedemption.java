@@ -68,7 +68,7 @@ public class ExtremeGambleRedemption implements ChannelPoint.ChannelPointInterfa
                 }
                 case RAVAGERS -> {
                     for (int i = 0; i < 5; i++) {
-                        RavagerEntity ravager = new RavagerEntity(EntityType.RAVAGER, player.getWorld());
+                        RavagerEntity ravager = new RavagerEntity(EntityType.RAVAGER, player.getEntityWorld());
                         ravager.setTarget(player);
                         ravager.setCustomName(Text.literal(username));
                         ravager.setCustomNameVisible(true);
@@ -78,7 +78,7 @@ public class ExtremeGambleRedemption implements ChannelPoint.ChannelPointInterfa
                 }
                 case TELEPORT_NETHER -> {
                     // If the player is in the Overworld or End, teleport to Nether, otherwise teleport to Overworld
-                    ServerWorld world = (player.getWorld().getRegistryKey().equals(World.OVERWORLD) || player.getWorld().getRegistryKey().equals(World.END))
+                    ServerWorld world = (player.getEntityWorld().getRegistryKey().equals(World.OVERWORLD) || player.getEntityWorld().getRegistryKey().equals(World.END))
                         ? ServerHelper.getServer().getWorld(World.NETHER) : ServerHelper.getServer().getWorld(World.OVERWORLD);
 
                     BlockPos safeSpawn = findSafeSpawn(world, player.getBlockX(), player.getBlockZ());
@@ -87,14 +87,14 @@ public class ExtremeGambleRedemption implements ChannelPoint.ChannelPointInterfa
                 }
                 case TNT -> {
                     for (int i = 0; i < 5; i++) {
-                        TntEntity tnt = new TntEntity(EntityType.TNT, player.getWorld());
+                        TntEntity tnt = new TntEntity(EntityType.TNT, player.getEntityWorld());
                         tnt.setFuse(30);
 
                         ServerHelper.spawnEntity(tnt);
                     }
                 }
                 case GHAST -> {
-                    GhastEntity ghast = new GhastEntity(EntityType.GHAST, player.getWorld());
+                    GhastEntity ghast = new GhastEntity(EntityType.GHAST, player.getEntityWorld());
                     ghast.setTarget(player);
 
                     ghast.setCustomName(Text.literal(username));
@@ -109,7 +109,7 @@ public class ExtremeGambleRedemption implements ChannelPoint.ChannelPointInterfa
                     ServerHelper.spawnEntity(ghast);
                 }
                 case SLIME -> {
-                    SlimeEntity slime = new SlimeEntity(EntityType.SLIME, player.getWorld());
+                    SlimeEntity slime = new SlimeEntity(EntityType.SLIME, player.getEntityWorld());
                     slime.setSize(8, true);
                     slime.setTarget(player);
 
@@ -135,13 +135,13 @@ public class ExtremeGambleRedemption implements ChannelPoint.ChannelPointInterfa
                     }
                 }
                 case CHEST_LOOT -> {
-                    ChestMinecartEntity chestMinecart = new ChestMinecartEntity(EntityType.CHEST_MINECART, player.getWorld());
+                    ChestMinecartEntity chestMinecart = new ChestMinecartEntity(EntityType.CHEST_MINECART, player.getEntityWorld());
                     chestMinecart.setCustomName(Text.literal(username));
                     chestMinecart.setCustomNameVisible(true);
 
                     String lootTable = (new Random()).nextBoolean() ? "chests/end_city_treasure" : "chests/ancient_city";
 
-                    chestMinecart.setLootTableId(RegistryKeys.LOOT_POOL_ENTRY_TYPE.getRegistry().withPath(lootTable));
+                    chestMinecart.setLootTable(RegistryKeys.LOOT_POOL_ENTRY_TYPE.getRegistry().withPath(lootTable));
 
                     ServerHelper.spawnEntity(chestMinecart);
                 }

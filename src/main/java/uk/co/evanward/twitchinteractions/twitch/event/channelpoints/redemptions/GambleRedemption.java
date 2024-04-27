@@ -52,7 +52,7 @@ public class GambleRedemption implements ChannelPoint.ChannelPointInterface
             switch(this) {
                 case WATER_BUCKET_CHALLENGE -> {
                     // Teleport the player to the world limit of the dimension they're in
-                    player.teleport(player.getX(), player.getWorld().getHeight(), player.getZ());
+                    player.teleport(player.getX(), player.getEntityWorld().getHeight(), player.getZ());
 
                     // get the item in the player's main hand
                     ItemStack itemInHand = player.getStackInHand(Hand.MAIN_HAND);
@@ -88,16 +88,16 @@ public class GambleRedemption implements ChannelPoint.ChannelPointInterface
                             Angerable angryEntity;
                             switch(this) {
                                 case BEE -> {
-                                    angryEntity = new BeeEntity(EntityType.BEE, player.getWorld());
+                                    angryEntity = new BeeEntity(EntityType.BEE, player.getEntityWorld());
                                 }
                                 case WOLF -> {
-                                    angryEntity = new WolfEntity(EntityType.WOLF, player.getWorld());
+                                    angryEntity = new WolfEntity(EntityType.WOLF, player.getEntityWorld());
                                 }
                                 case ZOMBIE_PIGLIN -> {
-                                    angryEntity = new ZombifiedPiglinEntity(EntityType.ZOMBIFIED_PIGLIN, player.getWorld());
+                                    angryEntity = new ZombifiedPiglinEntity(EntityType.ZOMBIFIED_PIGLIN, player.getEntityWorld());
                                 }
                                 case IRON_GOLEM -> {
-                                    angryEntity = new IronGolemEntity(EntityType.IRON_GOLEM, player.getWorld());
+                                    angryEntity = new IronGolemEntity(EntityType.IRON_GOLEM, player.getEntityWorld());
                                 }
                                 default -> throw new IllegalArgumentException("Unsupported AngryMob enum `" + this + "`");
                             }
@@ -127,19 +127,19 @@ public class GambleRedemption implements ChannelPoint.ChannelPointInterface
                 }
                 case FOOD_EXPLOSION -> {
                     for (int i = 0; i < 5; i++) {
-                        PigEntity pig = new PigEntity(EntityType.PIG, player.getWorld());
+                        PigEntity pig = new PigEntity(EntityType.PIG, player.getEntityWorld());
                         setAttributes(pig);
                         ServerHelper.spawnEntity(pig);
 
-                        CowEntity cow = new CowEntity(EntityType.COW, player.getWorld());
+                        CowEntity cow = new CowEntity(EntityType.COW, player.getEntityWorld());
                         setAttributes(cow);
                         ServerHelper.spawnEntity(cow);
 
-                        ChickenEntity chicken = new ChickenEntity(EntityType.CHICKEN, player.getWorld());
+                        ChickenEntity chicken = new ChickenEntity(EntityType.CHICKEN, player.getEntityWorld());
                         setAttributes(chicken);
                         ServerHelper.spawnEntity(chicken);
 
-                        SheepEntity sheep = new SheepEntity(EntityType.SHEEP, player.getWorld());
+                        SheepEntity sheep = new SheepEntity(EntityType.SHEEP, player.getEntityWorld());
                         setAttributes(sheep);
                         ServerHelper.spawnEntity(sheep);
 
@@ -151,7 +151,7 @@ public class GambleRedemption implements ChannelPoint.ChannelPointInterface
                     }
                 }
                 case CHARGED_CREEPERS -> {
-                    CreeperEntity creeper = new CreeperEntity(EntityType.CREEPER, player.getWorld());
+                    CreeperEntity creeper = new CreeperEntity(EntityType.CREEPER, player.getEntityWorld());
                     creeper.setTarget(player);
 
                     // Set the Creeper to charged if Creepers are now charged
@@ -243,9 +243,9 @@ public class GambleRedemption implements ChannelPoint.ChannelPointInterface
         fireworkEntityTag.putInt("Life", 0);
 
         // Create the firework entity and apply nbt
-        FireworkRocketEntity fireworkRocket = new FireworkRocketEntity(entity.getWorld(), entity.getX(), entity.getY(), entity.getZ(), fireworkItem);
+        FireworkRocketEntity fireworkRocket = new FireworkRocketEntity(entity.getEntityWorld(), entity.getX(), entity.getY(), entity.getZ(), fireworkItem);
         fireworkRocket.writeCustomDataToNbt(fireworkEntityTag);
 
-        entity.getWorld().spawnEntity(fireworkRocket);
+        entity.getEntityWorld().spawnEntity(fireworkRocket);
     }
 }

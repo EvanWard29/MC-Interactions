@@ -30,7 +30,7 @@ public class FriendCreatorRedemption implements ChannelPoint.ChannelPointInterfa
             switch (this) {
                 case AXOLOTL -> {
                     // Give an Axolotl in a bucket to avoid suffocation
-                    AxolotlEntity axolotl = new AxolotlEntity(EntityType.AXOLOTL, player.getWorld());
+                    AxolotlEntity axolotl = new AxolotlEntity(EntityType.AXOLOTL, player.getEntityWorld());
 
                     AxolotlEntity.Variant variant;
 
@@ -46,28 +46,28 @@ public class FriendCreatorRedemption implements ChannelPoint.ChannelPointInterfa
                     entity = axolotl;
                 }
                 case BEE -> {
-                    entity = new BeeEntity(EntityType.BEE, player.getWorld());
+                    entity = new BeeEntity(EntityType.BEE, player.getEntityWorld());
                 }
                 case FROG -> {
-                    entity = new FrogEntity(EntityType.FROG, player.getWorld());
+                    entity = new FrogEntity(EntityType.FROG, player.getEntityWorld());
                 }
                 case FOX -> {
-                    entity = new FoxEntity(EntityType.FOX, player.getWorld());
+                    entity = new FoxEntity(EntityType.FOX, player.getEntityWorld());
                 }
                 case DONKEY -> {
-                    DonkeyEntity donkey = new DonkeyEntity(EntityType.DONKEY, player.getWorld());
+                    DonkeyEntity donkey = new DonkeyEntity(EntityType.DONKEY, player.getEntityWorld());
                     donkey.setOwnerUuid(player.getUuid());
 
                     entity = donkey;
                 }
                 case CAMEL -> {
-                    CamelEntity camel = new CamelEntity(EntityType.CAMEL, player.getWorld());
+                    CamelEntity camel = new CamelEntity(EntityType.CAMEL, player.getEntityWorld());
                     camel.setOwnerUuid(player.getUuid());
 
                     entity = camel;
                 }
                 case MOOSHROOM -> {
-                    MooshroomEntity mooshroom = new MooshroomEntity(EntityType.MOOSHROOM, player.getWorld());
+                    MooshroomEntity mooshroom = new MooshroomEntity(EntityType.MOOSHROOM, player.getEntityWorld());
 
                     MooshroomEntity.Type variant;
 
@@ -83,7 +83,7 @@ public class FriendCreatorRedemption implements ChannelPoint.ChannelPointInterfa
                     entity = mooshroom;
                 }
                 case LLAMA -> {
-                    LlamaEntity llama = new LlamaEntity(EntityType.LLAMA, player.getWorld());
+                    LlamaEntity llama = new LlamaEntity(EntityType.LLAMA, player.getEntityWorld());
 
                     // Get a random carpet colour
                     DyeColor carpetColour = DyeColor.byId((new Random()).nextInt(DyeColor.values().length));
@@ -104,21 +104,21 @@ public class FriendCreatorRedemption implements ChannelPoint.ChannelPointInterfa
                     entity = llama;
                 }
                 case TRADER_LLAMA -> {
-                    TraderLlamaEntity traderLlama = new TraderLlamaEntity(EntityType.TRADER_LLAMA, player.getWorld());
+                    TraderLlamaEntity traderLlama = new TraderLlamaEntity(EntityType.TRADER_LLAMA, player.getEntityWorld());
                     traderLlama.setVariant(LlamaEntity.Variant.byId(random.nextInt(LlamaEntity.Variant.values().length)));
                     traderLlama.setOwnerUuid(player.getUuid());
 
                     entity = traderLlama;
                 }
                 case PARROT -> {
-                    ParrotEntity parrot = new ParrotEntity(EntityType.PARROT, player.getWorld());
+                    ParrotEntity parrot = new ParrotEntity(EntityType.PARROT, player.getEntityWorld());
                     parrot.setVariant(ParrotEntity.Variant.byIndex(random.nextInt(ParrotEntity.Variant.values().length)));
                     parrot.setOwner(player);
 
                     entity = parrot;
                 }
                 case RABBIT -> {
-                    RabbitEntity rabbit = new RabbitEntity(EntityType.RABBIT, player.getWorld());
+                    RabbitEntity rabbit = new RabbitEntity(EntityType.RABBIT, player.getEntityWorld());
                     rabbit.setVariant(RabbitEntity.RabbitType.byId(random.nextInt(RabbitEntity.RabbitType.values().length)));
 
                     entity = rabbit;
