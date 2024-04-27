@@ -2,6 +2,30 @@
   "required": true,
   "package": "uk.co.evanward.twitchinteractions.mixins",
   "mixins": [
-    "CreeperMixin"
+    "CreeperMixin",
+    "NbtCompoundMixin",
+    "worldchanges.ChickenItemLayMixin",
+    "worldchanges.DamageModifierMixin",
+    "worldchanges.ItemDespawnTimeMixin",
+    "worldchanges.ItemMaxStackSizeMixin",
+    "worldchanges.NaturalSpawnMixin",
+    "worldchanges.ReplaceLootMixin",
+    "worldchanges.ServerWorldLengthOfDayMixin",
+    "worldchanges.SheepColourMixin",
+    "worldchanges.SpawnEggMixin",
+    "worldchanges.VillagerCurrencyMixin",
+    "worldchanges.craftingoutput.CookingOutputMixin",
+    "worldchanges.craftingoutput.CuttingOutputMixin",
+    "worldchanges.craftingoutput.FurnaceOutputMixin",
+    "worldchanges.craftingoutput.ShapedCraftingOutputMixin",
+    "worldchanges.craftingoutput.ShapelessCraftingOutputMixin"
+  ],
+  "client": [
+    "worldchanges.ClientWorldLengthOfDayMixin",
+    "worldchanges.ReplaceItemModelMixin",
+    "worldchanges.ReplaceSoundMixin",
+    "worldchanges.blockmodels.BlockRenderMixin",
+    "worldchanges.blockmodels.ChunkRenderMixin",
+    "worldchanges.blockmodels.ReloadRenderMixin"
   ]
 }
