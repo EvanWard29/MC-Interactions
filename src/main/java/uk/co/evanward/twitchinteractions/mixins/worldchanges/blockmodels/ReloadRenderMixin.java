@@ -10,6 +10,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import uk.co.evanward.twitchinteractions.TwitchInteractions;
+import uk.co.evanward.twitchinteractions.interfaces.CanBeDirty;
 
 @Mixin(GameRenderer.class)
 public class ReloadRenderMixin
@@ -20,9 +21,9 @@ public class ReloadRenderMixin
     private void markChanged(float tickDelta, long limitTime, MatrixStack matrices, CallbackInfo ci)
     {
         // Re-render models if new models have been replaced
-        if (TwitchInteractions.worldChanges.BLOCK_MODELS.isDirty()) {
+        if (((CanBeDirty) TwitchInteractions.worldChanges.BLOCK_MODELS).isDirty()) {
             client.worldRenderer.reload();
-            TwitchInteractions.worldChanges.BLOCK_MODELS.clean();
+            ((CanBeDirty) TwitchInteractions.worldChanges.BLOCK_MODELS).clean();
         }
     }
 }

@@ -14,6 +14,7 @@ import net.minecraft.util.math.MathHelper;
 import org.json.JSONObject;
 import uk.co.evanward.twitchinteractions.TwitchInteractions;
 import uk.co.evanward.twitchinteractions.helpers.ServerHelper;
+import uk.co.evanward.twitchinteractions.interfaces.CanBeDirty;
 import uk.co.evanward.twitchinteractions.twitch.event.channelpoints.ChannelPoint;
 
 import java.util.Random;
@@ -320,6 +321,6 @@ public class WorldRandomiseRedemption implements ChannelPoint.ChannelPointInterf
         } while (replacement == Blocks.AIR);
 
         TwitchInteractions.worldChanges.BLOCK_MODELS.putString(block.asItem().toString(), replacement.asItem().toString());
-        TwitchInteractions.worldChanges.BLOCK_MODELS.markDirty();
+        ((CanBeDirty) TwitchInteractions.worldChanges.BLOCK_MODELS).markDirty();
     }
 }
