@@ -15,11 +15,13 @@ import net.minecraft.entity.mob.SlimeEntity;
 import net.minecraft.entity.mob.WardenEntity;
 import net.minecraft.entity.vehicle.ChestMinecartEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkSectionPos;
 import net.minecraft.util.math.Direction;
@@ -57,7 +59,7 @@ public class ExtremeGambleRedemption implements ChannelPoint.ChannelPointInterfa
         {
             switch (this) {
                 case WARDEN -> {
-                    WardenEntity warden = EntityType.WARDEN.create(player.getServerWorld(), null, null,
+                    WardenEntity warden = EntityType.WARDEN.create(player.getServerWorld(), null,
                         player.getSteppingPos().up().mutableCopy(), SpawnReason.TRIGGERED, false, false);
 
                     warden.setCustomName(Text.literal(username));
@@ -141,7 +143,7 @@ public class ExtremeGambleRedemption implements ChannelPoint.ChannelPointInterfa
 
                     String lootTable = (new Random()).nextBoolean() ? "chests/end_city_treasure" : "chests/ancient_city";
 
-                    chestMinecart.setLootTable(RegistryKeys.LOOT_POOL_ENTRY_TYPE.getRegistry().withPath(lootTable));
+                    chestMinecart.setLootTable(RegistryKey.of(RegistryKeys.LOOT_TABLE, new Identifier(lootTable)));
 
                     ServerHelper.spawnEntity(chestMinecart);
                 }

@@ -4,6 +4,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
@@ -62,7 +63,7 @@ public class WorldChanges extends PersistentState
      * Write the world changes to NBT for saving
      */
     @Override
-    public NbtCompound writeNbt(NbtCompound nbt)
+    public NbtCompound writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup)
     {
         nbt.putString("CHICKEN_EGG", CHICKEN_EGG.toString());
         nbt.putInt("DAY_LENGTH", DAY_LENGTH);
@@ -86,7 +87,7 @@ public class WorldChanges extends PersistentState
     /**
      * Load the existing world changes to NBT
      */
-    public static WorldChanges createFromNbt(NbtCompound nbt)
+    public static WorldChanges createFromNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup)
     {
         WorldChanges worldChanges = new WorldChanges();
 

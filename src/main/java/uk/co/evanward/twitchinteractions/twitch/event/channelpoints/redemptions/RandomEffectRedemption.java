@@ -2,6 +2,7 @@ package uk.co.evanward.twitchinteractions.twitch.event.channelpoints.redemptions
 
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKeys;
 import org.json.JSONObject;
 import uk.co.evanward.twitchinteractions.helpers.AnnouncementHelper;
@@ -31,6 +32,6 @@ public class RandomEffectRedemption implements ChannelPoint.ChannelPointInterfac
         // Apply the effect for 30-60 seconds
         int duration = (new Random()).nextInt(30, 60 + 1) * 20;
 
-        ServerHelper.getConnectedPlayer().addStatusEffect(new StatusEffectInstance(effect, duration));
+        ServerHelper.getConnectedPlayer().addStatusEffect(new StatusEffectInstance(Registries.STATUS_EFFECT.getEntry(effect), duration));
     }
 }

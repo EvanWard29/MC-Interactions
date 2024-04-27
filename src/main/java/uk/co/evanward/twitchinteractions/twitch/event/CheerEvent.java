@@ -37,7 +37,9 @@ public class CheerEvent implements TwitchEvent.TwitchEventInterface
                 }
                 case FROG -> {
                     FrogEntity frog = new FrogEntity(EntityType.FROG, world);
-                    frog.setVariant(Registries.FROG_VARIANT.get((new Random()).nextInt(Registries.FROG_VARIANT.size())));
+
+                    FrogVariant variant = Registries.FROG_VARIANT.get((new Random()).nextInt(Registries.FROG_VARIANT.size()));
+                    frog.setVariant(Registries.FROG_VARIANT.getEntry(variant));
 
                     return frog;
                 }

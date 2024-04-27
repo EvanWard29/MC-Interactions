@@ -235,7 +235,7 @@ public class GambleRedemption implements ChannelPoint.ChannelPointInterface
 
         // Create the firework item
         ItemStack fireworkItem = new ItemStack(Items.FIREWORK_ROCKET);
-        NbtCompound fireworkItemTag = fireworkItem.getOrCreateNbt();
+        NbtCompound fireworkItemTag = new NbtCompound();
         fireworkItemTag.put("Fireworks", firework);
 
         NbtCompound fireworkEntityTag = new NbtCompound();

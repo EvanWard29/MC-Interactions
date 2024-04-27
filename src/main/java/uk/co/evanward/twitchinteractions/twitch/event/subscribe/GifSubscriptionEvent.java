@@ -1,9 +1,12 @@
 package uk.co.evanward.twitchinteractions.twitch.event.subscribe;
 
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.NbtComponent;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SpawnEggItem;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.text.Text;
 import org.json.JSONObject;
 import uk.co.evanward.twitchinteractions.config.ModConfig;
 import uk.co.evanward.twitchinteractions.helpers.AnnouncementHelper;
@@ -43,18 +46,15 @@ public class GifSubscriptionEvent implements TwitchEvent.TwitchEventInterface
         SpawnEggItem spawnEggItem = SpawnEggItem.forEntity(EntityType.DOLPHIN);
         ItemStack dolphinEgg = spawnEggItem.asItem().getDefaultStack();
 
-        NbtCompound entityNbt = new NbtCompound();
-        entityNbt.putBoolean("CustomNameVisible", true);
-        entityNbt.putString("CustomName", new JSONObject().put("text", username).toString());
+        // Set the Dolphin's egg name to the username if the gifter
+        dolphinEgg.set(DataComponentTypes.ITEM_NAME, Text.literal(username));
 
-        NbtCompound itemName = new NbtCompound();
-        itemName.putString("Name", "{\"text\":\"" + username + "\"}");
+        // Set the Dolphin's name to the username of the gifter
+        NbtCompound entityData = new NbtCompound();
+        entityData.putBoolean("CustomNameVisible", true);
+        entityData.putString("CustomName", new JSONObject().put("text", username).toString());
+        dolphinEgg.set(DataComponentTypes.ENTITY_DATA, NbtComponent.of(entityData));
 
-        NbtCompound nbt = new NbtCompound();
-        nbt.put("EntityTag", entityNbt);
-        nbt.put("display", itemName);
-
-        dolphinEgg.setNbt(nbt);
         dolphinEgg.setCount(1);
 
         ServerHelper.giveItem(dolphinEgg);
