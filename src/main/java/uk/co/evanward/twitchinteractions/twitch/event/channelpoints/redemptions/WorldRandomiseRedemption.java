@@ -30,12 +30,12 @@ public class WorldRandomiseRedemption implements ChannelPoint.ChannelPointInterf
      *     <li>Villager currency</li>
      *     <li>Length of day</li>
      *     <li>Sheep colour</li>
-     *     <li>Item use speed</li>
      *     <li>Loot double or half</li>
      *     <li>Recipe output double or half</li>
      *     <li>Spawn egg chance</li>
      *     <li>Item despawn time</li>
-     *     <li>Damage modifier - Change the damage value of a random damage source</li>
+     *     <li>Item models</li>
+     *     <li>Block models</li>
      * </ul>
      */
     @Override
