@@ -309,18 +309,20 @@ public class WorldRandomiseRedemption implements ChannelPoint.ChannelPointInterf
      */
     private void changeBlockModel()
     {
-        Block block;
+        String blockName;
         do {
-            block = Registries.BLOCK.getRandom(ServerHelper.getConnectedPlayer().getRandom()).get().value();
-        } while (block == Blocks.AIR);
+            Block block = Registries.BLOCK.getRandom(ServerHelper.getConnectedPlayer().getRandom()).get().value();
+            blockName = block.getTranslationKey().substring(block.getTranslationKey().lastIndexOf('.') + 1);
+        } while (blockName.equals("air"));
 
 
-        Block replacement;
+        String replacementName;
         do {
-            replacement = Registries.BLOCK.getRandom(ServerHelper.getConnectedPlayer().getRandom()).get().value();
-        } while (replacement == Blocks.AIR);
+            Block replacement = Registries.BLOCK.getRandom(ServerHelper.getConnectedPlayer().getRandom()).get().value();
+            replacementName = replacement.getTranslationKey().substring(replacement.getTranslationKey().lastIndexOf('.') + 1);
+        } while (replacementName.equals("air"));
 
-        TwitchInteractions.worldChanges.BLOCK_MODELS.putString(block.asItem().toString(), replacement.asItem().toString());
+        TwitchInteractions.worldChanges.BLOCK_MODELS.putString(blockName, replacementName);
         ((CanBeDirty) TwitchInteractions.worldChanges.BLOCK_MODELS).markDirty();
     }
 }
