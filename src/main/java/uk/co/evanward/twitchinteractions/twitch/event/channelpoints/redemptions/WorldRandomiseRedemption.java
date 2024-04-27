@@ -1,9 +1,7 @@
 package uk.co.evanward.twitchinteractions.twitch.event.channelpoints.redemptions;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.damage.DamageType;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.Registries;
@@ -50,8 +48,6 @@ public class WorldRandomiseRedemption implements ChannelPoint.ChannelPointInterf
         this.changeSheepColour();
 
         this.changeDespawnTime();
-
-        this.changeDamageModifier();
 
         this.changeSpawnEggChance();
 
@@ -131,36 +127,6 @@ public class WorldRandomiseRedemption implements ChannelPoint.ChannelPointInterf
         TwitchInteractions.worldChanges.ITEM_DESPAWN = despawnTime < 600
             ? 6000
             : despawnTime;
-    }
-
-    /**
-     * Modify the damage of a random damage source
-     */
-    private void changeDamageModifier()
-    {
-        // Get a random damage type
-        DamageType damageType = ServerHelper.getConnectedPlayer()
-            .getDamageSources()
-            .registry
-            .getRandom(ServerHelper.getConnectedPlayer().getRandom())
-            .get()
-            .value();
-
-        // Get the existing modifier of the random damage type (if set already)
-        float damageModifier = TwitchInteractions.worldChanges.DAMAGE_MODIFIERS.getFloat(damageType.toString());
-
-        // Set the modifier to unmodified if not already modified
-        if (!(damageModifier > 0.0f)) {
-            damageModifier = 1.0f;
-        }
-
-        // Double or half the damage modifier
-        TwitchInteractions.worldChanges.DAMAGE_MODIFIERS.putFloat(
-            damageType.msgId(),
-            (new Random()).nextBoolean()
-                ? damageModifier * 2
-                : damageModifier / 2
-        );
     }
 
     /**
