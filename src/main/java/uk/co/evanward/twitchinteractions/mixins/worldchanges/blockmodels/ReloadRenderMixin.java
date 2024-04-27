@@ -2,7 +2,6 @@ package uk.co.evanward.twitchinteractions.mixins.worldchanges.blockmodels;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.GameRenderer;
-import net.minecraft.client.util.math.MatrixStack;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -18,7 +17,7 @@ public class ReloadRenderMixin
     @Shadow @Final MinecraftClient client;
 
     @Inject(method = "renderWorld", at = @At("HEAD"))
-    private void markChanged(float tickDelta, long limitTime, MatrixStack matrices, CallbackInfo ci)
+    private void markChanged(float tickDelta, long limitTime, CallbackInfo ci)
     {
         // Re-render models if new models have been replaced
         if (((CanBeDirty) TwitchInteractions.worldChanges.BLOCK_MODELS).isDirty()) {

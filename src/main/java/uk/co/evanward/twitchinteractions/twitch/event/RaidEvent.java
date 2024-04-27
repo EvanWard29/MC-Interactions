@@ -30,7 +30,7 @@ public class RaidEvent implements TwitchEvent.TwitchEventInterface
         {
             switch (this) {
                 case ZOMBIE -> {
-                    ZombieEntity zombie = new ZombieEntity(EntityType.ZOMBIE, player.getWorld());
+                    ZombieEntity zombie = new ZombieEntity(EntityType.ZOMBIE, player.getEntityWorld());
                     zombie.setTarget(player);
                     zombie.setBaby((new Random()).nextInt(100) < 40); // 40% chance to be a baby
                     zombie.equipStack(EquipmentSlot.HEAD, new ItemStack(Items.GOLDEN_HELMET));
@@ -38,7 +38,7 @@ public class RaidEvent implements TwitchEvent.TwitchEventInterface
                     return zombie;
                 }
                 case SKELETON -> {
-                    SkeletonEntity skeleton = new SkeletonEntity(EntityType.SKELETON, player.getWorld());
+                    SkeletonEntity skeleton = new SkeletonEntity(EntityType.SKELETON, player.getEntityWorld());
                     skeleton.setTarget(player);
                     skeleton.equipStack(EquipmentSlot.HEAD, new ItemStack(Items.GOLDEN_HELMET));
 
@@ -48,7 +48,7 @@ public class RaidEvent implements TwitchEvent.TwitchEventInterface
                     return skeleton;
                 }
                 case CREEPER -> {
-                    CreeperEntity creeper = new CreeperEntity(EntityType.CREEPER, player.getWorld());
+                    CreeperEntity creeper = new CreeperEntity(EntityType.CREEPER, player.getEntityWorld());
                     creeper.setTarget(player);
 
                     // 30% chance the creeper is charged
@@ -122,7 +122,7 @@ public class RaidEvent implements TwitchEvent.TwitchEventInterface
 
         // Summon an Ender Dragon for 100+ raiders
         if (raiders >= 100) {
-            EnderDragonEntity enderDragon = new EnderDragonEntity(EntityType.ENDER_DRAGON, player.getWorld());
+            EnderDragonEntity enderDragon = new EnderDragonEntity(EntityType.ENDER_DRAGON, player.getEntityWorld());
             enderDragon.setTarget(player);
 
             ServerHelper.spawnEntity(enderDragon);
@@ -131,7 +131,7 @@ public class RaidEvent implements TwitchEvent.TwitchEventInterface
         // Summon a wither for every 100th viewer past 500 up until 1000 (max 5 Withers)
         if (raiders >= 500) {
             for (int i = 0; i < Math.ceil((double) ((raiders - 400)) / 100); i++) {
-                WitherEntity wither = new WitherEntity(EntityType.WITHER, player.getWorld());
+                WitherEntity wither = new WitherEntity(EntityType.WITHER, player.getEntityWorld());
                 wither.setTarget(player);
 
                 ServerHelper.spawnEntity(wither);

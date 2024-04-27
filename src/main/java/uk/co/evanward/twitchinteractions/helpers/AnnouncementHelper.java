@@ -50,7 +50,7 @@ public class AnnouncementHelper
 
         // Play the announcement sound
         if (playSound) {
-            player.playSound(SoundEvents.ENTITY_PLAYER_LEVELUP, SoundCategory.PLAYERS, 1f, 0.5f);
+            player.playSoundToPlayer(SoundEvents.ENTITY_PLAYER_LEVELUP, SoundCategory.PLAYERS, 1f, 0.5f);
         }
     }
 }

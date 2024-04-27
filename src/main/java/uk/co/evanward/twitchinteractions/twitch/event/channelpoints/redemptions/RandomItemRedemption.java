@@ -1,10 +1,11 @@
 package uk.co.evanward.twitchinteractions.twitch.event.channelpoints.redemptions;
 
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.UnbreakableComponent;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.text.Text;
@@ -29,13 +30,15 @@ public class RandomItemRedemption implements ChannelPoint.ChannelPointInterface
 
             item = new ItemStack(RegistryEntry.of(tools[(new Random()).nextInt(tools.length)]));
 
-            NbtCompound unbreakable = new NbtCompound();
-            unbreakable.putBoolean("Unbreakable", true);
-            item.setNbt(unbreakable);
-
+            // Add OP enchants
             item.addEnchantment(Enchantments.EFFICIENCY, 100);
             item.addEnchantment(Enchantments.VANISHING_CURSE, 1);
-            item.setCustomName(Text.literal("Super " + item.getName().getString()));
+
+            // Set unbreakable
+            item.set(DataComponentTypes.UNBREAKABLE, new UnbreakableComponent(true));
+
+            // Set custom name
+            item.set(DataComponentTypes.ITEM_NAME, Text.literal("Super " + item.getName()));
         } else {
             // 95% chance to give a completely random item
             item = new ItemStack(

@@ -37,7 +37,9 @@ public class CheerEvent implements TwitchEvent.TwitchEventInterface
                 }
                 case FROG -> {
                     FrogEntity frog = new FrogEntity(EntityType.FROG, world);
-                    frog.setVariant(Registries.FROG_VARIANT.get((new Random()).nextInt(Registries.FROG_VARIANT.size())));
+
+                    FrogVariant variant = Registries.FROG_VARIANT.get((new Random()).nextInt(Registries.FROG_VARIANT.size()));
+                    frog.setVariant(Registries.FROG_VARIANT.getEntry(variant));
 
                     return frog;
                 }
@@ -83,7 +85,7 @@ public class CheerEvent implements TwitchEvent.TwitchEventInterface
         // Spawn a random mob for every 10th bit
         for (int i = 0; i < bits; i++) {
             Random random = new Random();
-            Entity entity = CheerEntities.values()[random.nextInt(CheerEntities.values().length)].getEntity(player.getWorld());
+            Entity entity = CheerEntities.values()[random.nextInt(CheerEntities.values().length)].getEntity(player.getEntityWorld());
             entity.setCustomName(Text.literal(!event.getBoolean("is_anonymous") ? event.getString("user_name") : "A Cool User"));
             entity.setCustomNameVisible(true);
 
