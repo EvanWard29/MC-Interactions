@@ -53,6 +53,7 @@ public class GifSubscriptionEvent implements TwitchEvent.TwitchEventInterface
         NbtCompound entityData = new NbtCompound();
         entityData.putBoolean("CustomNameVisible", true);
         entityData.putString("CustomName", new JSONObject().put("text", username).toString());
+        entityData.putString("id", "minecraft:dolphin");
         dolphinEgg.set(DataComponentTypes.ENTITY_DATA, NbtComponent.of(entityData));
 
         dolphinEgg.setCount(1);

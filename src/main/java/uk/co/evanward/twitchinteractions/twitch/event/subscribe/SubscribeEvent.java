@@ -114,6 +114,7 @@ public class SubscribeEvent implements TwitchEvent.TwitchEventInterface
             NbtCompound entityData = new NbtCompound();
             entityData.putString("CustomName", new JSONObject().put("text", event.getString("user_name")).toString());
             entityData.putBoolean("CustomNameVisible", true);
+            entityData.putString("id", "minecraft:tropical_fish");
             eggItem.set(DataComponentTypes.ENTITY_DATA, NbtComponent.of(entityData));
 
             eggItem.setCount(1);
