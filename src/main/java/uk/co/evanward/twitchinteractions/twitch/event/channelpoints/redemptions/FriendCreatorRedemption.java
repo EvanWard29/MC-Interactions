@@ -20,7 +20,7 @@ public class FriendCreatorRedemption implements ChannelPoint.ChannelPointInterfa
 {
     private enum Friend
     {
-        AXOLOTL, BEE, FOX, FROG, DONKEY, PARROT, RABBIT, LLAMA, MOOSHROOM, TRADER_LLAMA, CAMEL;
+        AXOLOTL, BEE, FOX, FROG, DONKEY, PARROT, RABBIT, LLAMA, MOOSHROOM, TRADER_LLAMA, CAMEL, TURTLE, SNIFFER, ARMADILLO;
 
         /**
          * Get the entity to summon
@@ -125,6 +125,15 @@ public class FriendCreatorRedemption implements ChannelPoint.ChannelPointInterfa
                     rabbit.setVariant(RabbitEntity.RabbitType.byId(random.nextInt(RabbitEntity.RabbitType.values().length)));
 
                     entity = rabbit;
+                }
+                case TURTLE -> {
+                    entity = new TurtleEntity(EntityType.TURTLE, player.getEntityWorld());
+                }
+                case SNIFFER -> {
+                    entity = new SnifferEntity(EntityType.SNIFFER, player.getEntityWorld());
+                }
+                case ARMADILLO -> {
+                    entity = new ArmadilloEntity(EntityType.ARMADILLO, player.getEntityWorld());
                 }
                 default -> throw new IllegalArgumentException("Unsupported Friend enum `" + this + "`");
             }
