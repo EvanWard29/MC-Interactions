@@ -7,6 +7,7 @@ import net.minecraft.entity.passive.*;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SpawnEggItem;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.registry.Registries;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.DyeColor;
@@ -52,7 +53,10 @@ public class FriendCreatorRedemption implements ChannelPoint.ChannelPointInterfa
                     entity = new BeeEntity(EntityType.BEE, player.getEntityWorld());
                 }
                 case FROG -> {
-                    entity = new FrogEntity(EntityType.FROG, player.getEntityWorld());
+                    FrogEntity frog = new FrogEntity(EntityType.FROG, player.getEntityWorld());
+                    frog.setVariant(Registries.FROG_VARIANT.getEntry(Registries.FROG_VARIANT.getRandom(player.getRandom()).get().value()));
+
+                    entity = frog;
                 }
                 case FOX -> {
                     FoxEntity fox = new FoxEntity(EntityType.FOX, player.getEntityWorld());
