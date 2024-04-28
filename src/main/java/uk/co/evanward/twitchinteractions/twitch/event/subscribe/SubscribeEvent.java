@@ -4,14 +4,13 @@ import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.NbtComponent;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.passive.CatEntity;
-import net.minecraft.entity.passive.CatVariant;
-import net.minecraft.entity.passive.PandaEntity;
-import net.minecraft.entity.passive.WolfEntity;
+import net.minecraft.entity.passive.*;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SpawnEggItem;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.Registries;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.DyeColor;
@@ -53,6 +52,19 @@ public class SubscribeEvent implements TwitchEvent.TwitchEventInterface
                     NbtCompound collar = new NbtCompound();
                     collar.putInt("CollarColor", (new Random()).nextInt(DyeColor.values().length));
                     wolf.readCustomDataFromNbt(collar);
+
+                    // Get a random variant
+                    RegistryKey<WolfVariant> variantKey = player.getEntityWorld().getRegistryManager()
+                        .get(RegistryKeys.WOLF_VARIANT)
+                        .getRandom(player.getRandom())
+                        .get()
+                        .registryKey();
+
+                    // Set the wolf to this variant
+                    player.getRegistryManager()
+                        .get(RegistryKeys.WOLF_VARIANT)
+                        .getEntry(variantKey)
+                        .ifPresent(wolf::setVariant);
 
                     return wolf;
                 }
