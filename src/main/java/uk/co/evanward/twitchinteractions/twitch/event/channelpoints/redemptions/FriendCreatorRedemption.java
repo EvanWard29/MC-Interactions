@@ -55,7 +55,14 @@ public class FriendCreatorRedemption implements ChannelPoint.ChannelPointInterfa
                     entity = new FrogEntity(EntityType.FROG, player.getEntityWorld());
                 }
                 case FOX -> {
-                    entity = new FoxEntity(EntityType.FOX, player.getEntityWorld());
+                    FoxEntity fox = new FoxEntity(EntityType.FOX, player.getEntityWorld());
+
+                    // 10% chance to be Snow Fox
+                    if (random.nextInt(100) <= 10) {
+                        fox.setVariant(FoxEntity.Type.SNOW);
+                    }
+
+                    entity = fox;
                 }
                 case DONKEY -> {
                     DonkeyEntity donkey = new DonkeyEntity(EntityType.DONKEY, player.getEntityWorld());
