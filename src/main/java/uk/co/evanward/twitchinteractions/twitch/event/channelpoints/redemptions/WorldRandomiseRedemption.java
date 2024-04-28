@@ -11,6 +11,7 @@ import net.minecraft.util.DyeColor;
 import net.minecraft.util.math.MathHelper;
 import org.json.JSONObject;
 import uk.co.evanward.twitchinteractions.TwitchInteractions;
+import uk.co.evanward.twitchinteractions.helpers.AnnouncementHelper;
 import uk.co.evanward.twitchinteractions.helpers.ServerHelper;
 import uk.co.evanward.twitchinteractions.interfaces.CanBeDirty;
 import uk.co.evanward.twitchinteractions.twitch.event.channelpoints.ChannelPoint;
@@ -41,6 +42,8 @@ public class WorldRandomiseRedemption implements ChannelPoint.ChannelPointInterf
     @Override
     public void trigger(JSONObject event)
     {
+        AnnouncementHelper.playAnnouncement(event.getString("user_name"), "Randomised The World!");
+
         this.changeChickenEgg();
 
         this.changeLengthOfDay();
