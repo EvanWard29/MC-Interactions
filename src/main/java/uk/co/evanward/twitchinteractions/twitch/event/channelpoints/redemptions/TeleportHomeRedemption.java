@@ -34,6 +34,6 @@ public class TeleportHomeRedemption implements ChannelPoint.ChannelPointInterfac
         player.teleport(overworld, spawn.getX(), spawn.getY(), spawn.getZ(), player.getYaw(), player.getPitch());
 
         // Play the announcement sound at the Overworld spawn
-        overworld.playSound(player, spawn, SoundEvents.ENTITY_PLAYER_LEVELUP, SoundCategory.PLAYERS, 1f, 0.5f);
+        player.playSoundToPlayer(SoundEvents.ENTITY_PLAYER_LEVELUP, SoundCategory.PLAYERS, 1f, 0.5f);
     }
 }
