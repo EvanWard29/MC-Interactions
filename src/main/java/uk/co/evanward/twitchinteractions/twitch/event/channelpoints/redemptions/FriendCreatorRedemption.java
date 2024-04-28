@@ -1,9 +1,13 @@
 package uk.co.evanward.twitchinteractions.twitch.event.channelpoints.redemptions;
 
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.NbtComponent;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.*;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.SpawnEggItem;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.registry.Registries;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.DyeColor;
@@ -17,7 +21,7 @@ public class FriendCreatorRedemption implements ChannelPoint.ChannelPointInterfa
 {
     private enum Friend
     {
-        AXOLOTL, BEE, FOX, FROG, DONKEY, PARROT, RABBIT, LLAMA, MOOSHROOM, TRADER_LLAMA, CAMEL;
+        AXOLOTL, BEE, FOX, FROG, DONKEY, PARROT, RABBIT, LLAMA, MOOSHROOM, TRADER_LLAMA, CAMEL, TURTLE, SNIFFER, ARMADILLO;
 
         /**
          * Get the entity to summon
@@ -49,10 +53,20 @@ public class FriendCreatorRedemption implements ChannelPoint.ChannelPointInterfa
                     entity = new BeeEntity(EntityType.BEE, player.getEntityWorld());
                 }
                 case FROG -> {
-                    entity = new FrogEntity(EntityType.FROG, player.getEntityWorld());
+                    FrogEntity frog = new FrogEntity(EntityType.FROG, player.getEntityWorld());
+                    frog.setVariant(Registries.FROG_VARIANT.getEntry(Registries.FROG_VARIANT.getRandom(player.getRandom()).get().value()));
+
+                    entity = frog;
                 }
                 case FOX -> {
-                    entity = new FoxEntity(EntityType.FOX, player.getEntityWorld());
+                    FoxEntity fox = new FoxEntity(EntityType.FOX, player.getEntityWorld());
+
+                    // 10% chance to be Snow Fox
+                    if (random.nextInt(100) <= 10) {
+                        fox.setVariant(FoxEntity.Type.SNOW);
+                    }
+
+                    entity = fox;
                 }
                 case DONKEY -> {
                     DonkeyEntity donkey = new DonkeyEntity(EntityType.DONKEY, player.getEntityWorld());
@@ -123,6 +137,15 @@ public class FriendCreatorRedemption implements ChannelPoint.ChannelPointInterfa
 
                     entity = rabbit;
                 }
+                case TURTLE -> {
+                    entity = new TurtleEntity(EntityType.TURTLE, player.getEntityWorld());
+                }
+                case SNIFFER -> {
+                    entity = new SnifferEntity(EntityType.SNIFFER, player.getEntityWorld());
+                }
+                case ARMADILLO -> {
+                    entity = new ArmadilloEntity(EntityType.ARMADILLO, player.getEntityWorld());
+                }
                 default -> throw new IllegalArgumentException("Unsupported Friend enum `" + this + "`");
             }
 
@@ -151,11 +174,23 @@ public class FriendCreatorRedemption implements ChannelPoint.ChannelPointInterfa
             // Give Axolotls as a bucket to avoid immediately suffocating
             AxolotlEntity axolotl = (AxolotlEntity) entity;
 
-            // Copy the axolotl data to the bucket
-            ItemStack axolotlBucket = axolotl.getBucketItem();
-            axolotl.copyDataToStack(axolotlBucket);
+            // Give Axolotls as a spawn egg to avoid immediately suffocating
+            SpawnEggItem axolotlEgg = SpawnEggItem.forEntity(EntityType.AXOLOTL);
+            ItemStack axolotlEggItem = axolotlEgg.getDefaultStack();
 
-            ServerHelper.giveItem(axolotlBucket);
+            // Set the egg's name
+            axolotlEggItem.set(DataComponentTypes.CUSTOM_NAME, Text.literal(username));
+
+            // Set the entity's name
+            NbtComponent.set(DataComponentTypes.ENTITY_DATA, axolotlEggItem, nbt -> {
+                nbt.putString("id", "minecraft:axolotl");
+                nbt.putString("CustomName", username);
+                nbt.putBoolean("CustomNameVisible", true);
+                nbt.putInt("Variant", axolotl.getVariant().getId());
+                nbt.putBoolean("FromBucket", true);
+            });
+
+            ServerHelper.giveItem(axolotlEggItem);
         } else {
             // Summon the friend
             ServerHelper.spawnEntity(entity);
