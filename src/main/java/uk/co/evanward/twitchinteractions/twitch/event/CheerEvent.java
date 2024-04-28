@@ -2,8 +2,10 @@ package uk.co.evanward.twitchinteractions.twitch.event;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.passive.*;
-import net.minecraft.registry.Registries;
+import net.minecraft.entity.passive.ChickenEntity;
+import net.minecraft.entity.passive.CowEntity;
+import net.minecraft.entity.passive.PigEntity;
+import net.minecraft.entity.passive.SheepEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.world.World;
@@ -18,7 +20,7 @@ public class CheerEvent implements TwitchEvent.TwitchEventInterface
 {
     private enum CheerEntities
     {
-        CHICKEN, COW, SHEEP, PIG, FROG;
+        CHICKEN, COW, SHEEP, PIG;
 
         public Entity getEntity(World world)
         {
@@ -34,14 +36,6 @@ public class CheerEvent implements TwitchEvent.TwitchEventInterface
                 }
                 case PIG -> {
                     return new PigEntity(EntityType.PIG, world);
-                }
-                case FROG -> {
-                    FrogEntity frog = new FrogEntity(EntityType.FROG, world);
-
-                    FrogVariant variant = Registries.FROG_VARIANT.get((new Random()).nextInt(Registries.FROG_VARIANT.size()));
-                    frog.setVariant(Registries.FROG_VARIANT.getEntry(variant));
-
-                    return frog;
                 }
                 default -> throw new RuntimeException("Unrecognised CheerEntity enum " + this);
             }
