@@ -30,6 +30,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.WorldChunk;
 import org.json.JSONObject;
 import uk.co.evanward.twitchinteractions.helpers.ServerHelper;
+import uk.co.evanward.twitchinteractions.helpers.TwitchHelper;
 import uk.co.evanward.twitchinteractions.twitch.event.channelpoints.ChannelPoint;
 
 import java.util.Random;
@@ -178,8 +179,7 @@ public class ExtremeGambleRedemption implements ChannelPoint.ChannelPointInterfa
         username = event.getString("user_name");
         player = ServerHelper.getConnectedPlayer();
 
-        ExtremeGambleAction.WARDEN.execute();
-        //TwitchHelper.getRandomAction(ExtremeGambleAction.values()).execute();
+        TwitchHelper.getRandomAction(ExtremeGambleAction.values()).execute();
     }
 
     /**
