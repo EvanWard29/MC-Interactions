@@ -1,8 +1,11 @@
 package uk.co.evanward.twitchinteractions.twitch.event.channelpoints.redemptions;
 
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.NbtComponent;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.*;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.SpawnEggItem;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
@@ -151,11 +154,23 @@ public class FriendCreatorRedemption implements ChannelPoint.ChannelPointInterfa
             // Give Axolotls as a bucket to avoid immediately suffocating
             AxolotlEntity axolotl = (AxolotlEntity) entity;
 
-            // Copy the axolotl data to the bucket
-            ItemStack axolotlBucket = axolotl.getBucketItem();
-            axolotl.copyDataToStack(axolotlBucket);
+            // Give Axolotls as a spawn egg to avoid immediately suffocating
+            SpawnEggItem axolotlEgg = SpawnEggItem.forEntity(EntityType.AXOLOTL);
+            ItemStack axolotlEggItem = axolotlEgg.getDefaultStack();
 
-            ServerHelper.giveItem(axolotlBucket);
+            // Set the egg's name
+            axolotlEggItem.set(DataComponentTypes.CUSTOM_NAME, Text.literal(username));
+
+            // Set the entity's name
+            NbtComponent.set(DataComponentTypes.ENTITY_DATA, axolotlEggItem, nbt -> {
+                nbt.putString("id", "minecraft:axolotl");
+                nbt.putString("CustomName", username);
+                nbt.putBoolean("CustomNameVisible", true);
+                nbt.putInt("Variant", axolotl.getVariant().getId());
+                nbt.putBoolean("FromBucket", true);
+            });
+
+            ServerHelper.giveItem(axolotlEggItem);
         } else {
             // Summon the friend
             ServerHelper.spawnEntity(entity);
