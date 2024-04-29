@@ -6,6 +6,7 @@ import net.minecraft.item.Item;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.text.Text;
 import net.minecraft.util.DyeColor;
@@ -330,22 +331,14 @@ public class WorldRandomiseRedemption implements ChannelPoint.ChannelPointInterf
      */
     private void changeBlockModel()
     {
-        String blockName;
-        Block block;
-        do {
-            block = Registries.BLOCK.getRandom(ServerHelper.getConnectedPlayer().getRandom()).get().value();
-            blockName = block.getTranslationKey().substring(block.getTranslationKey().lastIndexOf('.') + 1);
-        } while (blockName.equals("air"));
+        Block block = getRandomBlockModel();
+        Block replacement = getRandomBlockModel();
 
+        TwitchInteractions.worldChanges.BLOCK_MODELS.putString(
+            block.getTranslationKey().substring(block.getTranslationKey().lastIndexOf('.') + 1),
+            replacement.getTranslationKey().substring(replacement.getTranslationKey().lastIndexOf('.') + 1)
+        );
 
-        String replacementName;
-        Block replacement;
-        do {
-            replacement = Registries.BLOCK.getRandom(ServerHelper.getConnectedPlayer().getRandom()).get().value();
-            replacementName = replacement.getTranslationKey().substring(replacement.getTranslationKey().lastIndexOf('.') + 1);
-        } while (replacementName.equals("air"));
-
-        TwitchInteractions.worldChanges.BLOCK_MODELS.putString(blockName, replacementName);
         TwitchInteractions.worldChanges.BLOCK_MODELS.markDirty();
 
         sendMessage(Text.literal("The block model of ")
@@ -360,5 +353,22 @@ public class WorldRandomiseRedemption implements ChannelPoint.ChannelPointInterf
     private void sendMessage(Text message)
     {
         ServerHelper.getConnectedPlayer().sendMessage(message);
+    }
+
+    /**
+     * Get a random block that is not:
+     * <ul>
+     *     <li>Air</li>
+     *     <li>Shulker Box</li>
+     * </ul>
+     */
+    private Block getRandomBlockModel()
+    {
+        Block block;
+        do {
+            block = Registries.BLOCK.getRandom(ServerHelper.getConnectedPlayer().getRandom()).get().value();
+        } while (block.getName().contains(Text.of("Air")) || block.getDefaultState().isIn(BlockTags.SHULKER_BOXES));
+
+        return block;
     }
 }
