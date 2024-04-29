@@ -5,7 +5,6 @@
     "CreeperMixin",
     "NbtCompoundMixin",
     "worldchanges.ChickenItemLayMixin",
-    "worldchanges.DamageModifierMixin",
     "worldchanges.ItemDespawnTimeMixin",
     "worldchanges.ItemMaxStackSizeMixin",
     "worldchanges.NaturalSpawnMixin",
