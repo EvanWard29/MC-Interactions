@@ -46,6 +46,8 @@ public class WorldRandomiseRedemption implements ChannelPoint.ChannelPointInterf
     {
         AnnouncementHelper.playAnnouncement(event.getString("user_name"), "Randomised The World!");
 
+        sendMessage(Text.literal("-----------------"));
+
         this.changeChickenEgg();
 
         this.changeLengthOfDay();
@@ -109,7 +111,7 @@ public class WorldRandomiseRedemption implements ChannelPoint.ChannelPointInterf
 
         sendMessage(Text.literal("The length of day is now ")
             .append(Text.literal(String.valueOf((float) TwitchInteractions.worldChanges.DAY_LENGTH / 1200)).formatted(Formatting.AQUA))
-            .append(Text.literal(" minutes")));
+            .append(Text.literal(" minutes")).formatted(Formatting.GOLD));
     }
 
     /**
@@ -145,7 +147,7 @@ public class WorldRandomiseRedemption implements ChannelPoint.ChannelPointInterf
 
         sendMessage(Text.literal("Item despawn time is now ")
             .append(Text.literal(String.valueOf((float) TwitchInteractions.worldChanges.ITEM_DESPAWN / 1200)).formatted(Formatting.AQUA))
-            .append(Text.literal(" minutes")));
+            .append(Text.literal(" minutes")).formatted(Formatting.GOLD));
     }
 
     /**
@@ -170,8 +172,8 @@ public class WorldRandomiseRedemption implements ChannelPoint.ChannelPointInterf
         TwitchInteractions.worldChanges.REPLACE_LOOT.putString(loot.toString(), replacement.toString());
 
         sendMessage(Text.empty().append(loot.getName().copy().formatted(Formatting.AQUA))
-            .append(Text.literal(" loot has been replaced with "))
-            .append(replacement.getName().copy().formatted(Formatting.AQUA)));
+            .append(Text.literal(" loot has been replaced with ").formatted(Formatting.GOLD))
+            .append(replacement.getName().copy().formatted(Formatting.AQUA)).formatted(Formatting.GOLD));
     }
 
     /**
@@ -211,8 +213,8 @@ public class WorldRandomiseRedemption implements ChannelPoint.ChannelPointInterf
 
         sendMessage(Text.literal("Spawns of ")
             .append(entityType.getName().copy().formatted(Formatting.AQUA))
-            .append(Text.literal(" have been replaced with "))
-            .append(replacement.getName().copy().formatted(Formatting.AQUA)));
+            .append(Text.literal(" have been replaced with ").formatted(Formatting.GOLD))
+            .append(replacement.getName().copy().formatted(Formatting.AQUA)).formatted(Formatting.GOLD));
     }
 
     /**
@@ -278,8 +280,8 @@ public class WorldRandomiseRedemption implements ChannelPoint.ChannelPointInterf
         TwitchInteractions.worldChanges.RECIPE_MODIFIERS.putFloat(item.toString(), modifier);
 
         sendMessage(Text.literal("The recipe output of ").append(item.getName().copy().formatted(Formatting.AQUA))
-            .append(" has been multiplied by ")
-            .append(Text.literal(String.valueOf((int) modifier)).formatted(Formatting.AQUA)));
+            .append(Text.literal(" has been multiplied by ").formatted(Formatting.GOLD))
+            .append(Text.literal(String.valueOf((int) modifier)).formatted(Formatting.AQUA)).formatted(Formatting.GOLD));
     }
 
     /**
@@ -306,8 +308,8 @@ public class WorldRandomiseRedemption implements ChannelPoint.ChannelPointInterf
 
         sendMessage(Text.literal("The sound ")
             .append(Text.literal(sound.getId().getPath()).formatted(Formatting.AQUA))
-            .append(" has been replaced with ")
-            .append(Text.literal(replacement.getId().getPath()).formatted(Formatting.AQUA)));
+            .append(Text.literal(" has been replaced with ").formatted(Formatting.GOLD))
+            .append(Text.literal(replacement.getId().getPath()).formatted(Formatting.AQUA)).formatted(Formatting.GOLD));
     }
 
     /**
@@ -343,8 +345,8 @@ public class WorldRandomiseRedemption implements ChannelPoint.ChannelPointInterf
 
         sendMessage(Text.literal("The block model of ")
             .append(block.getName().copy().formatted(Formatting.AQUA))
-            .append(" has been replaced with ")
-            .append(replacement.getName().copy().formatted(Formatting.AQUA)));
+            .append(Text.literal(" has been replaced with ").formatted(Formatting.GOLD))
+            .append(replacement.getName().copy().formatted(Formatting.AQUA)).formatted(Formatting.GOLD));
     }
 
     /**
