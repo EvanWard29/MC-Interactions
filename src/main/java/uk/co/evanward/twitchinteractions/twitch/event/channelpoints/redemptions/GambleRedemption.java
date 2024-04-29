@@ -116,6 +116,9 @@ public class GambleRedemption implements ChannelPoint.ChannelPointInterface
                     for (int i = 0; i < 15; i++) {
                         Entity entity = angryEntity.getEntity();
 
+                        entity.setCustomName(Text.literal(username));
+                        entity.setCustomNameVisible(true);
+
                         // Set a random variant for Wolf
                         if (angryEntity == AngryMob.WOLF) {
                             WolfEntity wolf = (WolfEntity) entity;
