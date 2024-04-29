@@ -14,6 +14,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -112,8 +114,28 @@ public class GambleRedemption implements ChannelPoint.ChannelPointInterface
 
                     AngryMob angryEntity = AngryMob.values()[(new Random()).nextInt(AngryMob.values().length)];
                     for (int i = 0; i < 15; i++) {
+                        Entity entity = angryEntity.getEntity();
+
+                        // Set a random variant for Wolf
+                        if (angryEntity == AngryMob.WOLF) {
+                            WolfEntity wolf = (WolfEntity) entity;
+
+                            RegistryKey<WolfVariant> variantKey = player.getEntityWorld().getRegistryManager()
+                                .get(RegistryKeys.WOLF_VARIANT)
+                                .getRandom(player.getRandom())
+                                .get()
+                                .registryKey();
+
+                            // Set the wolf to this variant
+                            player.getRegistryManager()
+                                .get(RegistryKeys.WOLF_VARIANT)
+                                .getEntry(variantKey)
+                                .ifPresent(wolf::setVariant);
+
+                        }
+
                         // Spawn a new entity
-                        ServerHelper.spawnEntity(angryEntity.getEntity());
+                        ServerHelper.spawnEntity(entity);
 
                         // Only spawn one Iron Golem
                         if (angryEntity == AngryMob.IRON_GOLEM) {
