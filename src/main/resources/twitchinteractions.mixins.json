@@ -14,6 +14,7 @@
     "worldchanges.SheepColourMixin",
     "worldchanges.SpawnEggMixin",
     "worldchanges.VillagerCurrencyMixin",
+    "worldchanges.WitherSkullBlockMixin",
     "worldchanges.craftingoutput.CookingOutputMixin",
     "worldchanges.craftingoutput.CuttingOutputMixin",
     "worldchanges.craftingoutput.FurnaceOutputMixin",
