@@ -7,6 +7,7 @@
     "worldchanges.ChickenItemLayMixin",
     "worldchanges.ItemDespawnTimeMixin",
     "worldchanges.ItemMaxStackSizeMixin",
+    "worldchanges.MobSpawnerLogicMixin",
     "worldchanges.NaturalSpawnMixin",
     "worldchanges.ReplaceLootMixin",
     "worldchanges.ServerWorldLengthOfDayMixin",
