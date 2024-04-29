@@ -26,8 +26,8 @@ public class MeanRedemption implements ChannelPoint.ChannelPointInterface
 {
     private enum MeanActions implements Action
     {
-        PIGLIN_BRUTE(5), POLAR_BEAR(5), UNDEAD_HORSES(5), EVOKER(5), PUFFERFISH(5),
-        WITCH(5), BLAZE(5), WITHER_SKELETON(10), SILVERFISH(10), VEX(10),
+        PIGLIN_BRUTE(5), POLAR_BEAR(5), UNDEAD_HORSES(5), VEX(5), PUFFERFISH(5),
+        WITCH(5), BLAZE(5), WITHER_SKELETON(10), SILVERFISH(10), EVOKER(10),
         CREEPER(10), LIGHTNING(10), OBSIDIAN_BOX(10);
 
         private final int weight;
