@@ -15,7 +15,6 @@ import org.json.JSONObject;
 import uk.co.evanward.twitchinteractions.TwitchInteractions;
 import uk.co.evanward.twitchinteractions.helpers.AnnouncementHelper;
 import uk.co.evanward.twitchinteractions.helpers.ServerHelper;
-import uk.co.evanward.twitchinteractions.interfaces.CanBeDirty;
 import uk.co.evanward.twitchinteractions.twitch.event.channelpoints.ChannelPoint;
 
 import java.util.Random;
@@ -347,7 +346,7 @@ public class WorldRandomiseRedemption implements ChannelPoint.ChannelPointInterf
         } while (replacementName.equals("air"));
 
         TwitchInteractions.worldChanges.BLOCK_MODELS.putString(blockName, replacementName);
-        ((CanBeDirty) TwitchInteractions.worldChanges.BLOCK_MODELS).markDirty();
+        TwitchInteractions.worldChanges.BLOCK_MODELS.markDirty();
 
         sendMessage(Text.literal("The block model of ")
             .append(block.getName().copy().formatted(Formatting.AQUA))
