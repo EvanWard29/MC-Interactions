@@ -15,6 +15,7 @@ import java.util.Random;
 @Mixin(LivingEntity.class)
 public class SpawnEggMixin
 {
+    @SuppressWarnings("UnreachableCode")
     @Inject(method = "drop", at = @At(value = "TAIL"))
     private void dropEgg(DamageSource source, CallbackInfo ci)
     {
@@ -22,7 +23,11 @@ public class SpawnEggMixin
         if (spawnEggChance > 0 && (new Random()).nextInt(100) <= spawnEggChance) {
             SpawnEggItem spawnEgg = SpawnEggItem.forEntity(((LivingEntity)(Object)this).getType());
             if (spawnEgg != null) {
-                ((LivingEntity)(Object)this).dropStack(new ItemStack(spawnEgg));
+                // Take into account the loot modifier
+                ItemStack spawnEggStack = new ItemStack(spawnEgg);
+                spawnEggStack.setCount(Math.max(1, TwitchInteractions.worldChanges.LOOT_MODIFIER.getInt(spawnEgg.toString())));
+
+                ((LivingEntity)(Object)this).dropStack(spawnEggStack);
             }
         }
     }
