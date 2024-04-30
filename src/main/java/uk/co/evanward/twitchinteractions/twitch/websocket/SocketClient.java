@@ -95,12 +95,6 @@ public class SocketClient extends WebSocketClient
 
                 if (ModConfig.TWITCH_EVENTS.contains(type)) {
                     new TwitchEvent(type).getEvent().trigger(payload);
-
-                    try {
-                        TwitchInteractions.logger.info("Twitch event: " + type);
-                    } catch (JSONException e) {
-                        throw new RuntimeException(e);
-                    }
                 } else {
                     throw new RuntimeException("Not subscribed to `" + type.getString() + "` events");
                 }
