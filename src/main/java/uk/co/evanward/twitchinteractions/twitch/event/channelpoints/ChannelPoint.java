@@ -1,6 +1,7 @@
 package uk.co.evanward.twitchinteractions.twitch.event.channelpoints;
 
 import org.json.JSONObject;
+import uk.co.evanward.twitchinteractions.exceptions.UnsupportedChannelPointException;
 import uk.co.evanward.twitchinteractions.twitch.event.channelpoints.redemptions.*;
 
 public class ChannelPoint
@@ -30,7 +31,7 @@ public class ChannelPoint
             this.rewardId = rewardId;
         }
 
-        public static Redemption from(String rewardId)
+        public static Redemption from(String rewardId) throws UnsupportedChannelPointException
         {
             for (Redemption redemption : Redemption.values()) {
                 if (redemption.rewardId.equalsIgnoreCase(rewardId)) {
@@ -38,13 +39,13 @@ public class ChannelPoint
                 }
             }
 
-            throw new IllegalArgumentException("No enum with reward id `" + rewardId + "` found");
+            throw new UnsupportedChannelPointException("No enum with reward id `" + rewardId + "` found");
         }
     }
 
     private final Redemption redemption;
 
-    public ChannelPoint(String rewardId)
+    public ChannelPoint(String rewardId) throws UnsupportedChannelPointException
     {
         this.redemption = Redemption.from(rewardId);
     }
