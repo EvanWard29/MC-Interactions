@@ -13,16 +13,16 @@ public class ChannelPoint
 
     enum Redemption
     {
-        FRIEND_CREATOR("e11c6413-5220-4567-9261-0bf1fba7a19c"),
-        TELEPORT_HOME("eb45b111-e635-4b4b-a539-7d0718943f0d"),
-        SET_DAY("fc87018c-de1b-4a0e-8506-c2d01c584029"),
-        SET_NIGHT("6fe53a3d-2fb3-409e-a579-d473783b4776"),
-        MEAN("7a645ff5-ba7b-48a9-86c8-9fb4e410ac43"),
-        GAMBLE("37dd369a-f460-45ae-87b9-bcf98febf2af"),
-        EXTREME_GAMBLE("865e32f1-aec3-4950-abaa-a05ee6296e4c"),
-        RANDOM_EFFECT("20ecf4b4-95ea-4a17-834a-f50fa799d4ea"),
-        RANDOM_ITEM("1fe43479-5118-4d1c-8bc9-591fc2d862af"),
-        WORLD_RANDOMISE("1bda0825-ae54-43c7-b2be-56604937c8d0");
+        FRIEND_CREATOR("95659d42-8fbb-4cd3-afe4-953198a401b7"),
+        TELEPORT_HOME("54aad035-c47a-425a-a1f8-50245ba1b7f5"),
+        SET_DAY("469a5355-eafd-43da-9432-d8357b8a7be1"),
+        SET_NIGHT("99877225-b426-4537-bc79-ef5b6f2845ae"),
+        MEAN("b5134ef3-cd2e-40c9-afcd-4bee4e7acc88"),
+        GAMBLE("5b80bca8-edb5-40bc-af5a-c8db5960f857"),
+        EXTREME_GAMBLE("9af2dd6f-b95c-4d46-ba96-8a5d89cff6ef"),
+        RANDOM_EFFECT("7153472f-291f-4b54-b5c1-8221f4286996"),
+        RANDOM_ITEM("9968d4a0-e7ef-44c5-af54-9afad23f3734"),
+        WORLD_RANDOMISE("6a3fdbc0-5145-4658-8e6e-6f7f038c3c28");
 
         private final String rewardId;
 
