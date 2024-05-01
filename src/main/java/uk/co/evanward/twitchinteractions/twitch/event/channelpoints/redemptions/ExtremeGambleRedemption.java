@@ -25,6 +25,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkSectionPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.WorldChunk;
@@ -85,7 +86,35 @@ public class ExtremeGambleRedemption implements ChannelPoint.ChannelPointInterfa
                     ServerWorld world = (player.getEntityWorld().getRegistryKey().equals(World.OVERWORLD) || player.getEntityWorld().getRegistryKey().equals(World.END))
                         ? ServerHelper.getServer().getWorld(World.NETHER) : ServerHelper.getServer().getWorld(World.OVERWORLD);
 
-                    BlockPos safeSpawn = findSafeSpawn(world, player.getBlockX(), player.getBlockZ());
+                    BlockPos safeSpawn = world.getSpawnPos();
+
+                    int i = Math.max(0, ServerHelper.getServer().getSpawnRadius(world));
+                    int j = MathHelper.floor(world.getWorldBorder().getDistanceInsideBorder(player.getX(), player.getZ()));
+
+                    if (j < i) {
+                        i = j;
+                    }
+
+                    if (j <= 1) {
+                        i = 1;
+                    }
+
+                    long l = i * 2L + 1;
+                    long m = l * l;
+                    int k = m > 2147483647L ? Integer.MAX_VALUE : (int)m;
+                    int n = k <= 16 ? k - 1 : 17;
+                    int o = (new Random()).nextInt(k);
+
+                    for (int p = 0; p < k; p++) {
+                        int q = (o + n * p) % k;
+                        int r = q % (i * 2 + 1);
+                        int s = q / (i * 2 + 1);
+
+                        safeSpawn = findSafeSpawn(world, player.getBlockX() + r - i, player.getBlockZ() + s - i);
+                        if (safeSpawn != null) {
+                            break;
+                        }
+                    }
 
                     player.teleport(world, safeSpawn.getX(), safeSpawn.getY(), safeSpawn.getZ(), player.getYaw(), player.getPitch());
                 }
@@ -188,7 +217,8 @@ public class ExtremeGambleRedemption implements ChannelPoint.ChannelPointInterfa
     /**
      * Find a safe spawn in the Nether to teleport to
      */
-    private static BlockPos findSafeSpawn(ServerWorld world, int x, int z) {
+    private static BlockPos findSafeSpawn(ServerWorld world, int x, int z)
+    {
         boolean bl = world.getDimension().hasCeiling();
         WorldChunk worldChunk = world.getChunk(ChunkSectionPos.getSectionCoord(x), ChunkSectionPos.getSectionCoord(z));
         int i = bl ? world.getChunkManager().getChunkGenerator().getSpawnHeight(world) : worldChunk.sampleHeightmap(Heightmap.Type.MOTION_BLOCKING, x & 15, z & 15);
