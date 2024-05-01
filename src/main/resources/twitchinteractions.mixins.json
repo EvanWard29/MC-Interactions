@@ -20,7 +20,8 @@
     "worldchanges.craftingoutput.CuttingOutputMixin",
     "worldchanges.craftingoutput.FurnaceOutputMixin",
     "worldchanges.craftingoutput.ShapedCraftingOutputMixin",
-    "worldchanges.craftingoutput.ShapelessCraftingOutputMixin"
+    "worldchanges.craftingoutput.ShapelessCraftingOutputMixin",
+    "worldchanges.spawns.PatrolSpawnerMixin"
   ],
   "client": [
     "worldchanges.ClientWorldLengthOfDayMixin",
