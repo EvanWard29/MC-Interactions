@@ -21,6 +21,7 @@
     "worldchanges.craftingoutput.FurnaceOutputMixin",
     "worldchanges.craftingoutput.ShapedCraftingOutputMixin",
     "worldchanges.craftingoutput.ShapelessCraftingOutputMixin",
+    "worldchanges.spawns.EvokerEntityMixin",
     "worldchanges.spawns.PatrolSpawnerMixin"
   ],
   "client": [
