@@ -88,6 +88,9 @@ public class MeanRedemption implements ChannelPoint.ChannelPointInterface
                         zombie.setTarget(player);
                         equipArmour(zombie);
 
+                        zombie.setCustomName(Text.literal(username));
+                        zombie.setCustomNameVisible(true);
+
                         zombie.startRiding(zombieHorse);
 
                         zombieHorse.setCustomName(Text.literal(username));
@@ -103,6 +106,9 @@ public class MeanRedemption implements ChannelPoint.ChannelPointInterface
                         SkeletonEntity skeleton = new SkeletonEntity(EntityType.SKELETON, player.getEntityWorld());
                         skeleton.setTarget(player);
                         equipArmour(skeleton);
+
+                        skeleton.setCustomName(Text.literal(username));
+                        skeleton.setCustomNameVisible(true);
 
                         // Add a bow to the Skeleton
                         skeleton.setStackInHand(Hand.MAIN_HAND, new ItemStack(Items.BOW));
