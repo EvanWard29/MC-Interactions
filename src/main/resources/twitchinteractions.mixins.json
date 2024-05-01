@@ -22,7 +22,8 @@
     "worldchanges.craftingoutput.ShapedCraftingOutputMixin",
     "worldchanges.craftingoutput.ShapelessCraftingOutputMixin",
     "worldchanges.spawns.EvokerEntityMixin",
-    "worldchanges.spawns.PatrolSpawnerMixin"
+    "worldchanges.spawns.PatrolSpawnerMixin",
+    "worldchanges.spawns.PieceMixin"
   ],
   "client": [
     "worldchanges.ClientWorldLengthOfDayMixin",
