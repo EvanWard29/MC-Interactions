@@ -7,6 +7,7 @@ import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
+import net.minecraft.resource.featuretoggle.FeatureFlags;
 import net.minecraft.server.integrated.IntegratedServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
@@ -111,6 +112,7 @@ public class ServerHelper
             .flatMap(Optional::stream)
             .filter(entityTypeReference -> EnumSet.of(SpawnGroup.CREATURE, SpawnGroup.MONSTER, SpawnGroup.AXOLOTLS, SpawnGroup.AMBIENT)
                 .contains(entityTypeReference.value().getSpawnGroup()))
+            .filter(entityTypeReference -> !entityTypeReference.value().getRequiredFeatures().contains(FeatureFlags.UPDATE_1_21))
             .findAny()
             .get()
             .value();
