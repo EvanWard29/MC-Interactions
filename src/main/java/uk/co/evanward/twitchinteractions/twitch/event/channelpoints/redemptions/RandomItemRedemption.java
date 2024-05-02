@@ -49,6 +49,9 @@ public class RandomItemRedemption implements ChannelPoint.ChannelPointInterface
                     .get()
                     .value()
             );
+
+            // Return a stack of the random item
+            item.setCount(item.getItem().getMaxCount());
         }
 
         ServerHelper.giveItem(item);
