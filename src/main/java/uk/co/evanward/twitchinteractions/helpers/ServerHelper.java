@@ -11,6 +11,7 @@ import net.minecraft.server.integrated.IntegratedServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3d;
 import uk.co.evanward.twitchinteractions.TwitchInteractions;
 
@@ -113,5 +114,19 @@ public class ServerHelper
             .findAny()
             .get()
             .value();
+    }
+
+    /**
+     * Replace the given entity
+     */
+    public static Entity getEntityReplacement(Entity entity)
+    {
+        Entity replacement = Registries.ENTITY_TYPE.get(Identifier.tryParse(
+            TwitchInteractions.worldChanges.REPLACE_MOB_SPAWN.getString(entity.getType().toString())
+        )).create(entity.getWorld());
+
+        replacement.setPosition(entity.getPos());
+
+        return replacement;
     }
 }
