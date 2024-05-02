@@ -109,7 +109,7 @@ public class ServerHelper
     {
         return Stream.generate(() -> Registries.ENTITY_TYPE.getRandom(getConnectedPlayer().getRandom()))
             .flatMap(Optional::stream)
-            .filter(entityTypeReference -> EnumSet.of(SpawnGroup.CREATURE, SpawnGroup.MONSTER, SpawnGroup.WATER_CREATURE, SpawnGroup.WATER_AMBIENT)
+            .filter(entityTypeReference -> EnumSet.of(SpawnGroup.CREATURE, SpawnGroup.MONSTER, SpawnGroup.AXOLOTLS, SpawnGroup.AMBIENT)
                 .contains(entityTypeReference.value().getSpawnGroup()))
             .findAny()
             .get()
