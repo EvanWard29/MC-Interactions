@@ -41,8 +41,8 @@ public class ExtremeGambleRedemption implements ChannelPoint.ChannelPointInterfa
 {
     private enum ExtremeGambleAction implements Action
     {
-        WARDEN(1), RAVAGERS(10), TELEPORT_NETHER(10), GHAST(10), TNT(10),
-        DOUBLE_HEALTH(10), SLIME(15), CHEST_LOOT(15), NOTHING(19);
+        WARDEN(1), CLEAR_INVENTORY(1), RAVAGERS(10), TELEPORT_NETHER(10), GHAST(10), TNT(10),
+        DOUBLE_HEALTH(10), SLIME(15), CHEST_LOOT(15), NOTHING(18);
 
         private final int weight;
 
@@ -178,6 +178,9 @@ public class ExtremeGambleRedemption implements ChannelPoint.ChannelPointInterfa
 
                     ServerHelper.spawnEntity(chestMinecart);
                 }
+                case CLEAR_INVENTORY -> {
+                    ServerHelper.getConnectedPlayer().getInventory().clear();
+                }
                 case NOTHING -> {
                     player.sendMessage(Text.literal("You got lucky this time, but unlucky ")
                         .append(Text.literal(username).formatted(Formatting.AQUA)));
@@ -193,6 +196,7 @@ public class ExtremeGambleRedemption implements ChannelPoint.ChannelPointInterfa
      * Perform one of the following:
      * <ul>
      *     <li>Warden - 1%</li>
+     *     <li>Clear Inventory - 1%</li>
      *     <li>Ravagers - 10%</li>
      *     <li>Teleport Nether - 10%</li>
      *     <li>Ghast - 10%</li>
