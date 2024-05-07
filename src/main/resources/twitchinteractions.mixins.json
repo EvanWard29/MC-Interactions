@@ -25,6 +25,7 @@
     "worldchanges.spawns.EvokerEntityMixin",
     "worldchanges.spawns.PatrolSpawnerMixin",
     "worldchanges.spawns.PieceMixin",
+    "worldchanges.spawns.SculkShriekerBlockEntityMixin",
     "worldchanges.spawns.SnifferEggBlockMixin",
     "worldchanges.spawns.TurtleEggBlockMixin"
   ],
