@@ -21,6 +21,7 @@
     "worldchanges.craftingoutput.FurnaceOutputMixin",
     "worldchanges.craftingoutput.ShapedCraftingOutputMixin",
     "worldchanges.craftingoutput.ShapelessCraftingOutputMixin",
+    "worldchanges.spawns.EggEntityMixin",
     "worldchanges.spawns.EvokerEntityMixin",
     "worldchanges.spawns.PatrolSpawnerMixin",
     "worldchanges.spawns.PieceMixin",
