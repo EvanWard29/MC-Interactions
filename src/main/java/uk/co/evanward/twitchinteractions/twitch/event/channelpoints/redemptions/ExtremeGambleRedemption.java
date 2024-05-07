@@ -41,8 +41,8 @@ public class ExtremeGambleRedemption implements ChannelPoint.ChannelPointInterfa
 {
     private enum ExtremeGambleAction implements Action
     {
-        WARDEN(1), CLEAR_INVENTORY(1), RAVAGERS(10), TELEPORT_NETHER(10), GHAST(10), TNT(10),
-        DOUBLE_HEALTH(10), SLIME(15), CHEST_LOOT(15), NOTHING(18);
+        WARDEN(1), CLEAR_INVENTORY(1), RAVAGERS(10), TELEPORT_NETHER(10), SLIME(10), TNT(10),
+        DOUBLE_HEALTH(10), GHAST(15), CHEST_LOOT(15), NOTHING(18);
 
         private final int weight;
 
