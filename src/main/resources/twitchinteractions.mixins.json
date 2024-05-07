@@ -23,7 +23,9 @@
     "worldchanges.craftingoutput.ShapelessCraftingOutputMixin",
     "worldchanges.spawns.EvokerEntityMixin",
     "worldchanges.spawns.PatrolSpawnerMixin",
-    "worldchanges.spawns.PieceMixin"
+    "worldchanges.spawns.PieceMixin",
+    "worldchanges.spawns.SnifferEggBlockMixin",
+    "worldchanges.spawns.TurtleEggBlockMixin"
   ],
   "client": [
     "worldchanges.ClientWorldLengthOfDayMixin",
