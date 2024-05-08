@@ -1,4 +1,4 @@
-package uk.co.evanward.twitchinteractions.mixins.worldchanges;
+package uk.co.evanward.twitchinteractions.mixins.worldchanges.loot;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.LootTable;
@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import uk.co.evanward.twitchinteractions.TwitchInteractions;
 
 @Mixin(LootTable.class)
-public abstract class ReplaceLootMixin
+public abstract class LootTableMixin
 {
     @ModifyVariable(method = "method_331", at = @At(value = "HEAD"), argsOnly = true)
     private static ItemStack replaceItem(ItemStack stack)

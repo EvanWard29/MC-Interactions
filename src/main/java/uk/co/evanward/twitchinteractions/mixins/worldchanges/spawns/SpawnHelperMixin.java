@@ -1,4 +1,4 @@
-package uk.co.evanward.twitchinteractions.mixins.worldchanges;
+package uk.co.evanward.twitchinteractions.mixins.worldchanges.spawns;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.world.SpawnHelper;
@@ -9,7 +9,7 @@ import uk.co.evanward.twitchinteractions.TwitchInteractions;
 import uk.co.evanward.twitchinteractions.helpers.ServerHelper;
 
 @Mixin(SpawnHelper.class)
-public abstract class NaturalSpawnMixin
+public abstract class SpawnHelperMixin
 {
     @ModifyArg(
         method = "spawnEntitiesInChunk(Lnet/minecraft/entity/SpawnGroup;Lnet/minecraft/server/world/ServerWorld;Lnet/minecraft/world/chunk/Chunk;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/world/SpawnHelper$Checker;Lnet/minecraft/world/SpawnHelper$Runner;)V",

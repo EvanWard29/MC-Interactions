@@ -1,4 +1,4 @@
-package uk.co.evanward.twitchinteractions.mixins.worldchanges;
+package uk.co.evanward.twitchinteractions.mixins.worldchanges.spawns;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NbtCompound;

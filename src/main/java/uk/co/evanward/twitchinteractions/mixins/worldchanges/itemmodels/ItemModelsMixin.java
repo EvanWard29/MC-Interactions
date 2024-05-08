@@ -1,4 +1,4 @@
-package uk.co.evanward.twitchinteractions.mixins.worldchanges;
+package uk.co.evanward.twitchinteractions.mixins.worldchanges.itemmodels;
 
 import net.minecraft.client.render.item.ItemModels;
 import net.minecraft.item.Item;
@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import uk.co.evanward.twitchinteractions.TwitchInteractions;
 
 @Mixin(ItemModels.class)
-public class ReplaceItemModelMixin
+public class ItemModelsMixin
 {
     @ModifyVariable(method = "getModel(Lnet/minecraft/item/Item;)Lnet/minecraft/client/render/model/BakedModel;", at = @At("HEAD"), argsOnly = true)
     private Item getModel(Item item)

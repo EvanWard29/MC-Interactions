@@ -1,4 +1,4 @@
-package uk.co.evanward.twitchinteractions.mixins.worldchanges;
+package uk.co.evanward.twitchinteractions.mixins.worldchanges.spawnegg;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
@@ -16,7 +16,7 @@ import uk.co.evanward.twitchinteractions.TwitchInteractions;
 import java.util.Random;
 
 @Mixin(LivingEntity.class)
-public class SpawnEggMixin
+public class LivingEntityMixin
 {
     @SuppressWarnings("UnreachableCode")
     @Inject(method = "drop", at = @At(value = "TAIL"))

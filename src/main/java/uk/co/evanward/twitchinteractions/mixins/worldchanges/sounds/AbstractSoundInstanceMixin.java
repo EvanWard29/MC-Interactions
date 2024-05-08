@@ -1,4 +1,4 @@
-package uk.co.evanward.twitchinteractions.mixins.worldchanges;
+package uk.co.evanward.twitchinteractions.mixins.worldchanges.sounds;
 
 import net.minecraft.client.sound.AbstractSoundInstance;
 import net.minecraft.util.Identifier;
@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import uk.co.evanward.twitchinteractions.TwitchInteractions;
 
 @Mixin(AbstractSoundInstance.class)
-public abstract class ReplaceSoundMixin
+public abstract class AbstractSoundInstanceMixin
 {
     @ModifyVariable(method = "<init>(Lnet/minecraft/util/Identifier;Lnet/minecraft/sound/SoundCategory;Lnet/minecraft/util/math/random/Random;)V", at = @At("HEAD"), ordinal = 0, argsOnly = true)
     private static Identifier replaceSound(Identifier soundId)
