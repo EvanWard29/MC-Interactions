@@ -113,6 +113,7 @@ public class ServerHelper
             .filter(entityTypeReference -> EnumSet.of(SpawnGroup.CREATURE, SpawnGroup.MONSTER, SpawnGroup.AXOLOTLS, SpawnGroup.AMBIENT)
                 .contains(entityTypeReference.value().getSpawnGroup()))
             .filter(entityTypeReference -> !entityTypeReference.value().getRequiredFeatures().contains(FeatureFlags.UPDATE_1_21))
+            .filter(entityTypeReference -> !entityTypeReference.matchesId(Identifier.tryParse("wandering_trader")))
             .findAny()
             .get()
             .value();
