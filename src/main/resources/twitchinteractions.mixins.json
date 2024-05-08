@@ -6,7 +6,6 @@
     "NbtCompoundMixin",
     "worldchanges.ChickenItemLayMixin",
     "worldchanges.ItemDespawnTimeMixin",
-    "worldchanges.ItemMaxStackSizeMixin",
     "worldchanges.MobSpawnerLogicMixin",
     "worldchanges.NaturalSpawnMixin",
     "worldchanges.ReplaceLootMixin",
@@ -27,7 +26,9 @@
     "worldchanges.spawns.PieceMixin",
     "worldchanges.spawns.SculkShriekerBlockEntityMixin",
     "worldchanges.spawns.SnifferEggBlockMixin",
-    "worldchanges.spawns.TurtleEggBlockMixin"
+    "worldchanges.spawns.TurtleEggBlockMixin",
+    "worldchanges.stacksize.ItemMixin",
+    "worldchanges.stacksize.ItemStackMixin"
   ],
   "client": [
     "worldchanges.ClientWorldLengthOfDayMixin",
