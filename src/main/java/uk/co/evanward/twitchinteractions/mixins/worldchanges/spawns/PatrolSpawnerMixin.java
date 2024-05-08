@@ -17,7 +17,7 @@ public class PatrolSpawnerMixin
     {
         if (TwitchInteractions.worldChanges.REPLACE_MOB_SPAWN.contains(pillager.getType().toString())) {
             Entity entity = Registries.ENTITY_TYPE.get(Identifier.tryParse(TwitchInteractions.worldChanges.REPLACE_MOB_SPAWN.getString(pillager.getType().toString())))
-                .create(pillager.getWorld());
+                .create(pillager.getEntityWorld());
 
             entity.setPosition(pillager.getPos());
             pillager = entity;

@@ -16,7 +16,7 @@ public class EvokerEntityMixin
     {
         if (TwitchInteractions.worldChanges.REPLACE_MOB_SPAWN.contains(vex.getType().toString())) {
             Entity replacement = Registries.ENTITY_TYPE.get(Identifier.tryParse(TwitchInteractions.worldChanges.REPLACE_MOB_SPAWN.getString(vex.getType().toString())))
-                .create(vex.getWorld());
+                .create(vex.getEntityWorld());
 
             replacement.setPosition(vex.getPos());
 
