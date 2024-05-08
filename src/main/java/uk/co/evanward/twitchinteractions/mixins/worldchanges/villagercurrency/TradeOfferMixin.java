@@ -1,4 +1,4 @@
-package uk.co.evanward.twitchinteractions.mixins.worldchanges;
+package uk.co.evanward.twitchinteractions.mixins.worldchanges.villagercurrency;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import uk.co.evanward.twitchinteractions.TwitchInteractions;
 
 @Mixin(TradeOffer.class)
-public class VillagerCurrencyMixin
+public class TradeOfferMixin
 {
     @ModifyVariable(method = "<init>(Lnet/minecraft/village/TradedItem;Ljava/util/Optional;Lnet/minecraft/item/ItemStack;IIZIIFI)V", at = @At("HEAD"), ordinal = 0, argsOnly = true)
     private static TradedItem changeBuyItem(TradedItem buyItem)

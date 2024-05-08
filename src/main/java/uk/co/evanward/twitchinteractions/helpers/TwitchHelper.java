@@ -215,6 +215,66 @@ public class TwitchHelper
     }
 
     /**
+     * Refund the given channel point redemption
+     */
+    public static void refund(String redemptionId, String rewardId)
+    {
+        updateRedemptionStatus(redemptionId, rewardId, true);
+    }
+
+    /**
+     * Confirm the given channel point redemption
+     */
+    public static void redeem(String redemptionId, String rewardId)
+    {
+        updateRedemptionStatus(redemptionId, rewardId, false);
+    }
+
+    /**
+     * Set a channel point redemption to `FULFILLED` on success, or `CANCELED` on failure
+     */
+    private static void updateRedemptionStatus(String redemptionId, String rewardId, boolean refund)
+    {
+        if (!TwitchInteractions.isDebugMode()) {
+            HttpClient client = HttpClient.newHttpClient();
+
+            // Build the request
+            HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(
+                    API_ENDPOINT
+                    + "/channel_points/custom_rewards/redemptions"
+                    + "?broadcaster_id=" + ModConfig.BROADCASTER_ID
+                    + "&id=" + redemptionId
+                    + "&reward_id=" + rewardId
+                ))
+                .method(
+                    "PATCH",
+                    HttpRequest.BodyPublishers.ofString(
+                        new JSONObject()
+                            .put("status", refund ? "CANCELED" : "FULFILLED")
+                            .toString()
+                    )
+                )
+                .header("Client-Id", CLIENT_ID)
+                .header("Accept", "application/json")
+                .header("Content-Type", "application/json")
+                .header("Authorization", "Bearer " + ModConfig.USER_ACCESS_TOKEN)
+                .build();
+
+            try {
+                HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+                // Throw error if response is not OK
+                if (response.statusCode() != 200) {
+                    throw new Exception(response.body());
+                }
+            } catch (Exception e) {
+                TwitchInteractions.logger.error("Error updating redemption status for redemption `" + redemptionId + "`: " + e.getMessage());
+            }
+        }
+    }
+
+    /**
      * Get the user's Twitch broadcasterId
      */
     private static String getTwitchUserId() throws IOException, InterruptedException

@@ -28,8 +28,8 @@ public abstract class FurnaceOutputMixin
     {
         if (TwitchInteractions.worldChanges.RECIPE_MODIFIERS.contains(itemStack.getItem().toString())) {
             amount = (int) Math.ceil(1 * TwitchInteractions.worldChanges.RECIPE_MODIFIERS.getFloat(itemStack.getItem().toString()));
-
-            itemStack.increment(amount);
         }
+
+        itemStack.increment(amount);
     }
 }

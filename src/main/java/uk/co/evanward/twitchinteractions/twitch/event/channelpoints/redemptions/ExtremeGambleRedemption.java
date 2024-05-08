@@ -25,10 +25,12 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkSectionPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.WorldChunk;
 import org.json.JSONObject;
+import uk.co.evanward.twitchinteractions.helpers.AnnouncementHelper;
 import uk.co.evanward.twitchinteractions.helpers.ServerHelper;
 import uk.co.evanward.twitchinteractions.helpers.TwitchHelper;
 import uk.co.evanward.twitchinteractions.twitch.event.channelpoints.ChannelPoint;
@@ -39,8 +41,8 @@ public class ExtremeGambleRedemption implements ChannelPoint.ChannelPointInterfa
 {
     private enum ExtremeGambleAction implements Action
     {
-        WARDEN(1), RAVAGERS(10), TELEPORT_NETHER(10), GHAST(10), TNT(10),
-        DOUBLE_HEALTH(10), SLIME(15), CHEST_LOOT(15), NOTHING(19);
+        WARDEN(1), CLEAR_INVENTORY(1), RAVAGERS(10), TELEPORT_NETHER(10), SLIME(10), TNT(10),
+        DOUBLE_HEALTH(10), GHAST(15), CHEST_LOOT(15), NOTHING(18);
 
         private final int weight;
 
@@ -84,7 +86,35 @@ public class ExtremeGambleRedemption implements ChannelPoint.ChannelPointInterfa
                     ServerWorld world = (player.getEntityWorld().getRegistryKey().equals(World.OVERWORLD) || player.getEntityWorld().getRegistryKey().equals(World.END))
                         ? ServerHelper.getServer().getWorld(World.NETHER) : ServerHelper.getServer().getWorld(World.OVERWORLD);
 
-                    BlockPos safeSpawn = findSafeSpawn(world, player.getBlockX(), player.getBlockZ());
+                    BlockPos safeSpawn = world.getSpawnPos();
+
+                    int i = Math.max(0, ServerHelper.getServer().getSpawnRadius(world));
+                    int j = MathHelper.floor(world.getWorldBorder().getDistanceInsideBorder(player.getX(), player.getZ()));
+
+                    if (j < i) {
+                        i = j;
+                    }
+
+                    if (j <= 1) {
+                        i = 1;
+                    }
+
+                    long l = i * 2L + 1;
+                    long m = l * l;
+                    int k = m > 2147483647L ? Integer.MAX_VALUE : (int)m;
+                    int n = k <= 16 ? k - 1 : 17;
+                    int o = (new Random()).nextInt(k);
+
+                    for (int p = 0; p < k; p++) {
+                        int q = (o + n * p) % k;
+                        int r = q % (i * 2 + 1);
+                        int s = q / (i * 2 + 1);
+
+                        safeSpawn = findSafeSpawn(world, player.getBlockX() + r - i, player.getBlockZ() + s - i);
+                        if (safeSpawn != null) {
+                            break;
+                        }
+                    }
 
                     player.teleport(world, safeSpawn.getX(), safeSpawn.getY(), safeSpawn.getZ(), player.getYaw(), player.getPitch());
                 }
@@ -148,6 +178,9 @@ public class ExtremeGambleRedemption implements ChannelPoint.ChannelPointInterfa
 
                     ServerHelper.spawnEntity(chestMinecart);
                 }
+                case CLEAR_INVENTORY -> {
+                    ServerHelper.getConnectedPlayer().getInventory().clear();
+                }
                 case NOTHING -> {
                     player.sendMessage(Text.literal("You got lucky this time, but unlucky ")
                         .append(Text.literal(username).formatted(Formatting.AQUA)));
@@ -163,6 +196,7 @@ public class ExtremeGambleRedemption implements ChannelPoint.ChannelPointInterfa
      * Perform one of the following:
      * <ul>
      *     <li>Warden - 1%</li>
+     *     <li>Clear Inventory - 1%</li>
      *     <li>Ravagers - 10%</li>
      *     <li>Teleport Nether - 10%</li>
      *     <li>Ghast - 10%</li>
@@ -179,13 +213,16 @@ public class ExtremeGambleRedemption implements ChannelPoint.ChannelPointInterfa
         username = event.getString("user_name");
         player = ServerHelper.getConnectedPlayer();
 
+        AnnouncementHelper.playAnnouncement(username, "Is Feeling Extremely Lucky!");
+
         TwitchHelper.getRandomAction(ExtremeGambleAction.values()).execute();
     }
 
     /**
      * Find a safe spawn in the Nether to teleport to
      */
-    private static BlockPos findSafeSpawn(ServerWorld world, int x, int z) {
+    private static BlockPos findSafeSpawn(ServerWorld world, int x, int z)
+    {
         boolean bl = world.getDimension().hasCeiling();
         WorldChunk worldChunk = world.getChunk(ChunkSectionPos.getSectionCoord(x), ChunkSectionPos.getSectionCoord(z));
         int i = bl ? world.getChunkManager().getChunkGenerator().getSpawnHeight(world) : worldChunk.sampleHeightmap(Heightmap.Type.MOTION_BLOCKING, x & 15, z & 15);

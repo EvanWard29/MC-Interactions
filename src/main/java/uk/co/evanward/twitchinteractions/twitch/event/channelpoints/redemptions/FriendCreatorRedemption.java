@@ -12,6 +12,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.DyeColor;
 import org.json.JSONObject;
+import uk.co.evanward.twitchinteractions.helpers.AnnouncementHelper;
 import uk.co.evanward.twitchinteractions.helpers.ServerHelper;
 import uk.co.evanward.twitchinteractions.twitch.event.channelpoints.ChannelPoint;
 
@@ -166,6 +167,8 @@ public class FriendCreatorRedemption implements ChannelPoint.ChannelPointInterfa
     public void trigger(JSONObject event)
     {
         username = event.getString("user_name");
+
+        AnnouncementHelper.playAnnouncement(username, "Has A New Friend!");
 
         Friend friend = Friend.values()[(new Random()).nextInt(Friend.values().length)];
         PassiveEntity entity = friend.getFriend();

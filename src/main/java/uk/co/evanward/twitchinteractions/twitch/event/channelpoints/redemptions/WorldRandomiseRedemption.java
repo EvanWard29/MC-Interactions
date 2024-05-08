@@ -6,13 +6,17 @@ import net.minecraft.item.Item;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.tag.BlockTags;
+import net.minecraft.resource.featuretoggle.FeatureFlags;
 import net.minecraft.sound.SoundEvent;
+import net.minecraft.text.Text;
 import net.minecraft.util.DyeColor;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.math.MathHelper;
 import org.json.JSONObject;
 import uk.co.evanward.twitchinteractions.TwitchInteractions;
+import uk.co.evanward.twitchinteractions.helpers.AnnouncementHelper;
 import uk.co.evanward.twitchinteractions.helpers.ServerHelper;
-import uk.co.evanward.twitchinteractions.interfaces.CanBeDirty;
 import uk.co.evanward.twitchinteractions.twitch.event.channelpoints.ChannelPoint;
 
 import java.util.Random;
@@ -41,6 +45,10 @@ public class WorldRandomiseRedemption implements ChannelPoint.ChannelPointInterf
     @Override
     public void trigger(JSONObject event)
     {
+        AnnouncementHelper.playAnnouncement(event.getString("user_name"), "Randomised The World!");
+
+        sendMessage(Text.literal("-----------------"));
+
         this.changeChickenEgg();
 
         this.changeLengthOfDay();
@@ -77,12 +85,20 @@ public class WorldRandomiseRedemption implements ChannelPoint.ChannelPointInterf
      */
     private void changeChickenEgg()
     {
-        TwitchInteractions.worldChanges.CHICKEN_EGG = ServerHelper.getServer()
-            .getRegistryManager()
-            .get(RegistryKeys.ITEM)
-            .getRandom(ServerHelper.getConnectedPlayer().getRandom())
-            .get()
-            .value();
+        Item item;
+        do {
+            item = ServerHelper.getServer()
+                .getRegistryManager()
+                .get(RegistryKeys.ITEM)
+                .getRandom(ServerHelper.getConnectedPlayer().getRandom())
+                .get()
+                .value();
+        } while (item.getRequiredFeatures().contains(FeatureFlags.UPDATE_1_21));
+
+        TwitchInteractions.worldChanges.CHICKEN_EGG = item;
+
+        sendMessage(Text.literal("Chickens now lay ")
+            .append(TwitchInteractions.worldChanges.CHICKEN_EGG.getName().copy().formatted(Formatting.AQUA)));
     }
 
     /**
@@ -98,6 +114,10 @@ public class WorldRandomiseRedemption implements ChannelPoint.ChannelPointInterf
         TwitchInteractions.worldChanges.DAY_LENGTH = newDayLength < 1500
             ? 24000
             : newDayLength;
+
+        sendMessage(Text.literal("The length of day is now ")
+            .append(Text.literal(String.valueOf((float) TwitchInteractions.worldChanges.DAY_LENGTH / 1200)).formatted(Formatting.AQUA))
+            .append(Text.literal(" minutes")).formatted(Formatting.GOLD));
     }
 
     /**
@@ -106,6 +126,9 @@ public class WorldRandomiseRedemption implements ChannelPoint.ChannelPointInterf
     private void changeSheepColour()
     {
         TwitchInteractions.worldChanges.SHEEP_COLOUR = DyeColor.values()[new Random().nextInt(DyeColor.values().length)];
+
+        sendMessage(Text.literal("Natural sheep are now ")
+            .append(Text.literal(TwitchInteractions.worldChanges.SHEEP_COLOUR.getName()).formatted(Formatting.AQUA)));
     }
 
     /**
@@ -127,6 +150,10 @@ public class WorldRandomiseRedemption implements ChannelPoint.ChannelPointInterf
         TwitchInteractions.worldChanges.ITEM_DESPAWN = despawnTime < 600
             ? 6000
             : despawnTime;
+
+        sendMessage(Text.literal("Item despawn time is now ")
+            .append(Text.literal(String.valueOf((float) TwitchInteractions.worldChanges.ITEM_DESPAWN / 1200)).formatted(Formatting.AQUA))
+            .append(Text.literal(" minutes")).formatted(Formatting.GOLD));
     }
 
     /**
@@ -135,6 +162,9 @@ public class WorldRandomiseRedemption implements ChannelPoint.ChannelPointInterf
     private void changeSpawnEggChance()
     {
         TwitchInteractions.worldChanges.SPAWN_EGG_CHANCE = (new Random()).nextInt(100);
+
+        sendMessage(Text.literal("The chance of a spawn egg dropping is now ")
+            .append(Text.literal(TwitchInteractions.worldChanges.SPAWN_EGG_CHANCE + "%").formatted(Formatting.AQUA)));
     }
 
     /**
@@ -146,6 +176,10 @@ public class WorldRandomiseRedemption implements ChannelPoint.ChannelPointInterf
         Item replacement = Registries.ITEM.getRandom(ServerHelper.getConnectedPlayer().getRandom()).get().value();
 
         TwitchInteractions.worldChanges.REPLACE_LOOT.putString(loot.toString(), replacement.toString());
+
+        sendMessage(Text.empty().append(loot.getName().copy().formatted(Formatting.AQUA))
+            .append(Text.literal(" loot has been replaced with ").formatted(Formatting.GOLD))
+            .append(replacement.getName().copy().formatted(Formatting.AQUA)).formatted(Formatting.GOLD));
     }
 
     /**
@@ -164,6 +198,10 @@ public class WorldRandomiseRedemption implements ChannelPoint.ChannelPointInterf
         }
 
         TwitchInteractions.worldChanges.LOOT_MODIFIER.putInt(lootAmount.toString(), amount);
+
+        sendMessage(Text.empty().append(lootAmount.getName().copy().formatted(Formatting.AQUA))
+            .append(Text.literal(" loot has been multiplied by "))
+            .append(Text.literal(String.valueOf(amount)).formatted(Formatting.AQUA)));
     }
 
     /**
@@ -178,6 +216,11 @@ public class WorldRandomiseRedemption implements ChannelPoint.ChannelPointInterf
         EntityType<?> replacement = ServerHelper.randomMobType();
 
         TwitchInteractions.worldChanges.REPLACE_MOB_SPAWN.putString(entityType.toString(), replacement.getUntranslatedName());
+
+        sendMessage(Text.literal("Spawns of ")
+            .append(entityType.getName().copy().formatted(Formatting.AQUA))
+            .append(Text.literal(" have been replaced with ").formatted(Formatting.GOLD))
+            .append(replacement.getName().copy().formatted(Formatting.AQUA)).formatted(Formatting.GOLD));
     }
 
     /**
@@ -211,6 +254,10 @@ public class WorldRandomiseRedemption implements ChannelPoint.ChannelPointInterf
 
         itemSizes.putInt("current", MathHelper.ceil(size));
         TwitchInteractions.worldChanges.STACK_SIZE.put(item.toString(), itemSizes);
+
+        sendMessage(Text.literal("The stack size of ")
+            .append(item.getName().copy().formatted(Formatting.AQUA)).append(" has been changed to ")
+            .append(Text.literal(String.valueOf(itemSizes.getInt("current"))).formatted(Formatting.AQUA)));
     }
 
     /**
@@ -237,6 +284,10 @@ public class WorldRandomiseRedemption implements ChannelPoint.ChannelPointInterf
         }
 
         TwitchInteractions.worldChanges.RECIPE_MODIFIERS.putFloat(item.toString(), modifier);
+
+        sendMessage(Text.literal("The recipe output of ").append(item.getName().copy().formatted(Formatting.AQUA))
+            .append(Text.literal(" has been multiplied by ").formatted(Formatting.GOLD))
+            .append(Text.literal(String.valueOf((int) modifier)).formatted(Formatting.AQUA)).formatted(Formatting.GOLD));
     }
 
     /**
@@ -246,6 +297,9 @@ public class WorldRandomiseRedemption implements ChannelPoint.ChannelPointInterf
     {
         // Get a random item to switch currency for
         TwitchInteractions.worldChanges.VILLAGER_CURRENCY = Registries.ITEM.getRandom(ServerHelper.getConnectedPlayer().getRandom()).get().value();
+
+        sendMessage(Text.literal("Villager currency has been replaced with ")
+            .append(TwitchInteractions.worldChanges.VILLAGER_CURRENCY.getName().copy().formatted(Formatting.AQUA)));
     }
 
     /**
@@ -257,6 +311,11 @@ public class WorldRandomiseRedemption implements ChannelPoint.ChannelPointInterf
         SoundEvent replacement = Registries.SOUND_EVENT.getRandom(ServerHelper.getConnectedPlayer().getRandom()).get().value();
 
         TwitchInteractions.worldChanges.SOUNDS.putString(sound.getId().toString(), replacement.getId().toString());
+
+        sendMessage(Text.literal("The sound ")
+            .append(Text.literal(sound.getId().getPath()).formatted(Formatting.AQUA))
+            .append(Text.literal(" has been replaced with ").formatted(Formatting.GOLD))
+            .append(Text.literal(replacement.getId().getPath()).formatted(Formatting.AQUA)).formatted(Formatting.GOLD));
     }
 
     /**
@@ -268,6 +327,11 @@ public class WorldRandomiseRedemption implements ChannelPoint.ChannelPointInterf
         Item replacement = Registries.ITEM.getRandom(ServerHelper.getConnectedPlayer().getRandom()).get().value();
 
         TwitchInteractions.worldChanges.ITEM_MODELS.putString(item.toString(), replacement.toString());
+
+        sendMessage(Text.literal("The item model of ")
+            .append(item.getName().copy().formatted(Formatting.AQUA))
+            .append(" has been replaced with ")
+            .append(replacement.getName().copy().formatted(Formatting.AQUA)));
     }
 
     /**
@@ -275,20 +339,44 @@ public class WorldRandomiseRedemption implements ChannelPoint.ChannelPointInterf
      */
     private void changeBlockModel()
     {
-        String blockName;
+        Block block = getRandomBlockModel();
+        Block replacement = getRandomBlockModel();
+
+        TwitchInteractions.worldChanges.BLOCK_MODELS.putString(
+            block.getTranslationKey().substring(block.getTranslationKey().lastIndexOf('.') + 1),
+            replacement.getTranslationKey().substring(replacement.getTranslationKey().lastIndexOf('.') + 1)
+        );
+
+        TwitchInteractions.worldChanges.BLOCK_MODELS.markDirty();
+
+        sendMessage(Text.literal("The block model of ")
+            .append(block.getName().copy().formatted(Formatting.AQUA))
+            .append(Text.literal(" has been replaced with ").formatted(Formatting.GOLD))
+            .append(replacement.getName().copy().formatted(Formatting.AQUA)).formatted(Formatting.GOLD));
+    }
+
+    /**
+     * Send a message to the connected player describing the world change
+     */
+    private void sendMessage(Text message)
+    {
+        ServerHelper.getConnectedPlayer().sendMessage(message);
+    }
+
+    /**
+     * Get a random block that is not:
+     * <ul>
+     *     <li>Air</li>
+     *     <li>Shulker Box</li>
+     * </ul>
+     */
+    private Block getRandomBlockModel()
+    {
+        Block block;
         do {
-            Block block = Registries.BLOCK.getRandom(ServerHelper.getConnectedPlayer().getRandom()).get().value();
-            blockName = block.getTranslationKey().substring(block.getTranslationKey().lastIndexOf('.') + 1);
-        } while (blockName.equals("air"));
+            block = Registries.BLOCK.getRandom(ServerHelper.getConnectedPlayer().getRandom()).get().value();
+        } while (block.getName().contains(Text.of("Air")) || block.getDefaultState().isIn(BlockTags.SHULKER_BOXES));
 
-
-        String replacementName;
-        do {
-            Block replacement = Registries.BLOCK.getRandom(ServerHelper.getConnectedPlayer().getRandom()).get().value();
-            replacementName = replacement.getTranslationKey().substring(replacement.getTranslationKey().lastIndexOf('.') + 1);
-        } while (replacementName.equals("air"));
-
-        TwitchInteractions.worldChanges.BLOCK_MODELS.putString(blockName, replacementName);
-        ((CanBeDirty) TwitchInteractions.worldChanges.BLOCK_MODELS).markDirty();
+        return block;
     }
 }

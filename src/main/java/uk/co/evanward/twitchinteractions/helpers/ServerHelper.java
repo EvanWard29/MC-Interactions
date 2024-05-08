@@ -7,10 +7,12 @@ import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
+import net.minecraft.resource.featuretoggle.FeatureFlags;
 import net.minecraft.server.integrated.IntegratedServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3d;
 import uk.co.evanward.twitchinteractions.TwitchInteractions;
 
@@ -108,10 +110,26 @@ public class ServerHelper
     {
         return Stream.generate(() -> Registries.ENTITY_TYPE.getRandom(getConnectedPlayer().getRandom()))
             .flatMap(Optional::stream)
-            .filter(entityTypeReference -> EnumSet.of(SpawnGroup.CREATURE, SpawnGroup.MONSTER, SpawnGroup.WATER_CREATURE, SpawnGroup.WATER_AMBIENT)
+            .filter(entityTypeReference -> EnumSet.of(SpawnGroup.CREATURE, SpawnGroup.MONSTER, SpawnGroup.AXOLOTLS, SpawnGroup.AMBIENT)
                 .contains(entityTypeReference.value().getSpawnGroup()))
+            .filter(entityTypeReference -> !entityTypeReference.value().getRequiredFeatures().contains(FeatureFlags.UPDATE_1_21))
+            .filter(entityTypeReference -> !entityTypeReference.matchesId(Identifier.tryParse("wandering_trader")))
             .findAny()
             .get()
             .value();
+    }
+
+    /**
+     * Replace the given entity
+     */
+    public static Entity getEntityReplacement(Entity entity)
+    {
+        Entity replacement = Registries.ENTITY_TYPE.get(Identifier.tryParse(
+            TwitchInteractions.worldChanges.REPLACE_MOB_SPAWN.getString(entity.getType().toString())
+        )).create(entity.getWorld());
+
+        replacement.setPosition(entity.getPos());
+
+        return replacement;
     }
 }
