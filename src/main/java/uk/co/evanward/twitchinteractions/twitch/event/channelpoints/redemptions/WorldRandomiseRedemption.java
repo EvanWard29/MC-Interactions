@@ -7,6 +7,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.tag.BlockTags;
+import net.minecraft.resource.featuretoggle.FeatureFlags;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.text.Text;
 import net.minecraft.util.DyeColor;
@@ -84,12 +85,17 @@ public class WorldRandomiseRedemption implements ChannelPoint.ChannelPointInterf
      */
     private void changeChickenEgg()
     {
-        TwitchInteractions.worldChanges.CHICKEN_EGG = ServerHelper.getServer()
-            .getRegistryManager()
-            .get(RegistryKeys.ITEM)
-            .getRandom(ServerHelper.getConnectedPlayer().getRandom())
-            .get()
-            .value();
+        Item item;
+        do {
+            item = ServerHelper.getServer()
+                .getRegistryManager()
+                .get(RegistryKeys.ITEM)
+                .getRandom(ServerHelper.getConnectedPlayer().getRandom())
+                .get()
+                .value();
+        } while (item.getRequiredFeatures().contains(FeatureFlags.UPDATE_1_21));
+
+        TwitchInteractions.worldChanges.CHICKEN_EGG = item;
 
         sendMessage(Text.literal("Chickens now lay ")
             .append(TwitchInteractions.worldChanges.CHICKEN_EGG.getName().copy().formatted(Formatting.AQUA)));
