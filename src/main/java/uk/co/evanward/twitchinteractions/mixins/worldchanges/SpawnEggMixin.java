@@ -26,12 +26,12 @@ public class SpawnEggMixin
         if (spawnEggChance > 0 && (new Random()).nextInt(100) <= spawnEggChance) {
             Item spawnEgg = SpawnEggItem.forEntity(((LivingEntity)(Object)this).getType());
 
-            // Replace the spawn egg with the replaced loot
-            if (TwitchInteractions.worldChanges.REPLACE_LOOT.contains(spawnEgg.toString())) {
-                spawnEgg = Registries.ITEM.get(Identifier.tryParse(TwitchInteractions.worldChanges.REPLACE_LOOT.getString(spawnEgg.toString())));
-            }
-
             if (spawnEgg != null) {
+                // Replace the spawn egg with the replaced loot
+                if (TwitchInteractions.worldChanges.REPLACE_LOOT.contains(spawnEgg.toString())) {
+                    spawnEgg = Registries.ITEM.get(Identifier.tryParse(TwitchInteractions.worldChanges.REPLACE_LOOT.getString(spawnEgg.toString())));
+                }
+
                 // Take into account the loot modifier
                 ItemStack spawnEggStack = new ItemStack(spawnEgg);
                 spawnEggStack.setCount(Math.max(1, TwitchInteractions.worldChanges.LOOT_MODIFIER.getInt(spawnEgg.toString())));
