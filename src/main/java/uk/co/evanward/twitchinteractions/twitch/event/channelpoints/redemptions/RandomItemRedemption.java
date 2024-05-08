@@ -38,7 +38,7 @@ public class RandomItemRedemption implements ChannelPoint.ChannelPointInterface
             item.set(DataComponentTypes.UNBREAKABLE, new UnbreakableComponent(true));
 
             // Set custom name
-            item.set(DataComponentTypes.ITEM_NAME, Text.literal("Super " + item.getName()));
+            item.set(DataComponentTypes.ITEM_NAME, Text.literal("Super " + item.getName().getString()));
         } else {
             // 95% chance to give a completely random item
             item = new ItemStack(
