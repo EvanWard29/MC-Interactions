@@ -25,7 +25,7 @@ public class WitherSkullBlockMixin
                 "minecraft",
                 TwitchInteractions.worldChanges.REPLACE_MOB_SPAWN.getString(EntityType.WITHER.toString())
             )).create(entity.getServer().getWorld(
-                    entity.getWorld().getRegistryKey()),
+                    entity.getEntityWorld().getRegistryKey()),
                 replacementEntity -> {},
                 entity.getBlockPos(),
                 SpawnReason.SPAWNER,

@@ -51,7 +51,7 @@ public class FollowEvent implements TwitchEvent.TwitchEventInterface
             ServerPlayerEntity player = ServerHelper.getConnectedPlayer();
             AnnouncementHelper.playAnnouncement(follower.getString("user_name"), "Just Followed!");
 
-            AllayEntity allay = new AllayEntity(EntityType.ALLAY, player.getWorld());
+            AllayEntity allay = new AllayEntity(EntityType.ALLAY, player.getEntityWorld());
             allay.setPosition(player.getPos());
             allay.setCustomName(Text.literal(follower.getString("user_name")));
             allay.setCustomNameVisible(true);

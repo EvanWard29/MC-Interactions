@@ -22,7 +22,7 @@ public class MobSpawnerLogicMixin
                 "minecraft",
                 TwitchInteractions.worldChanges.REPLACE_MOB_SPAWN.getString(entity.getType().toString())
             )).create(entity.getServer().getWorld(
-                entity.getWorld().getRegistryKey()),
+                entity.getEntityWorld().getRegistryKey()),
                 slimeEntity -> {},
                 entity.getBlockPos(),
                 SpawnReason.SPAWNER,

@@ -62,7 +62,7 @@ public class ServerHelper
         }
 
         // Play item pickup sound
-        player.getWorld().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2f, ((player.getRandom().nextFloat() - player.getRandom().nextFloat()) * 0.7f + 1.0f) * 2.0f);
+        player.getEntityWorld().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2f, ((player.getRandom().nextFloat() - player.getRandom().nextFloat()) * 0.7f + 1.0f) * 2.0f);
         player.currentScreenHandler.sendContentUpdates();
     }
 
@@ -126,7 +126,7 @@ public class ServerHelper
     {
         Entity replacement = Registries.ENTITY_TYPE.get(Identifier.tryParse(
             TwitchInteractions.worldChanges.REPLACE_MOB_SPAWN.getString(entity.getType().toString())
-        )).create(entity.getWorld());
+        )).create(entity.getEntityWorld());
 
         replacement.setPosition(entity.getPos());
 

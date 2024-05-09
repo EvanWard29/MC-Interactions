@@ -18,7 +18,7 @@ public class PieceMixin
     {
         if (TwitchInteractions.worldChanges.REPLACE_MOB_SPAWN.contains(entity.getType().toString())) {
             MobEntity replacement = (MobEntity) Registries.ENTITY_TYPE.get(Identifier.tryParse(TwitchInteractions.worldChanges.REPLACE_MOB_SPAWN.getString(entity.getType().toString())))
-                .create(entity.getWorld());
+                .create(entity.getEntityWorld());
 
             replacement.setPosition(entity.getPos());
             replacement.setPersistent();
