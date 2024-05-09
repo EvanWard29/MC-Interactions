@@ -21,6 +21,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import org.json.JSONObject;
+import uk.co.evanward.twitchinteractions.TwitchInteractions;
 import uk.co.evanward.twitchinteractions.helpers.AnnouncementHelper;
 import uk.co.evanward.twitchinteractions.helpers.ServerHelper;
 import uk.co.evanward.twitchinteractions.helpers.TwitchHelper;
@@ -179,14 +180,22 @@ public class GambleRedemption implements ChannelPoint.ChannelPointInterface
                     CreeperEntity creeper = new CreeperEntity(EntityType.CREEPER, player.getEntityWorld());
                     creeper.setTarget(player);
 
-                    chargedCreepers = !chargedCreepers;
+                    TwitchInteractions.worldChanges.CHARGED_CREEPERS = !TwitchInteractions.worldChanges.CHARGED_CREEPERS;
 
                     // Set the creeper to charged/uncharged
                     NbtCompound powered = new NbtCompound();
-                    powered.putBoolean("powered", chargedCreepers);
+                    powered.putBoolean("powered", TwitchInteractions.worldChanges.CHARGED_CREEPERS);
                     creeper.readCustomDataFromNbt(powered);
 
                     ServerHelper.spawnEntity(creeper);
+
+                    TwitchInteractions.worldChanges.markDirty();
+
+                    ServerHelper.getConnectedPlayer().sendMessage(Text.literal(
+                        TwitchInteractions.worldChanges.CHARGED_CREEPERS
+                            ? "Creepers are now charged!"
+                            : "Creepers are no longer charged!"
+                    ));
                 }
                 case NOTHING -> {
                     player.sendMessage(Text.literal("You got lucky this time, but unlucky ")
@@ -195,9 +204,6 @@ public class GambleRedemption implements ChannelPoint.ChannelPointInterface
             }
         }
     }
-
-    // TODO: Save the last state of this
-    public static boolean chargedCreepers;
 
     private static String username;
     private static ServerPlayerEntity player;

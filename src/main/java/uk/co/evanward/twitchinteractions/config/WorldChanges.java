@@ -29,6 +29,7 @@ public class WorldChanges extends PersistentState
     public NbtCompound SOUNDS;
     public NbtCompound ITEM_MODELS;
     public NbtCompound BLOCK_MODELS;
+    public boolean CHARGED_CREEPERS;
 
     private static final Type<WorldChanges> type = new Type<>(
         WorldChanges::new,
@@ -55,6 +56,7 @@ public class WorldChanges extends PersistentState
         this.SOUNDS = new NbtCompound();
         this.ITEM_MODELS = new NbtCompound();
         this.BLOCK_MODELS = new NbtCompound();
+        this.CHARGED_CREEPERS = false;
     }
 
     /**
@@ -77,6 +79,7 @@ public class WorldChanges extends PersistentState
         nbt.put("SOUNDS", SOUNDS);
         nbt.put("ITEM_MODELS", ITEM_MODELS);
         nbt.put("BLOCK_MODELS", BLOCK_MODELS);
+        nbt.putBoolean("CHARGED_CREEPERS", CHARGED_CREEPERS);
 
         return nbt;
     }
@@ -121,6 +124,8 @@ public class WorldChanges extends PersistentState
         worldChanges.ITEM_MODELS = nbt.getCompound("ITEM_MODELS");
 
         worldChanges.BLOCK_MODELS = nbt.getCompound("BLOCK_MODELS");
+
+        worldChanges.CHARGED_CREEPERS = nbt.getBoolean("CHARGED_CREEPERS");
 
         return worldChanges;
     }
