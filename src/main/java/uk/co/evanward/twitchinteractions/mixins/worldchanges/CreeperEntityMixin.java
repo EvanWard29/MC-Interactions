@@ -19,7 +19,7 @@ public abstract class CreeperEntityMixin
     @Shadow @Final private static TrackedData<Boolean> CHARGED;
 
     @Unique
-    public EntityData initialize(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, @Nullable EntityData entityData, @Nullable NbtCompound entityNbt)
+    public EntityData initialize(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, @Nullable EntityData entityData)
     {
         if (TwitchInteractions.worldChanges.CHARGED_CREEPERS) {
             ((CreeperEntity)(Object)this).getDataTracker().set(CHARGED, true);
