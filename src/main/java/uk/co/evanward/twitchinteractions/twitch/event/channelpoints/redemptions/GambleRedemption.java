@@ -179,18 +179,14 @@ public class GambleRedemption implements ChannelPoint.ChannelPointInterface
                     CreeperEntity creeper = new CreeperEntity(EntityType.CREEPER, player.getEntityWorld());
                     creeper.setTarget(player);
 
-                    // Set the Creeper to charged if Creepers are now charged
-                    if (!chargedCreepers) {
-                        NbtCompound powered = new NbtCompound();
-                        powered.putBoolean("powered", true);
+                    chargedCreepers = !chargedCreepers;
 
-                        creeper.readCustomDataFromNbt(powered);
-                    }
+                    // Set the creeper to charged/uncharged
+                    NbtCompound powered = new NbtCompound();
+                    powered.putBoolean("powered", chargedCreepers);
+                    creeper.readCustomDataFromNbt(powered);
 
                     ServerHelper.spawnEntity(creeper);
-
-                    // Set spawning Creepers to charged
-                    chargedCreepers = !chargedCreepers;
                 }
                 case NOTHING -> {
                     player.sendMessage(Text.literal("You got lucky this time, but unlucky ")
