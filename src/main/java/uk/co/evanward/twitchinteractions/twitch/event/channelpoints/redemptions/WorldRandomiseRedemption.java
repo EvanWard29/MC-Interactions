@@ -213,7 +213,7 @@ public class WorldRandomiseRedemption implements ChannelPoint.ChannelPointInterf
         EntityType<?> entityType = ServerHelper.randomMobType();
 
         // Get a random mob to replace with
-        EntityType<?> replacement = ServerHelper.randomMobType();
+        EntityType<?> replacement = ServerHelper.randomMobTypeReplacement();
 
         TwitchInteractions.worldChanges.REPLACE_MOB_SPAWN.putString(entityType.toString(), replacement.getUntranslatedName());
 

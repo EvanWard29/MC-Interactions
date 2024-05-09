@@ -104,7 +104,7 @@ public class ServerHelper
     }
 
     /**
-     * Get a random living mob type
+     * Get a random living mob type to replace
      */
     public static EntityType<?> randomMobType()
     {
@@ -113,7 +113,29 @@ public class ServerHelper
             .filter(entityTypeReference -> EnumSet.of(SpawnGroup.CREATURE, SpawnGroup.MONSTER, SpawnGroup.AXOLOTLS, SpawnGroup.AMBIENT)
                 .contains(entityTypeReference.value().getSpawnGroup()))
             .filter(entityTypeReference -> !entityTypeReference.value().getRequiredFeatures().contains(FeatureFlags.UPDATE_1_21))
+
+            // Mobs that shouldn't be replaced
             .filter(entityTypeReference -> !entityTypeReference.matchesId(Identifier.tryParse("wandering_trader")))
+            .filter(entityTypeReference -> !entityTypeReference.matchesId(Identifier.tryParse("bat")))
+            .filter(entityTypeReference -> !entityTypeReference.matchesId(Identifier.tryParse("giant")))
+            .filter(entityTypeReference -> !entityTypeReference.matchesId(Identifier.tryParse("zombie_horse")))
+            .filter(entityTypeReference -> !entityTypeReference.matchesId(Identifier.tryParse("illusioner")))
+
+            .findAny()
+            .get()
+            .value();
+    }
+
+    /**
+     * Get a random living mob type replacement
+     */
+    public static EntityType<?> randomMobTypeReplacement()
+    {
+        return Stream.generate(() -> Registries.ENTITY_TYPE.getRandom(getConnectedPlayer().getRandom()))
+            .flatMap(Optional::stream)
+            .filter(entityTypeReference -> EnumSet.of(SpawnGroup.CREATURE, SpawnGroup.MONSTER, SpawnGroup.AXOLOTLS, SpawnGroup.AMBIENT, SpawnGroup.WATER_CREATURE, SpawnGroup.WATER_AMBIENT)
+                .contains(entityTypeReference.value().getSpawnGroup()))
+            .filter(entityTypeReference -> !entityTypeReference.value().getRequiredFeatures().contains(FeatureFlags.UPDATE_1_21))
             .findAny()
             .get()
             .value();
