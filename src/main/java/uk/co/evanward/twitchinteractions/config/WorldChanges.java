@@ -40,7 +40,7 @@ public class WorldChanges extends PersistentState
     /**
      * Create the default world change values
      */
-    WorldChanges()
+    public WorldChanges()
     {
         this.CHICKEN_EGG = Items.EGG;
         this.DAY_LENGTH = 24000;

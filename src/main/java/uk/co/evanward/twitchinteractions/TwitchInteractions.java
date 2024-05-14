@@ -25,7 +25,7 @@ public class TwitchInteractions implements ModInitializer
     public static final HypeTrain hypeTrain = new HypeTrain();
     public static SocketClient socketClient;
 
-    public static WorldChanges worldChanges;
+    public static WorldChanges worldChanges = new WorldChanges();
 
     @Override
     public void onInitialize() {
