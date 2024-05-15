@@ -82,6 +82,10 @@ public class ServerHelper
         Random random = new Random();
 
         // Get a random position within a 10 block square of the player that is safe for the mob to spawn on
+        int maxAttempts = 1000;
+        int attempts = 0;
+
+        boolean safe;
         do {
             // Set the position to the centre of the block
             double x = (random.nextBoolean() ? player.getBlockX() + random.nextInt(10) : player.getBlockX() - random.nextInt(10)) + 0.5;
@@ -90,7 +94,20 @@ public class ServerHelper
 
             Vec3d pos = new Vec3d(x, y, z);
             entity.setPosition(pos);
-        } while (entity.collidesWithStateAtPos(entity.getBlockPos(), player.getServerWorld().getBlockState(entity.getBlockPos())));
+
+            boolean collides = entity.collidesWithStateAtPos(entity.getBlockPos(), player.getServerWorld().getBlockState(entity.getBlockPos()));
+            boolean isAir = player.getServerWorld().getBlockState(entity.getBlockPos().down()).isAir();
+
+            safe = !collides && !isAir;
+
+            attempts++;
+        } while (
+            !safe && attempts < maxAttempts
+        );
+
+        if (attempts == maxAttempts) {
+            throw new RuntimeException("Could not find safe spawn");
+        }
 
         player.getServerWorld().spawnEntityAndPassengers(entity);
     }
