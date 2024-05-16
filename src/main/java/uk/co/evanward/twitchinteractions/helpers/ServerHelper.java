@@ -5,13 +5,16 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.SpawnGroup;
+import net.minecraft.entity.mob.VexEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.registry.Registries;
 import net.minecraft.resource.featuretoggle.FeatureFlags;
 import net.minecraft.server.integrated.IntegratedServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3d;
 import uk.co.evanward.twitchinteractions.TwitchInteractions;
@@ -168,6 +171,11 @@ public class ServerHelper
         )).create(entity.getEntityWorld());
 
         replacement.setPosition(entity.getPos());
+
+        if (replacement.getType() == EntityType.VEX) {
+            VexEntity vex = (VexEntity) replacement;
+            vex.setStackInHand(Hand.MAIN_HAND, new ItemStack(Items.IRON_SWORD));
+        }
 
         return replacement;
     }

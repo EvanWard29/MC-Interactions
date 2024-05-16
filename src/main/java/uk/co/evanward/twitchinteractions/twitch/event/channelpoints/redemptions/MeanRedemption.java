@@ -17,7 +17,6 @@ import net.minecraft.util.math.BlockPos;
 import org.json.JSONObject;
 import uk.co.evanward.twitchinteractions.helpers.AnnouncementHelper;
 import uk.co.evanward.twitchinteractions.helpers.ServerHelper;
-import uk.co.evanward.twitchinteractions.helpers.TwitchHelper;
 import uk.co.evanward.twitchinteractions.twitch.event.channelpoints.ChannelPoint;
 
 import java.util.Random;
@@ -159,6 +158,9 @@ public class MeanRedemption implements ChannelPoint.ChannelPointInterface
                         VexEntity vex = new VexEntity(EntityType.VEX, player.getEntityWorld());
                         vex.setTarget(player);
 
+                        // Give the Vex a sword
+                        vex.setStackInHand(Hand.MAIN_HAND, new ItemStack(Items.IRON_SWORD));
+
                         ServerHelper.spawnEntity(vex);
                     }
                 }
@@ -231,7 +233,8 @@ public class MeanRedemption implements ChannelPoint.ChannelPointInterface
 
         AnnouncementHelper.playAnnouncement(username, "Is Feeling Mean!");
 
-        TwitchHelper.getRandomAction(MeanActions.values()).execute();
+        MeanActions.VEX.execute();
+        //TwitchHelper.getRandomAction(MeanActions.values()).execute();
     }
 
     /**
