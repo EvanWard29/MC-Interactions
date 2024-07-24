@@ -6,6 +6,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SpawnEggItem;
 import net.minecraft.registry.Registries;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -20,7 +21,7 @@ public class LivingEntityMixin
 {
     @SuppressWarnings("UnreachableCode")
     @Inject(method = "drop", at = @At(value = "TAIL"))
-    private void dropEgg(DamageSource source, CallbackInfo ci)
+    private void dropEgg(ServerWorld world, DamageSource damageSource, CallbackInfo ci)
     {
         int spawnEggChance = TwitchInteractions.worldChanges.SPAWN_EGG_CHANCE;
         if (spawnEggChance > 0 && (new Random()).nextInt(100) <= spawnEggChance) {

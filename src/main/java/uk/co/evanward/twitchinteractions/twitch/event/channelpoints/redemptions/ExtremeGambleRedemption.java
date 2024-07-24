@@ -32,7 +32,6 @@ import net.minecraft.world.chunk.WorldChunk;
 import org.json.JSONObject;
 import uk.co.evanward.twitchinteractions.helpers.AnnouncementHelper;
 import uk.co.evanward.twitchinteractions.helpers.ServerHelper;
-import uk.co.evanward.twitchinteractions.helpers.TwitchHelper;
 import uk.co.evanward.twitchinteractions.twitch.event.channelpoints.ChannelPoint;
 
 import java.util.Random;
@@ -174,7 +173,7 @@ public class ExtremeGambleRedemption implements ChannelPoint.ChannelPointInterfa
 
                     String lootTable = (new Random()).nextBoolean() ? "chests/end_city_treasure" : "chests/ancient_city";
 
-                    chestMinecart.setLootTable(RegistryKey.of(RegistryKeys.LOOT_TABLE, new Identifier(lootTable)));
+                    chestMinecart.setLootTable(RegistryKey.of(RegistryKeys.LOOT_TABLE, Identifier.ofVanilla(lootTable)));
 
                     ServerHelper.spawnEntity(chestMinecart);
                 }
@@ -215,7 +214,8 @@ public class ExtremeGambleRedemption implements ChannelPoint.ChannelPointInterfa
 
         AnnouncementHelper.playAnnouncement(username, "Is Feeling Extremely Lucky!");
 
-        TwitchHelper.getRandomAction(ExtremeGambleAction.values()).execute();
+        //TwitchHelper.getRandomAction(ExtremeGambleAction.values()).execute();
+        ExtremeGambleAction.CHEST_LOOT.execute();
     }
 
     /**

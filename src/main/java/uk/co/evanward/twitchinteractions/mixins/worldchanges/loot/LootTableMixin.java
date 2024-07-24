@@ -17,7 +17,7 @@ public abstract class LootTableMixin
     {
         // Replace the loot
         if (TwitchInteractions.worldChanges.REPLACE_LOOT.contains(stack.getItem().toString())) {
-            stack = new ItemStack(Registries.ITEM.get(Identifier.of("minecraft", TwitchInteractions.worldChanges.REPLACE_LOOT.getString(stack.getItem().toString()))));
+            stack = new ItemStack(Registries.ITEM.get(Identifier.tryParse(TwitchInteractions.worldChanges.REPLACE_LOOT.getString(stack.getItem().toString()))));
         }
 
         // Set the loot amount

@@ -18,7 +18,7 @@ public class MobSpawnerLogicMixin
     {
         // Replace spawner entities with their replacement
         if (TwitchInteractions.worldChanges.REPLACE_MOB_SPAWN.contains(entity.getType().toString())) {
-            entity = Registries.ENTITY_TYPE.get(Identifier.of(
+            entity = Registries.ENTITY_TYPE.get(Identifier.tryParse(
                 "minecraft",
                 TwitchInteractions.worldChanges.REPLACE_MOB_SPAWN.getString(entity.getType().toString())
             )).create(entity.getServer().getWorld(

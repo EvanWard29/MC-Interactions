@@ -94,7 +94,7 @@ public class WorldChanges extends PersistentState
         worldChanges.CHICKEN_EGG = ServerHelper.getServer()
             .getRegistryManager()
             .get(RegistryKeys.ITEM)
-            .get(Identifier.of("minecraft", nbt.getString("CHICKEN_EGG")));
+            .get(Identifier.tryParse("minecraft", nbt.getString("CHICKEN_EGG")));
 
         worldChanges.DAY_LENGTH = nbt.getInt("DAY_LENGTH");
 
@@ -117,7 +117,7 @@ public class WorldChanges extends PersistentState
         worldChanges.VILLAGER_CURRENCY = ServerHelper.getServer()
             .getRegistryManager()
             .get(RegistryKeys.ITEM)
-            .get(Identifier.of("minecraft", nbt.getString("VILLAGER_CURRENCY")));
+            .get(Identifier.tryParse("minecraft", nbt.getString("VILLAGER_CURRENCY")));
 
         worldChanges.SOUNDS = nbt.getCompound("SOUNDS");
 

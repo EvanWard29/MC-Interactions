@@ -1,8 +1,8 @@
 package uk.co.evanward.twitchinteractions.mixins.worldchanges.craftingoutput;
 
-import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.CuttingRecipe;
+import net.minecraft.recipe.input.SingleStackRecipeInput;
 import net.minecraft.registry.RegistryWrapper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -13,8 +13,8 @@ import uk.co.evanward.twitchinteractions.TwitchInteractions;
 @Mixin(CuttingRecipe.class)
 public abstract class CuttingOutputMixin
 {
-    @Inject(method = "craft", at = @At("RETURN"))
-    public void changeOutputAmount(Inventory inventory, RegistryWrapper.WrapperLookup lookup, CallbackInfoReturnable<ItemStack> cir)
+    @Inject(method = "craft(Lnet/minecraft/recipe/input/SingleStackRecipeInput;Lnet/minecraft/registry/RegistryWrapper$WrapperLookup;)Lnet/minecraft/item/ItemStack;", at = @At("RETURN"))
+    public void changeOutputAmount(SingleStackRecipeInput singleStackRecipeInput, RegistryWrapper.WrapperLookup wrapperLookup, CallbackInfoReturnable<ItemStack> cir)
     {
         ItemStack itemStack = cir.getReturnValue();
 

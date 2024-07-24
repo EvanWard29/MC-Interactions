@@ -55,7 +55,7 @@ public class GambleRedemption implements ChannelPoint.ChannelPointInterface
             switch(this) {
                 case WATER_BUCKET_CHALLENGE -> {
                     // Teleport the player to the world limit of the dimension they're in
-                    player.teleport(player.getX(), player.getEntityWorld().getHeight(), player.getZ());
+                    player.teleport(player.getX(), player.getEntityWorld().getHeight(), player.getZ(), false);
 
                     // get the item in the player's main hand
                     ItemStack itemInHand = player.getStackInHand(Hand.MAIN_HAND);

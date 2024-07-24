@@ -25,7 +25,7 @@ public class WitherSkullBlockMixin
     private static Entity replaceWither(Entity entity)
     {
         if (TwitchInteractions.worldChanges.REPLACE_MOB_SPAWN.contains(EntityType.WITHER.toString())) {
-            entity = Registries.ENTITY_TYPE.get(Identifier.of(
+            entity = Registries.ENTITY_TYPE.get(Identifier.tryParse(
                 "minecraft",
                 TwitchInteractions.worldChanges.REPLACE_MOB_SPAWN.getString(EntityType.WITHER.toString())
             )).create(entity.getServer().getWorld(

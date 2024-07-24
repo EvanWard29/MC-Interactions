@@ -16,7 +16,7 @@ public class ItemModelsMixin
     private Item getModel(Item item)
     {
         if (TwitchInteractions.worldChanges.ITEM_MODELS.contains(item.toString())) {
-            item = Registries.ITEM.get(Identifier.of("minecraft", TwitchInteractions.worldChanges.ITEM_MODELS.getString(item.toString())));
+            item = Registries.ITEM.get(Identifier.tryParse(TwitchInteractions.worldChanges.ITEM_MODELS.getString(item.toString())));
         }
 
         return item;

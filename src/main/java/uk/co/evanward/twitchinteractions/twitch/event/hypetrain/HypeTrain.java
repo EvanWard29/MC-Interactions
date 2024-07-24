@@ -10,6 +10,7 @@ import net.minecraft.entity.mob.*;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import uk.co.evanward.twitchinteractions.TwitchInteractions;
@@ -136,7 +137,7 @@ public class HypeTrain
 
                     // Add power to the Skeleton's bow and armour, based on the current Hype Train level
                     if (buffed) {
-                        bow.addEnchantment(Enchantments.POWER, TwitchInteractions.hypeTrain.level.value());
+                        bow.addEnchantment(ServerHelper.getServer().getRegistryManager().get(RegistryKeys.ENCHANTMENT).getEntry(ServerHelper.getServer().getRegistryManager().get(RegistryKeys.ENCHANTMENT).get(Enchantments.POWER)), TwitchInteractions.hypeTrain.level.value());
 
                         buffEntity(skeleton);
                     }
