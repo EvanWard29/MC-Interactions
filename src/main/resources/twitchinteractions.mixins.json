@@ -31,8 +31,8 @@
     "worldchanges.villagercurrency.TradeOfferMixin"
   ],
   "client": [
+    "worldchanges.blockmodels.BlockRenderManagerMixin",
     "worldchanges.blockmodels.BlockRenderMixin",
-    "worldchanges.blockmodels.ChunkRenderMixin",
     "worldchanges.blockmodels.ReloadRenderMixin",
     "worldchanges.daylength.ClientWorldMixin",
     "worldchanges.itemmodels.ItemModelsMixin",
