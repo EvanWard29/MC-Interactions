@@ -15,8 +15,15 @@ public class ItemModelsMixin
     @ModifyVariable(method = "getModel(Lnet/minecraft/item/Item;)Lnet/minecraft/client/render/model/BakedModel;", at = @At("HEAD"), argsOnly = true)
     private Item getModel(Item item)
     {
+        // New naming
         if (TwitchInteractions.worldChanges.ITEM_MODELS.contains(item.toString())) {
-            item = Registries.ITEM.get(Identifier.tryParse(TwitchInteractions.worldChanges.ITEM_MODELS.getString(item.toString())));
+            return Registries.ITEM.get(Identifier.tryParse(TwitchInteractions.worldChanges.ITEM_MODELS.getString(item.toString())));
+        }
+
+        // Old naming
+        String itemName = item.toString().substring(item.toString().lastIndexOf(':') + 1);
+        if (TwitchInteractions.worldChanges.ITEM_MODELS.contains(itemName)) {
+            return Registries.ITEM.get(Identifier.tryParse(TwitchInteractions.worldChanges.ITEM_MODELS.getString(itemName)));
         }
 
         return item;

@@ -15,11 +15,14 @@ public class BlockRenderManagerMixin
     @ModifyArg(method = "getModel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/block/BlockModels;getModel(Lnet/minecraft/block/BlockState;)Lnet/minecraft/client/render/model/BakedModel;"))
     private BlockState replaceBlockModel(BlockState state)
     {
-        String blockItem = state.getBlock().asItem().toString();
-        blockItem = blockItem.substring(blockItem.lastIndexOf(':') + 1);
+        if (TwitchInteractions.worldChanges.BLOCK_MODELS.contains(state.getBlock().asItem().toString())) {
+            return Registries.BLOCK.get(Identifier.tryParse(TwitchInteractions.worldChanges.BLOCK_MODELS.getString(state.getBlock().asItem().toString()))).getDefaultState();
+        }
 
-        if (TwitchInteractions.worldChanges.BLOCK_MODELS.contains(blockItem)) {
-             state = Registries.BLOCK.get(Identifier.ofVanilla(TwitchInteractions.worldChanges.BLOCK_MODELS.getString(blockItem))).getDefaultState();
+        String blockItemName = state.getBlock().asItem().toString();
+        blockItemName = blockItemName.substring(blockItemName.lastIndexOf(':') + 1);
+        if (TwitchInteractions.worldChanges.BLOCK_MODELS.contains(blockItemName)) {
+            return Registries.BLOCK.get(Identifier.ofVanilla(TwitchInteractions.worldChanges.BLOCK_MODELS.getString(blockItemName))).getDefaultState();
         }
 
         return state;
