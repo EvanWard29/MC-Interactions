@@ -372,7 +372,6 @@ public class WorldRandomiseRedemption implements ChannelPoint.ChannelPointInterf
             block = Registries.BLOCK.getRandom(ServerHelper.getConnectedPlayer().getRandom()).get().value();
         } while (block.getName().contains(Text.of("Air"))
             || block.getDefaultState().isIn(BlockTags.SHULKER_BOXES)
-            || block.asItem().toString().contains("redstone_wire")
         );
 
         return block;
