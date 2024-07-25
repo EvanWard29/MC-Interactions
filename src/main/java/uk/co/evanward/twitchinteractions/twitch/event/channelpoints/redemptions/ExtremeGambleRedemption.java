@@ -32,6 +32,7 @@ import net.minecraft.world.chunk.WorldChunk;
 import org.json.JSONObject;
 import uk.co.evanward.twitchinteractions.helpers.AnnouncementHelper;
 import uk.co.evanward.twitchinteractions.helpers.ServerHelper;
+import uk.co.evanward.twitchinteractions.helpers.TwitchHelper;
 import uk.co.evanward.twitchinteractions.twitch.event.channelpoints.ChannelPoint;
 
 import java.util.Random;
@@ -214,8 +215,7 @@ public class ExtremeGambleRedemption implements ChannelPoint.ChannelPointInterfa
 
         AnnouncementHelper.playAnnouncement(username, "Is Feeling Extremely Lucky!");
 
-        //TwitchHelper.getRandomAction(ExtremeGambleAction.values()).execute();
-        ExtremeGambleAction.CHEST_LOOT.execute();
+        TwitchHelper.getRandomAction(ExtremeGambleAction.values()).execute();
     }
 
     /**
