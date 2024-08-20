@@ -18,7 +18,6 @@
   <div class="text-start mt-3">
     <p>Minecraft Interactions is a Minecraft Java mod I've developed for personal use, inspired by the <a href="https://www.curseforge.com/minecraft/mc-mods/twitchspawn" target="_blank">TwitchSpawn</a> mod.</p>
     <p>The mod was designed to connect to the Twitch API using a WebSocket and listen for subscribed events, such as gaining a new follower or subscriber.</p>
-    <img src="https://evanward.co.uk/assets/img/portfolio/mc-interactions/set-night.webp" alt="MC Interactions channel point redemption.">
     <p>Triggered events would then perform an action in-game, like spawning a mob when someone follows, or changing the time of day to night when someone redeems a custom channel point.</p>
     <p class="mb-0">From this project, I learnt a number of skills which I could apply to other projects:</p>
     <ul>
