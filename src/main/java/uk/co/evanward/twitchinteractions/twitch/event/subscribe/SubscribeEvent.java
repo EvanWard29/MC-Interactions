@@ -55,16 +55,13 @@ public class SubscribeEvent implements TwitchEvent.TwitchEventInterface
 
                     // Get a random variant
                     RegistryKey<WolfVariant> variantKey = player.getEntityWorld().getRegistryManager()
-                        .get(RegistryKeys.WOLF_VARIANT)
+                        .getOrThrow(RegistryKeys.WOLF_VARIANT)
                         .getRandom(player.getRandom())
                         .get()
                         .registryKey();
 
                     // Set the wolf to this variant
-                    player.getRegistryManager()
-                        .get(RegistryKeys.WOLF_VARIANT)
-                        .getEntry(variantKey)
-                        .ifPresent(wolf::setVariant);
+                    wolf.setVariant(player.getRegistryManager().getOrThrow(RegistryKeys.WOLF_VARIANT).getOrThrow(variantKey));
 
                     return wolf;
                 }

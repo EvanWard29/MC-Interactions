@@ -1,5 +1,6 @@
 package uk.co.evanward.twitchinteractions.twitch.event.channelpoints.redemptions;
 
+import net.minecraft.network.packet.s2c.play.PositionFlag;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -32,7 +33,7 @@ public class TeleportHomeRedemption implements ChannelPoint.ChannelPointInterfac
         }
 
         // Teleport the player to the Overworld spawn
-        player.teleport(ServerHelper.getServer().getWorld(World.OVERWORLD), spawn.getX(), spawn.getY(), spawn.getZ(), player.getYaw(), player.getPitch());
+        player.teleport(ServerHelper.getServer().getWorld(World.OVERWORLD), spawn.getX(), spawn.getY(), spawn.getZ(), PositionFlag.VALUES, player.getYaw(), player.getPitch(), false);
 
         // Play the announcement sound at the Overworld spawn
         player.playSoundToPlayer(SoundEvents.ENTITY_PLAYER_LEVELUP, SoundCategory.PLAYERS, 1f, 0.5f);
