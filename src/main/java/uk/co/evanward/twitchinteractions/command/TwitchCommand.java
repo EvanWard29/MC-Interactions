@@ -12,7 +12,6 @@ import net.minecraft.util.Formatting;
 import uk.co.evanward.twitchinteractions.TwitchInteractions;
 import uk.co.evanward.twitchinteractions.config.ModConfig;
 import uk.co.evanward.twitchinteractions.helpers.TwitchHelper;
-import uk.co.evanward.twitchinteractions.twitch.server.SQLite;
 import uk.co.evanward.twitchinteractions.twitch.server.SparkServer;
 
 import java.util.Objects;
@@ -96,6 +95,9 @@ public class TwitchCommand
     private static int disconnect(CommandContext<ServerCommandSource> context)
     {
         if (TwitchInteractions.socketClient.isConnected()) {
+            // Remove event subscriptions
+            TwitchHelper.unsubscribe();
+
             try {
                 TwitchInteractions.socketClient.closeBlocking();
             } catch (InterruptedException e) {
