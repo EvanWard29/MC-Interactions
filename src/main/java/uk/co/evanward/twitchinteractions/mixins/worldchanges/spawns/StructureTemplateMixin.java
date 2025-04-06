@@ -1,6 +1,7 @@
 package uk.co.evanward.twitchinteractions.mixins.worldchanges.spawns;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.Registries;
 import net.minecraft.structure.StructureTemplate;
@@ -25,7 +26,7 @@ public class StructureTemplateMixin
         if (entity.isPresent() && TwitchInteractions.worldChanges.REPLACE_MOB_SPAWN.contains(entity.get().getType().toString())) {
             cir.setReturnValue(Optional.ofNullable(Registries.ENTITY_TYPE.get(
                 Identifier.tryParse(TwitchInteractions.worldChanges.REPLACE_MOB_SPAWN.getString(entity.get().getType().toString()))
-            ).create(world.toServerWorld())));
+            ).create(world.toServerWorld(), SpawnReason.COMMAND)));
         }
     }
 }
