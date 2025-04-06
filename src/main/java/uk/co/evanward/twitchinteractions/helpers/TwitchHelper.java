@@ -59,7 +59,7 @@ public class TwitchHelper
         ModConfig.USER_ACCESS_TOKEN = accessToken;
 
         try {
-            ModConfig.BROADCASTER_ID = getTwitchUserId();
+            ModConfig.BROADCASTER_ID = getTwitchUser().getString("id");
         } catch (IOException | InterruptedException e) {
             TwitchInteractions.logger.error("Error getting Twitch broadcaster ID: " + e.getMessage());
         }
@@ -124,37 +124,16 @@ public class TwitchHelper
     }
 
     /** Unsubscribe from all currently subscribed events */
-    public static void unsubscribe()
+    public static void unsubscribe() throws Exception
     {
         // Check if Twitch has been authenticated first
         if (!authenticated()) {
-            TwitchInteractions.logger.error("User is not authenticated with Twitch");
-
-            return;
+            throw new Exception("User is not authenticated with Twitch");
         }
 
         HttpClient client = HttpClient.newHttpClient();
 
-        // Get a list of subscribed events
-        HttpRequest request = HttpRequest.newBuilder()
-            .uri(URI.create(SUBSCRIPTION_ENDPOINT))
-            .GET()
-            .header("Client-Id", CLIENT_ID)
-            .header("Accept", "application/json")
-            .header("Content-Type", "application/json")
-            .header("Authorization", "Bearer " + ModConfig.USER_ACCESS_TOKEN)
-            .build();
-
-        String response;
-        try {
-            response = client.send(request, HttpResponse.BodyHandlers.ofString()).body();
-        } catch (IOException | InterruptedException e) {
-            TwitchInteractions.logger.error("Error getting subscribed events: " + e.getMessage());
-
-            return;
-        }
-
-        JSONArray subscriptions = new JSONObject(response).getJSONArray("data");
+        JSONArray subscriptions = getSubEvents();
         for (int i = 0; i < subscriptions.length(); i++) {
             JSONObject subscription = subscriptions.getJSONObject(i);
 
@@ -184,6 +163,38 @@ public class TwitchHelper
 
             TwitchInteractions.logger.info("Unsubscribed from event `" + subscription.getString("type") + "`");
         }
+    }
+
+    /** Get a list of subscribed events */
+    public static JSONArray getSubEvents() throws Exception
+    {
+        HttpClient client = HttpClient.newHttpClient();
+
+        // Get a list of subscribed events
+        HttpRequest request = HttpRequest.newBuilder()
+            .uri(URI.create(SUBSCRIPTION_ENDPOINT))
+            .GET()
+            .header("Client-Id", CLIENT_ID)
+            .header("Accept", "application/json")
+            .header("Content-Type", "application/json")
+            .header("Authorization", "Bearer " + ModConfig.USER_ACCESS_TOKEN)
+            .build();
+
+        HttpResponse response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        JSONObject body = new JSONObject(response.body());
+
+        if (response.statusCode() != 200) {
+            String error;
+            if (body.has("error")) {
+                error = body.getString("error");
+            } else {
+                error = body.toString();
+            }
+
+            throw new Exception("Error getting subscribed events: " + error);
+        }
+
+        return new JSONObject(response.body().toString()).getJSONArray("data");
     }
 
     /**
@@ -341,7 +352,7 @@ public class TwitchHelper
     /**
      * Get the user's Twitch broadcasterId
      */
-    private static String getTwitchUserId() throws IOException, InterruptedException
+    public static JSONObject getTwitchUser() throws IOException, InterruptedException
     {
         HttpClient client = HttpClient.newHttpClient();
 
@@ -356,6 +367,6 @@ public class TwitchHelper
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         JSONObject responseBody = new JSONObject(response.body());
 
-        return responseBody.getJSONArray("data").getJSONObject(0).getString("id");
+        return responseBody.getJSONArray("data").getJSONObject(0);
     }
 }
