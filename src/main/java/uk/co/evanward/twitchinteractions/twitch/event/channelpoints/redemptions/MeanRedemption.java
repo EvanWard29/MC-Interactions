@@ -17,6 +17,7 @@ import net.minecraft.util.math.BlockPos;
 import org.json.JSONObject;
 import uk.co.evanward.twitchinteractions.helpers.AnnouncementHelper;
 import uk.co.evanward.twitchinteractions.helpers.ServerHelper;
+import uk.co.evanward.twitchinteractions.helpers.TwitchHelper;
 import uk.co.evanward.twitchinteractions.twitch.event.channelpoints.ChannelPoint;
 
 import java.util.Random;
@@ -233,8 +234,7 @@ public class MeanRedemption implements ChannelPoint.ChannelPointInterface
 
         AnnouncementHelper.playAnnouncement(username, "Is Feeling Mean!");
 
-        MeanActions.VEX.execute();
-        //TwitchHelper.getRandomAction(MeanActions.values()).execute();
+        TwitchHelper.getRandomAction(MeanActions.values()).execute();
     }
 
     /**
