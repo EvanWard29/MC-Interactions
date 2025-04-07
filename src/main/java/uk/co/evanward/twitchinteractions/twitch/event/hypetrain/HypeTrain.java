@@ -137,7 +137,7 @@ public class HypeTrain
 
                     // Add power to the Skeleton's bow and armour, based on the current Hype Train level
                     if (buffed) {
-                        bow.addEnchantment(ServerHelper.getServer().getRegistryManager().get(RegistryKeys.ENCHANTMENT).getEntry(ServerHelper.getServer().getRegistryManager().get(RegistryKeys.ENCHANTMENT).get(Enchantments.POWER)), TwitchInteractions.hypeTrain.level.value());
+                        bow.addEnchantment(ServerHelper.getServer().getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT).getEntry(ServerHelper.getServer().getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT).get(Enchantments.POWER)), TwitchInteractions.hypeTrain.level.value());
 
                         buffEntity(skeleton);
                     }

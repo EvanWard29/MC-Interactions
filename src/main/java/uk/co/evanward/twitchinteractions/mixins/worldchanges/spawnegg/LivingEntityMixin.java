@@ -37,7 +37,7 @@ public class LivingEntityMixin
                 ItemStack spawnEggStack = new ItemStack(spawnEgg);
                 spawnEggStack.setCount(Math.max(1, TwitchInteractions.worldChanges.LOOT_MODIFIER.getInt(spawnEgg.toString())));
 
-                ((LivingEntity)(Object)this).dropStack(spawnEggStack);
+                ((LivingEntity)(Object)this).dropStack(world, spawnEggStack);
             }
         }
     }

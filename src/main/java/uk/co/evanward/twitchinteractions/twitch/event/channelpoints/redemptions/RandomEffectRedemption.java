@@ -23,7 +23,7 @@ public class RandomEffectRedemption implements ChannelPoint.ChannelPointInterfac
         do {
             effect = ServerHelper.getServer()
                 .getRegistryManager()
-                .get(RegistryKeys.STATUS_EFFECT)
+                .getOrThrow(RegistryKeys.STATUS_EFFECT)
                 .getRandom(ServerHelper.getConnectedPlayer().getRandom())
                 .get()
                 .value();

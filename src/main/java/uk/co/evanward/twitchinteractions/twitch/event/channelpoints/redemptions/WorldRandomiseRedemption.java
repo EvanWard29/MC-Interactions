@@ -86,7 +86,7 @@ public class WorldRandomiseRedemption implements ChannelPoint.ChannelPointInterf
     {
         TwitchInteractions.worldChanges.CHICKEN_EGG = ServerHelper.getServer()
             .getRegistryManager()
-            .get(RegistryKeys.ITEM)
+            .getOrThrow(RegistryKeys.ITEM)
             .getRandom(ServerHelper.getConnectedPlayer().getRandom())
             .get()
             .value();
@@ -304,12 +304,12 @@ public class WorldRandomiseRedemption implements ChannelPoint.ChannelPointInterf
         SoundEvent sound = Registries.SOUND_EVENT.getRandom(ServerHelper.getConnectedPlayer().getRandom()).get().value();
         SoundEvent replacement = Registries.SOUND_EVENT.getRandom(ServerHelper.getConnectedPlayer().getRandom()).get().value();
 
-        TwitchInteractions.worldChanges.SOUNDS.putString(sound.getId().toString(), replacement.getId().toString());
+        TwitchInteractions.worldChanges.SOUNDS.putString(sound.id().toString(), replacement.id().toString());
 
         sendMessage(Text.literal("The sound ")
-            .append(Text.literal(sound.getId().getPath()).formatted(Formatting.AQUA))
+            .append(Text.literal(sound.id().getPath()).formatted(Formatting.AQUA))
             .append(Text.literal(" has been replaced with ").formatted(Formatting.GOLD))
-            .append(Text.literal(replacement.getId().getPath()).formatted(Formatting.AQUA)).formatted(Formatting.GOLD));
+            .append(Text.literal(replacement.id().getPath()).formatted(Formatting.AQUA)).formatted(Formatting.GOLD));
     }
 
     /**

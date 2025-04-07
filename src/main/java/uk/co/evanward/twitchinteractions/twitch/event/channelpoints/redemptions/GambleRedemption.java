@@ -125,16 +125,13 @@ public class GambleRedemption implements ChannelPoint.ChannelPointInterface
                             WolfEntity wolf = (WolfEntity) entity;
 
                             RegistryKey<WolfVariant> variantKey = player.getEntityWorld().getRegistryManager()
-                                .get(RegistryKeys.WOLF_VARIANT)
+                                .getOrThrow(RegistryKeys.WOLF_VARIANT)
                                 .getRandom(player.getRandom())
                                 .get()
                                 .registryKey();
 
                             // Set the wolf to this variant
-                            player.getRegistryManager()
-                                .get(RegistryKeys.WOLF_VARIANT)
-                                .getEntry(variantKey)
-                                .ifPresent(wolf::setVariant);
+                            wolf.setVariant(player.getRegistryManager().getOrThrow(RegistryKeys.WOLF_VARIANT).getOrThrow(variantKey));
 
                         }
 
@@ -149,7 +146,7 @@ public class GambleRedemption implements ChannelPoint.ChannelPointInterface
                 }
                 case HALF_HEALTH -> {
                     player.setHealth(10);
-                    player.getAttributes().getCustomInstance(EntityAttributes.GENERIC_MAX_HEALTH).setBaseValue(10);
+                    player.getAttributes().getCustomInstance(EntityAttributes.MAX_HEALTH).setBaseValue(10);
                 }
                 case FOOD_EXPLOSION -> {
                     for (int i = 0; i < 5; i++) {

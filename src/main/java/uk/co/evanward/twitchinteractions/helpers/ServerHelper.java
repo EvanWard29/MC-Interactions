@@ -1,10 +1,7 @@
 package uk.co.evanward.twitchinteractions.helpers;
 
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ItemEntity;
-import net.minecraft.entity.SpawnGroup;
+import net.minecraft.entity.*;
 import net.minecraft.entity.mob.VexEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -165,7 +162,7 @@ public class ServerHelper
     {
         Entity replacement = Registries.ENTITY_TYPE.get(Identifier.tryParse(
             TwitchInteractions.worldChanges.REPLACE_MOB_SPAWN.getString(entity.getType().toString())
-        )).create(entity.getEntityWorld());
+        )).create(entity.getEntityWorld(), SpawnReason.COMMAND);
 
         replacement.setPosition(entity.getPos());
 

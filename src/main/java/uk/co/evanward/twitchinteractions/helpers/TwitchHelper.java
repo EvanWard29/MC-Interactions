@@ -1,6 +1,7 @@
 package uk.co.evanward.twitchinteractions.helpers;
 
 import org.apache.http.client.utils.URIBuilder;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import uk.co.evanward.twitchinteractions.TwitchInteractions;
 import uk.co.evanward.twitchinteractions.config.ModConfig;
@@ -58,7 +59,7 @@ public class TwitchHelper
         ModConfig.USER_ACCESS_TOKEN = accessToken;
 
         try {
-            ModConfig.BROADCASTER_ID = getTwitchUserId();
+            ModConfig.BROADCASTER_ID = getTwitchUser().getString("id");
         } catch (IOException | InterruptedException e) {
             TwitchInteractions.logger.error("Error getting Twitch broadcaster ID: " + e.getMessage());
         }
@@ -115,11 +116,85 @@ public class TwitchHelper
             if (responseBody.has("error")) {
                 TwitchInteractions.logger.error("Error subscribing to event `" + event.getType().toString() + "`: " + response);
             } else {
-                TwitchInteractions.logger.info("Subscribed to event: " + type.getString());
+                TwitchInteractions.logger.info("Subscribed to event: " + type.getString() + " - " + responseBody.getJSONArray("data").getJSONObject(0).getString("id"));
             }
         }
 
         return true;
+    }
+
+    /** Unsubscribe from all currently subscribed events */
+    public static void unsubscribe() throws Exception
+    {
+        // Check if Twitch has been authenticated first
+        if (!authenticated()) {
+            throw new Exception("User is not authenticated with Twitch");
+        }
+
+        HttpClient client = HttpClient.newHttpClient();
+
+        JSONArray subscriptions = getSubEvents();
+        for (int i = 0; i < subscriptions.length(); i++) {
+            JSONObject subscription = subscriptions.getJSONObject(i);
+
+            HttpRequest deleteRequest = HttpRequest.newBuilder()
+                .uri(URI.create(SUBSCRIPTION_ENDPOINT + "?id=" + subscription.getString("id")))
+                .DELETE()
+                .header("Client-Id", CLIENT_ID)
+                .header("Accept", "application/json")
+                .header("Content-Type", "application/json")
+                .header("Authorization", "Bearer " + ModConfig.USER_ACCESS_TOKEN)
+                .build();
+
+            HttpResponse deleteResponse;
+            try {
+                deleteResponse = client.send(deleteRequest, HttpResponse.BodyHandlers.ofString());
+            } catch (IOException | InterruptedException e) {
+                TwitchInteractions.logger.error("Error unsubscribing from event `" + subscription.getString("type") + "`: " + e.getMessage());
+
+                continue;
+            }
+
+            if (deleteResponse.statusCode() != 204) {
+                TwitchInteractions.logger.error("Error unsubscribing from event `" + subscription.getString("type") + "`: " + deleteResponse.body().toString());
+
+                continue;
+            }
+
+            TwitchInteractions.logger.info("Unsubscribed from event `" + subscription.getString("type") + "`");
+        }
+    }
+
+    /** Get a list of subscribed events */
+    public static JSONArray getSubEvents() throws Exception
+    {
+        HttpClient client = HttpClient.newHttpClient();
+
+        // Get a list of subscribed events
+        HttpRequest request = HttpRequest.newBuilder()
+            .uri(URI.create(SUBSCRIPTION_ENDPOINT))
+            .GET()
+            .header("Client-Id", CLIENT_ID)
+            .header("Accept", "application/json")
+            .header("Content-Type", "application/json")
+            .header("Authorization", "Bearer " + ModConfig.USER_ACCESS_TOKEN)
+            .build();
+
+        HttpResponse response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        JSONObject body = new JSONObject(response.body());
+
+        if (response.statusCode() != 200) {
+            String error;
+            if (body.has("error")) {
+                error = body.getString("error");
+            } else {
+                error = body.toString();
+            }
+
+            throw new Exception("Error getting subscribed events: " + error);
+        }
+
+        return new JSONObject(response.body().toString()).getJSONArray("data");
     }
 
     /**
@@ -277,7 +352,7 @@ public class TwitchHelper
     /**
      * Get the user's Twitch broadcasterId
      */
-    private static String getTwitchUserId() throws IOException, InterruptedException
+    public static JSONObject getTwitchUser() throws IOException, InterruptedException
     {
         HttpClient client = HttpClient.newHttpClient();
 
@@ -292,6 +367,6 @@ public class TwitchHelper
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         JSONObject responseBody = new JSONObject(response.body());
 
-        return responseBody.getJSONArray("data").getJSONObject(0).getString("id");
+        return responseBody.getJSONArray("data").getJSONObject(0);
     }
 }

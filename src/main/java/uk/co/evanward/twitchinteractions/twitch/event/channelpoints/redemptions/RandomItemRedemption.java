@@ -31,8 +31,8 @@ public class RandomItemRedemption implements ChannelPoint.ChannelPointInterface
             item = new ItemStack(RegistryEntry.of(tools[(new Random()).nextInt(tools.length)]));
 
             // Add OP enchants
-            item.addEnchantment(ServerHelper.getServer().getRegistryManager().get(RegistryKeys.ENCHANTMENT).getEntry(ServerHelper.getServer().getRegistryManager().get(RegistryKeys.ENCHANTMENT).get(Enchantments.EFFICIENCY)), 100);
-            item.addEnchantment(ServerHelper.getServer().getRegistryManager().get(RegistryKeys.ENCHANTMENT).getEntry(ServerHelper.getServer().getRegistryManager().get(RegistryKeys.ENCHANTMENT).get(Enchantments.VANISHING_CURSE)), 100);
+            item.addEnchantment(ServerHelper.getServer().getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT).getEntry(ServerHelper.getServer().getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT).get(Enchantments.EFFICIENCY)), 100);
+            item.addEnchantment(ServerHelper.getServer().getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT).getEntry(ServerHelper.getServer().getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT).get(Enchantments.VANISHING_CURSE)), 100);
 
             // Set unbreakable
             item.set(DataComponentTypes.UNBREAKABLE, new UnbreakableComponent(true));
@@ -44,7 +44,7 @@ public class RandomItemRedemption implements ChannelPoint.ChannelPointInterface
             item = new ItemStack(
                 ServerHelper.getServer()
                     .getRegistryManager()
-                    .get(RegistryKeys.ITEM)
+                    .getOrThrow(RegistryKeys.ITEM)
                     .getRandom(ServerHelper.getConnectedPlayer().getRandom())
                     .get()
                     .value()

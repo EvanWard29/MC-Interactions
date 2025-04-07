@@ -9,12 +9,14 @@ import net.minecraft.text.ClickEvent;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import uk.co.evanward.twitchinteractions.TwitchInteractions;
 import uk.co.evanward.twitchinteractions.config.ModConfig;
 import uk.co.evanward.twitchinteractions.helpers.TwitchHelper;
-import uk.co.evanward.twitchinteractions.twitch.server.SQLite;
 import uk.co.evanward.twitchinteractions.twitch.server.SparkServer;
 
+import java.io.IOException;
 import java.util.Objects;
 
 import static net.minecraft.server.command.CommandManager.literal;
@@ -42,6 +44,33 @@ public class TwitchCommand
             context.getSource().sendFeedback(() -> Text.literal("Connected to Twitch with session id `" + sessionId + "`").formatted(Formatting.AQUA), false);
         } else {
             context.getSource().sendFeedback(() -> Text.literal("Client is not connected to Twitch").formatted(Formatting.GOLD), false);
+        }
+
+        // Display who is authenticated
+        if (TwitchHelper.authenticated()) {
+            try {
+                JSONObject twitchUser = TwitchHelper.getTwitchUser();
+                context.getSource().sendFeedback(() -> Text.literal("The connected Twitch user is `" + twitchUser.getString("display_name") + "`").formatted(Formatting.AQUA), false);
+            } catch (IOException | InterruptedException e) {
+                TwitchInteractions.logger.error("Error getting Twitch user: " + e.getMessage());
+            }
+        } else {
+            context.getSource().sendFeedback(() -> Text.literal("User is not connected to Twitch").formatted(Formatting.RED), false);
+        }
+
+        // Display the list of events listening for
+        if (TwitchHelper.authenticated() && TwitchInteractions.socketClient.isConnected()) {
+            try {
+                JSONArray subEvents = TwitchHelper.getSubEvents();
+                context.getSource().sendFeedback(() -> Text.literal("Listening for the following events:").formatted(Formatting.AQUA), false);
+
+                for (int i = 0; i < subEvents.length(); i++) {
+                    int finalI = i;
+                    context.getSource().sendFeedback(() -> Text.literal(subEvents.getJSONObject(finalI).getString("type")), false);
+                }
+            } catch (Exception e) {
+                TwitchInteractions.logger.error("Error getting subscribed events: " + e.getMessage());
+            }
         }
 
         return 1;
@@ -96,6 +125,13 @@ public class TwitchCommand
     private static int disconnect(CommandContext<ServerCommandSource> context)
     {
         if (TwitchInteractions.socketClient.isConnected()) {
+            // Remove event subscriptions
+            try {
+                TwitchHelper.unsubscribe();
+            } catch (Exception e) {
+                TwitchInteractions.logger.error("Error unsubscribing from twitch events: " + e.getMessage());
+            }
+
             try {
                 TwitchInteractions.socketClient.closeBlocking();
             } catch (InterruptedException e) {

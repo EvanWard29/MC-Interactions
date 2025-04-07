@@ -15,6 +15,7 @@ import net.minecraft.entity.mob.SlimeEntity;
 import net.minecraft.entity.mob.WardenEntity;
 import net.minecraft.entity.vehicle.ChestMinecartEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.network.packet.s2c.play.PositionFlag;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -116,7 +117,7 @@ public class ExtremeGambleRedemption implements ChannelPoint.ChannelPointInterfa
                         }
                     }
 
-                    player.teleport(world, safeSpawn.getX(), safeSpawn.getY(), safeSpawn.getZ(), player.getYaw(), player.getPitch());
+                    player.teleport(world, safeSpawn.getX(), safeSpawn.getY(), safeSpawn.getZ(), PositionFlag.VALUES, player.getYaw(), player.getPitch(), false);
                 }
                 case TNT -> {
                     for (int i = 0; i < 5; i++) {
@@ -149,7 +150,7 @@ public class ExtremeGambleRedemption implements ChannelPoint.ChannelPointInterfa
                     ServerHelper.spawnEntity(slime);
                 }
                 case DOUBLE_HEALTH -> {
-                    EntityAttributeInstance maxHealth = player.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH);
+                    EntityAttributeInstance maxHealth = player.getAttributeInstance(EntityAttributes.MAX_HEALTH);
                     if (maxHealth.getBaseValue() >= 1280) {
                         // Reset player's health
                         maxHealth.setBaseValue(20);
